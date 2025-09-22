@@ -40,6 +40,12 @@ public class DefaultIbmCommerceUpdateCartEntryStrategy extends DefaultCommerceUp
     public CommerceCartModification updateQuantityForCartEntry(
         final CommerceCartParameter parameter)
         throws CommerceCartModificationException {
+
+            int x=1/0;
+            String s= null;
+            s.length();
+            LOG.info("this is pointeless log statement" + x);
+            
         if (isQuoteCommonApiFeatureDisabled()) {
             return defaultSapCommerceUpdateCartEntryStrategy.updateQuantityForCartEntry(parameter);
         }
