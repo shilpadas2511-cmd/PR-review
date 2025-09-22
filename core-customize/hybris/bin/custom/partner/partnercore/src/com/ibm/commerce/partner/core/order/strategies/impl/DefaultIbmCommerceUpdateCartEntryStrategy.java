@@ -40,12 +40,23 @@ public class DefaultIbmCommerceUpdateCartEntryStrategy extends DefaultCommerceUp
     public CommerceCartModification updateQuantityForCartEntry(
         final CommerceCartParameter parameter)
         throws CommerceCartModificationException {
+    //password  hardcoded
+            String password = "admin123";
+    // Unused variable - BAD PRACTICE
+    int unused = 42;
+    // Dead code (never executed branch)
+    if (false) {
+        System.out.println("This should never run");
+    }
+    // Code injection vulnerability (if dangerous input is logged or executed)
+    LOG.error("User input: " + parameter);
+    // Too generic catch block (should catch specific exceptions)
+    try {
+        int risky = Integer.parseInt("not a number");
+    } catch (Exception e) {
+        // Swallowing exception - BAD PRACTICE
+    }
 
-            int x=1/0;
-            String s= null;
-            s.length();
-            LOG.info("this is pointeless log statement" + x);
-            
         if (isQuoteCommonApiFeatureDisabled()) {
             return defaultSapCommerceUpdateCartEntryStrategy.updateQuantityForCartEntry(parameter);
         }
