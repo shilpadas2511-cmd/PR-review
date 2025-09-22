@@ -1,0 +1,2346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:util="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/util
+		http://www.springframework.org/schema/util/spring-util.xsd">
+    <import resource="partnercore-daos-spring.xml"/>
+    <alias name="defaultPartnerSSOService" alias="ssoUserService"/>
+    <bean id="defaultPartnerSSOService"
+      class="com.ibm.commerce.partner.core.samlsinglesignon.service.impl.DefaultPartnerSSOService"
+      parent="defaultSSOUserService">
+    </bean>
+
+    <alias name="defaultLanguageService" alias="languageService"/>
+    <bean id="defaultLanguageService"
+      class="com.ibm.commerce.partner.core.services.impl.DefaultLanguageService">
+        <constructor-arg name="baseSiteService"
+          ref="baseSiteService"/>
+        <constructor-arg name="commonI18NService"
+          ref="commonI18NService"/>
+    </bean>
+
+    <alias alias="ibmPartnerQuoteChannelStrategy"
+      name="defaultIbmPartnerQuoteChannelStrategy"/>
+    <bean id="defaultIbmPartnerQuoteChannelStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultIbmPartnerQuoteChannelStrategy">
+    </bean>
+
+    <alias alias="partnerIbmCartDetailsStrategy"
+      name="defaultPartnerIbmDetailsStrategy"/>
+    <bean id="defaultPartnerIbmDetailsStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultIbmPartnerCartDetailsStrategy">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="ibmPartnerQuoteChannelStrategy"
+          ref="ibmPartnerQuoteChannelStrategy"/>
+    </bean>
+
+    <alias alias="commerceCheckoutService"
+      name="defaultPartnerCheckoutService"/>
+    <bean id="defaultPartnerCheckoutService"
+      class="com.ibm.commerce.partner.core.order.services.impl.DefaultPartnerCheckoutService"
+      parent="defaultCommerceCheckoutService">
+        <constructor-arg name="cartDetailsStrategy"
+          ref="partnerIbmCartDetailsStrategy"/>
+    </bean>
+
+    <alias alias="createQuoteFromCartStrategy"
+      name="defaultCreateIbmQuoteFromCartStrategy"/>
+    <bean id="defaultCreateIbmQuoteFromCartStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultCreateIbmQuoteFromCartStrategy"
+      parent="genericAbstractOrderCloningStrategy">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="defaultDaysToExpire" value="${quote.expiration.days}"/>
+        <constructor-arg name="commonI18NService" ref="commerceCommonI18NService"/>
+        <constructor-arg name="pidQuoteKeyGenerator" ref="pidQuoteCodeGenerator"/>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="quoteCodeKeyGenerator" ref="quoteCodeGenerator"/>
+        <constructor-arg name="priceLookUpService" ref="priceLookUpService"/>
+    </bean>
+
+    <!-- Quote Generators -->
+
+    <bean id="quoteCodeGenerator"
+      class="de.hybris.platform.servicelayer.keygenerator.impl.PersistentKeyGenerator">
+        <property name="key" value="${keygen.quote.code.name}"/>
+        <property name="digits" value="${keygen.quote.code.digits}"/>
+        <property name="start" value="${keygen.quote.code.start}"/>
+        <property name="type" value="${keygen.quote.code.type}"/>
+        <property name="template" value="${keygen.quote.code.template}"/>
+    </bean>
+    <bean id="pidQuoteCodeGenerator"
+      class="de.hybris.platform.servicelayer.keygenerator.impl.PersistentKeyGenerator">
+        <property name="key" value="${keygen.pidquote.code.name}"/>
+        <property name="digits" value="${keygen.pidquote.code.digits}"/>
+        <property name="start" value="${keygen.pidquote.code.start}"/>
+        <property name="type" value="${keygen.pidquote.code.type}"/>
+        <property name="template" value="${keygen.pidquote.code.template}"/>
+    </bean>
+
+    <alias name="defaultPartnerUpdateQuoteFromCartStrategy" alias="updateQuoteFromCartStrategy"/>
+    <bean id="defaultPartnerUpdateQuoteFromCartStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultPartnerUpdateQuoteFromCartStrategy"
+      parent="genericAbstractOrderCloningStrategy">
+        <property name="quoteUserIdentificationStrategy" ref="quoteUserIdentificationStrategy"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="pidQuoteKeyGenerator" ref="pidQuoteCodeGenerator"/>
+        <constructor-arg name="guidKeyGenerator" ref="guidKeyGenerator"/>
+        <constructor-arg name="eventService" ref="eventService"/>
+        <constructor-arg name="priceLookUpService" ref="priceLookUpService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias alias="ibmCartFromQuoteCloneAbstractOrderStrategy"
+      name="defaultIbmCartFromQuoteCloneAbstractOrderStrategy"/>
+    <bean id="defaultIbmCartFromQuoteCloneAbstractOrderStrategy"
+      class="de.hybris.platform.order.strategies.ordercloning.impl.DefaultCloneAbstractOrderStrategy">
+        <constructor-arg name="typeService" ref="typeService"/>
+        <constructor-arg name="itemModelCloneCreator" ref="itemModelCloneCreator"/>
+        <constructor-arg name="abstractOrderEntryTypeService" ref="abstractOrderEntryTypeService"/>
+        <constructor-arg name="skippedAttributes" ref="cloneAbstractOrderSkippedAttributesList"/>
+        <property name="cloneHooks" ref="ibmCartFromQuoteCloneAbstractOrderHookList"/>
+    </bean>
+
+    <alias alias="createCartFromQuoteStrategy"
+      name="defaultCreateIbmCartFromQuoteStrategy"/>
+    <bean id="defaultCreateIbmCartFromQuoteStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultCreateIbmCartFromQuoteStrategy"
+      parent="genericAbstractOrderCloningStrategy">
+        <property name="cloneAbstractOrderStrategy"
+          ref="ibmCartFromQuoteCloneAbstractOrderStrategy"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="priceLookUpService" ref="priceLookUpService"/>
+    </bean>
+
+
+    <alias name="defaultCloneIbmQuoteStrategy"
+      alias="cloneIbmQuoteStrategy"/>
+    <bean id="defaultCloneIbmQuoteStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultCloneIbmQuoteStrategy"
+      parent="genericAbstractOrderCloningStrategy">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="abstractOrderEntryTypeService" ref="abstractOrderEntryTypeService"/>
+        <constructor-arg name="quoteCodeKeyGenerator" ref="quoteCodeGenerator"/>
+        <constructor-arg name="defaultDaysToExpire" value="${quote.expiration.days}"/>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="keyGenerator" ref="orderCodeGenerator"/>
+        <constructor-arg name="pidQuoteKeyGenerator" ref="pidQuoteCodeGenerator"/>
+    </bean>
+
+    <alias name="defaultPartnerSessionCountryStrategy" alias="sessionCountryStrategy"/>
+    <bean id="defaultPartnerSessionCountryStrategy"
+      class="com.ibm.commerce.partner.core.strategy.impl.DefaultPartnerSessionCountryStrategy">
+        <constructor-arg name="cartService" ref="cartService"/>
+    </bean>
+
+    <alias alias="userService" name="defaultPartnerUserService"/>
+    <alias alias="partnerUserService" name="defaultPartnerUserService"/>
+    <bean id="defaultPartnerUserService"
+      class="com.ibm.commerce.partner.core.user.service.impl.DefaultPartnerUserService"
+      parent="defaultUserService">
+    </bean>
+
+    <bean id="B2BUnitModelValidateInterceptor"
+      class="com.ibm.commerce.partner.core.interceptor.PartnerB2BUnitModelValidateInterceptor">
+        <property name="b2bUnitService" ref="b2bUnitService"/>
+        <property name="userService" ref="userService"/>
+        <property name="modelService" ref="modelService"/>
+        <property name="l10NService" ref="l10nService"/>
+    </bean>
+
+    <bean id="productCodeResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.ProductCodeResolver"
+      parent="abstractValueResolver">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+    </bean>
+
+    <bean id="productNameResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.ProductNameResolver"
+      parent="abstractPropertyFieldValueProvider">
+        <constructor-arg name="fieldNameProvider" ref="solrFieldNameProvider"/>
+        <constructor-arg name="commerceCommonI18NService" ref="commerceCommonI18NService"/>
+        <constructor-arg name="productService" ref="ibmProductService"/>
+    </bean>
+    <bean id="partnerProductSearchAvailabilityValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.PartnerProductSearchAvailabilityValueResolver"
+      parent="abstractValueResolver">
+        <constructor-arg name="partnerProductSearchAvailabilityService" ref="partnerProductSearchAvailabilityService"/>
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="deploymentTypeService" ref="ibmDeploymentTypeService"/>
+    </bean>
+
+    <bean id="partnerSellerAudienceValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.PartnerSellerAudienceValueResolver"
+      parent="abstractValueResolver">
+        <constructor-arg name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="productDeploymentTypeValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.ProductDeploymentTypeValueResolver"
+      parent="abstractValueResolver">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+    </bean>
+
+    <bean id="productDeploymentTypeDisplayNameResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.ProductDeploymentTypeDisplayNameResolver">
+        <constructor-arg name="deploymentTypeService" ref="ibmDeploymentTypeService"/>
+    </bean>
+
+    <bean id="quoteStatusNameResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.QuoteStatusNameResolver"
+      parent="abstractPropertyFieldValueProvider">
+        <constructor-arg name="fieldNameProvider" ref="solrFieldNameProvider"/>
+        <constructor-arg name="commerceCommonI18NService" ref="commerceCommonI18NService"/>
+        <constructor-arg name="enumerationService" ref="enumerationService"/>
+    </bean>
+
+    <alias name="defaultIbmDeploymentTypeService" alias="ibmDeploymentTypeService"/>
+    <bean id="defaultIbmDeploymentTypeService"
+      class="com.ibm.commerce.partner.core.product.service.impl.DefaultIbmDeploymentTypeService">
+        <constructor-arg name="deploymentTypeDao" ref="ibmDeploymentTypeDao"/>
+        <constructor-arg name="defaultDeploymentType"
+          value="${partner.product.deployment.type.default}"/>
+    </bean>
+
+    <bean id="partnerCategoryCodeValueProvider" parent="abstractCategoryCodeValueProvider">
+        <property name="categorySource" ref="partnerCategorySource"/>
+    </bean>
+
+    <bean id="partnerCategoryNameValueProvider" parent="abstractCategoryNameValueProvider">
+        <property name="categorySource" ref="partnerCategorySource"/>
+    </bean>
+
+    <alias name="ibmCartValidationStrategy" alias="cartValidationStrategy"/>
+    <bean id="ibmCartValidationStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultIbmCartValidationStrategy"
+      parent="defaultCartValidationStrategy"/>
+
+    <alias name="defaultPartnerSearchResponseCategoryJsonFilterPopulator"
+      alias="partnerSearchResponseCategoryJsonFilterPopulator"/>
+    <bean name="defaultPartnerSearchResponseCategoryJsonFilterPopulator"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.populators.PartnerSearchResponseCategoryJsonFilterPopulator">
+        <constructor-arg name="categoryFacetCode"
+          value="${partner.search.facet.categories.code}"/>
+    </bean>
+
+    <alias name="defaultPartnerOpportunityService" alias="opportunityService"/>
+    <bean id="defaultPartnerOpportunityService"
+      class="com.ibm.commerce.partner.core.opportunity.service.impl.DefaultPartnerOpportunityService">
+        <constructor-arg name="opportunityDao" ref="opportunityDao"/>
+        <constructor-arg name="opportunityOutboundService" ref="partnerOpportunityOutboundService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="b2BUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="userService" ref="partnerUserService"/>
+        <constructor-arg name="partnerB2BUnitService" ref="partnerB2BUnitService"/>
+    </bean>
+
+    <alias name="defaultPartnerB2BUnitService" alias="b2bUnitService"/>
+    <alias name="defaultPartnerB2BUnitService" alias="partnerB2BUnitService"/>
+    <bean id="defaultPartnerB2BUnitService"
+      class="com.ibm.commerce.partner.core.b2b.company.service.impl.DefaultPartnerB2BUnitService"
+      parent="defaultB2BUnitService">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultPartnerEntryGroupService" alias="partnerEntryGroupService"/>
+    <bean id="defaultPartnerEntryGroupService"
+      class="com.ibm.commerce.partner.core.order.services.impl.DefaultPartnerEntryGroupService"
+      parent="defaultEntryGroupService">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultPartnerProcessService" alias="partnerProcessService"/>
+    <bean id="defaultPartnerProcessService"
+      class="com.ibm.commerce.partner.core.order.services.impl.DefaultPartnerProcessService">
+        <constructor-arg name="partnerProcessDao" ref="partnerProcessDao"/>
+    </bean>
+
+    <alias name="defaultPartnerEntryGroupStrategy" alias="partnerEntryGroupStrategy"/>
+    <bean id="defaultPartnerEntryGroupStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultPartnerEntryGroupStrategy">
+        <constructor-arg name="entryGroupService" ref="partnerEntryGroupService"/>
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultEntryGroupAddToCartMethodHook" alias="entryGroupUpdateCartMethodHook"/>
+    <alias name="defaultEntryGroupAddToCartMethodHook" alias="entryGroupAddToCartMethodHook"/>
+    <bean id="defaultEntryGroupAddToCartMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.EntryGroupAddToCartMethodHook">
+        <constructor-arg name="entryGroupStrategy" ref="partnerEntryGroupStrategy"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="entryGroupService" ref="partnerEntryGroupService"/>
+    </bean>
+
+    <bean id="entryGroupAddToCartMethodHookMergeDirective"
+      depends-on="commerceAddToCartMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="entryGroupAddToCartMethodHook"/>
+    </bean>
+
+    <alias name="defaultPartnerEntryProductInfoStrategy" alias="partnerEntryProductInfoStrategy"/>
+    <bean id="defaultPartnerEntryProductInfoStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultPartnerEntryProductInfoStrategy">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultPartnerFormDetailsStrategy" alias="partnerFormDetailsStrategy"/>
+    <bean id="defaultPartnerFormDetailsStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultPartnerFormDetailsStrategy">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="partnerProcessService" ref="partnerProcessService"/>
+        <constructor-arg name="eventService" ref="eventService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="customerEmailResolutionService" ref="customerEmailResolutionService"/>
+    </bean>
+
+    <alias name="defaultPartnerProductConfigurationStrategy"
+      alias="partnerProductConfigurationStrategy"/>
+    <bean id="defaultPartnerProductConfigurationStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultPartnerProductConfigurationStrategy">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="persistenceService"
+          ref="sapProductConfigProductConfigurationPersistenceService"/>
+        <constructor-arg name="guidKeyGenerator" ref="guidKeyGenerator"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultPartnerCartChildEntryStrategy" alias="partnerCartChildEntryStrategy"/>
+    <bean id="defaultPartnerCartChildEntryStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultPartnerCartChildEntryStrategy">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="cartService" ref="cartService"/>
+    </bean>
+
+    <alias name="defaultProductInfoAddToCartMethodHook" alias="productInfoAddToCartMethodHook"/>
+    <bean id="defaultProductInfoAddToCartMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.ProductInfoAddToCartMethodHook">
+        <constructor-arg name="entryProductInfoStrategy" ref="partnerEntryProductInfoStrategy"/>
+    </bean>
+
+    <alias name="defaultProductConfigurationAddToCartMethodHook"
+      alias="productConfigurationAddToCartMethodHook"/>
+    <bean id="defaultProductConfigurationAddToCartMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.ProductConfigurationAddToCartMethodHook">
+        <constructor-arg name="productConfigurationStrategy"
+          ref="partnerProductConfigurationStrategy"/>
+    </bean>
+
+
+    <bean id="productInfoAddToCartMethodHookMergeDirective"
+      depends-on="commerceAddToCartMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="productInfoAddToCartMethodHook"/>
+    </bean>
+
+    <bean id="productConfigurationAddToCartMethodHookMergeDirective"
+      depends-on="commerceAddToCartMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="productConfigurationAddToCartMethodHook"/>
+    </bean>
+
+    <alias name="defaultPartnerCategorySource" alias="partnerCategorySource"/>
+    <bean id="defaultPartnerCategorySource"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.DefaultPartnerCategorySource"
+      parent="defaultCategorySource">
+        <property name="rootCategory" value="${partner.category.root.code}"/>
+    </bean>
+
+    <alias name="defaultPriceUpdateToCartMethodHook" alias="priceUpdateToCartMethodHook"/>
+    <bean id="defaultPriceUpdateToCartMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.PriceUpdateToCartMethodHook">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <bean id="priceUpdateToCartMethodHookMergeDirective"
+      depends-on="commerceUpdateCartEntryMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="priceUpdateToCartMethodHook"/>
+    </bean>
+
+    <alias name="defaultProductConfigurationUpdateToCartMethodHook"
+      alias="productConfigurationUpdateToCartMethodHook"/>
+    <bean id="defaultProductConfigurationUpdateToCartMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.ProductConfigurationUpdateToCartMethodHook">
+        <constructor-arg name="productConfigurationStrategy"
+          ref="partnerProductConfigurationStrategy"/>
+    </bean>
+
+    <bean id="productConfigurationUpdateToCartMethodHookMergeDirective"
+      depends-on="commerceUpdateCartEntryMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="productConfigurationUpdateToCartMethodHook"/>
+    </bean>
+
+    <!-- Inbound B2BCustomer Persistence Hook -->
+    <bean id="partnerCpiCategoryPersistenceHook"
+      class="com.ibm.commerce.partner.core.events.PartnerCpiCategoryPersistenceHook">
+        <constructor-arg name="categoryDao"
+          ref="categoryDao"/>
+        <constructor-arg name="catalogVersionService" ref="catalogVersionService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultCartPriceLookUpMethodHook" alias="cartPriceLookUpMethodHook"/>
+    <bean id="defaultCartPriceLookUpMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.CartPriceLookUpMethodHook">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="eventService" ref="eventService"/>
+        <constructor-arg name="partnerProcessService" ref="partnerProcessService"/>
+        <constructor-arg name="priceLookUpService" ref="priceLookUpService"/>
+    </bean>
+
+    <bean id="cartPriceLookUpMethodHookMergeDirective" depends-on="commerceAddToCartMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="cartPriceLookUpMethodHook"/>
+    </bean>
+
+    <bean id="cartPriceLookUpUpdateMethodHookMergeDirective"
+      depends-on="commerceUpdateCartEntryMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="cartPriceLookUpMethodHook"/>
+    </bean>
+
+    <bean id="priceLookUpProcessDefinitionResource"
+      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource"
+          value="classpath:/partnercore/processes/order/price-lookup-process.xml"/>
+    </bean>
+
+    <bean id="provisionFormUpdateEditorsProcessDefinitionResource"
+      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource"
+          value="classpath:/partnercore/processes/order/provision-form-update-editors-process.xml"/>
+    </bean>
+
+    <bean id="updateProvisionFormEditorsEventListener"
+      class="com.ibm.commerce.partner.core.event.UpdateProvisionFormEditorsEventListener"
+      parent="abstractEventListener">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="businessProcessService" ref="businessProcessService"/>
+        <constructor-arg name="processCodeGenerator" ref="partnerUniqueUidKeyGenerator"/>
+    </bean>
+
+    <bean id="quotePriceLookUpProcessDefinitionResource"
+      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource"
+          value="classpath:/partnercore/processes/order/quote-price-lookup-process.xml"/>
+    </bean>
+
+    <bean id="cartPriceLookUpEventListener"
+      class="com.ibm.commerce.partner.core.event.CartPriceLookUpEventListener"
+      parent="abstractEventListener">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="businessProcessService" ref="businessProcessService"/>
+        <constructor-arg name="processCodeGenerator" ref="partnerUniqueUidKeyGenerator"/>
+    </bean>
+
+    <alias name="defaultPriceLookUpService" alias="priceLookUpService"/>
+    <bean id="defaultPriceLookUpService"
+      class="com.ibm.commerce.partner.core.services.impl.DefaultPriceLookUpService">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultEntitledPriceAction" alias="entitledPriceAction"/>
+    <bean id="defaultEntitledPriceAction"
+      class="com.ibm.commerce.partner.core.actions.order.EntitledPriceAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="responseReverseDataConverter"
+          ref="priceLookUpResponseReverseConverter"/>
+        <constructor-arg name="pricingOutboundService" ref="partnerPricingOutboundService"/>
+        <constructor-arg name="maxRetryAllowed"
+          value="${partner.pricing.service.action.failure.maxRetryAllowed.default}"/>
+    </bean>
+
+    <alias name="defaultFullPriceAction" alias="fullPriceAction"/>
+    <bean id="defaultFullPriceAction"
+      class="com.ibm.commerce.partner.core.actions.order.FullPriceAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="responseReverseDataConverter"
+          ref="priceLookUpResponseReverseConverter"/>
+        <constructor-arg name="pricingOutboundService" ref="partnerPricingOutboundService"/>
+        <constructor-arg name="priceLookUpService" ref="priceLookUpService"/>
+        <constructor-arg name="maxRetryAllowed"
+          value="${partner.pricing.service.action.failure.maxRetryAllowed.default}"/>
+    </bean>
+
+    <alias name="defaultCalculateOrderAction" alias="partnerCalculateOrderAction"/>
+    <bean id="defaultCalculateOrderAction"
+      class="com.ibm.commerce.partner.core.actions.order.CalculateOrderAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="calculationService" ref="calculationService"/>
+        <constructor-arg name="commerceCartService" ref="commerceCartService"/>
+        <constructor-arg name="reasonUpdateStrategy" ref="partnerCartUpdateReasonSelectionStrategy"/>
+    </bean>
+
+    <alias name="defaultRemovePricingInformationAction"
+      alias="partnerRemovePricingInformationAction"/>
+    <bean id="defaultRemovePricingInformationAction"
+      class="com.ibm.commerce.partner.core.actions.order.RemovePricingInformationAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="calculationService" ref="calculationService"/>
+    </bean>
+
+    <alias name="defaultPartnerOrderEntriesCheckAction"
+      alias="partnerOrderEntriesCheckAction"/>
+    <bean id="defaultPartnerOrderEntriesCheckAction"
+      class="com.ibm.commerce.partner.core.actions.order.PartnerOrderEntriesCheckAction"
+      parent="partnerAbstractSimpleDecisionAction">
+    </bean>
+
+    <alias name="defaultDealRegAction" alias="dealRegAction"/>
+    <bean id="defaultDealRegAction"
+      class="com.ibm.commerce.partner.core.actions.order.DealRegAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="responseReverseDataConverter" ref="dealRegResponseConverter"/>
+        <constructor-arg name="pricingOutboundService" ref="partnerPricingOutboundService"/>
+    </bean>
+
+    <alias name="DefaultFetchFormDetailsAction" alias="fetchFormDetailsAction"/>
+    <bean id="DefaultFetchFormDetailsAction"
+      class="com.ibm.commerce.partner.core.actions.order.provisionform.FetchFormDetailsAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="partnerProvisionFormOutboundIntegrationService" ref="partnerProvisionFormOutboundIntegrationService"/>
+    </bean>
+
+    <alias name="DefaultPatchAllowedUsersAction" alias="patchAllowedUsersAction"/>
+    <bean id="DefaultPatchAllowedUsersAction"
+      class="com.ibm.commerce.partner.core.actions.order.provisionform.PatchAllowedUsersAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="provisionFormRequestConverter" ref="provisionFormRequestConverter"/>
+    </bean>
+
+    <alias name="defaultPartnerCommerceStockService" alias="partnerCommerceStockService"/>
+    <bean id="defaultPartnerCommerceStockService"
+      class="com.ibm.commerce.partner.core.stock.PartnerCommerceStockService"
+      parent="defaultCommerceStockService"/>
+
+    <alias name="defaultPartnerStockSapBeanConfigurationHook"
+      alias="partnerStockSapBeanConfigurationHook"/>
+    <bean id="defaultPartnerStockSapBeanConfigurationHook"
+      class="com.ibm.commerce.partner.core.sapmodel.services.impl.PartnerSapBeanConfigurationHook">
+        <constructor-arg name="baseStoreBeanMap" ref="stockBaseStoreBeanMap"/>
+    </bean>
+
+    <util:map id="stockBaseStoreBeanMap" key-type="java.lang.String" value-type="java.lang.String">
+        <entry key="partner" value="partnerCommerceStockService"/>
+    </util:map>
+
+    <alias name="defaultPartnerCalculationService" alias="partnerCalculationService"/>
+    <bean id="defaultPartnerCalculationService"
+      class="com.ibm.commerce.partner.core.order.services.impl.DefaultPartnerCalculationService"
+      parent="defaultCalculationService"/>
+
+    <alias name="defaultPartnerCalculationSapBeanConfigurationHook"
+      alias="partnerCalculationSapBeanConfigurationHook"/>
+    <bean id="defaultPartnerCalculationSapBeanConfigurationHook"
+      class="com.ibm.commerce.partner.core.sapmodel.services.impl.PartnerSapBeanConfigurationHook">
+        <constructor-arg name="baseStoreBeanMap" ref="calculationBaseStoreBeanMap"/>
+    </bean>
+
+    <util:map id="calculationBaseStoreBeanMap" key-type="java.lang.String"
+      value-type="java.lang.String">
+        <entry key="partner" value="partnerCalculationService"/>
+    </util:map>
+
+    <bean id="partnerCommerceStockServiceHookMergeDirective"
+      depends-on="commerceStockServiceHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="partnerStockSapBeanConfigurationHook"/>
+    </bean>
+    <bean id="partnerCalculationServiceHookMergeDirective"
+      depends-on="calculationServiceHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="partnerCalculationSapBeanConfigurationHook"/>
+    </bean>
+
+    <alias name="defaultPidCartFactory" alias="pidCartFactory"/>
+    <bean id="defaultPidCartFactory"
+      class="com.ibm.commerce.partner.core.order.services.impl.DefaultPidCartFactory"
+      parent="defaultPartnerCommerceCartFactory">
+        <constructor-arg name="netGrossStrategy" ref="netGrossStrategy"/>
+        <constructor-arg name="baseSiteService" ref="baseSiteService"/>
+        <constructor-arg name="baseStoreService" ref="baseStoreService"/>
+        <constructor-arg name="guidKeyGenerator" ref="guidKeyGenerator"/>
+        <constructor-arg name="keyGenerator" ref="orderCodeGenerator"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+        <constructor-arg name="userNetCheckingStrategy" ref="userNetCheckingStrategy"/>
+        <constructor-arg name="cartType" value="${default.partner.cart.pid.type}"/>
+    </bean>
+
+    <alias name="defaultPartnerCommerceCartFactory" alias="cartFactory"/>
+    <bean id="defaultPartnerCommerceCartFactory"
+      class="com.ibm.commerce.partner.core.order.services.impl.DefaultPartnerCommerceCartFactory"
+      parent="commerceCartFactory">
+        <constructor-arg name="quoteCodeKeyGenerator" ref="quoteCodeGenerator"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerSapCpqQuoteService" ref="partnerSapCpqQuoteService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+
+    <util:list id="ibmCartFromQuoteCloneAbstractOrderHookList"
+      value-type="de.hybris.platform.order.strategies.ordercloning.CloneAbstractOrderHook">
+        <ref bean="cartEarliestRetrievalDateReorderHook"/>
+    </util:list>
+
+    <alias name="defaultPartnerCountryService" alias="partnerCountryService"/>
+    <bean id="defaultPartnerCountryService"
+      class="com.ibm.commerce.partner.core.country.services.impl.DefaultPartnerCountryService">
+        <constructor-arg name="countryDao" ref="partnerCountryDao"/>
+    </bean>
+
+    <alias name="ibmCartRestorationStrategy" alias="commerceCartRestorationStrategy"/>
+    <bean id="ibmCartRestorationStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultIbmCartRestorationStrategy"
+      parent="defaultCommerceCartRestorationStrategy">
+    </bean>
+
+    <alias name="defaultPartnerAbstractSimpleDecisionAction"
+      alias="partnerAbstractSimpleDecisionAction"/>
+    <bean id="defaultPartnerAbstractSimpleDecisionAction"
+      class=" com.ibm.commerce.partner.core.actions.PartnerAbstractSimpleDecisionAction"
+      parent="abstractAction" abstract="true">
+        <constructor-arg name="maxRetryAllowed"
+          value="${partner.action.failure.maxRetryAllowed.default}"/>
+        <constructor-arg name="retryDelay" value="${partner.action.failure.retryDelay.default}"/>
+    </bean>
+
+    <bean id="ibmRestClient" class="com.ibm.commerce.partner.core.restservices.IbmRestClient"/>
+
+    <alias name="defaultIbmOutboundIntegrationService" alias="ibmOutboundIntegrationService"/>
+    <bean id="defaultIbmOutboundIntegrationService"
+      class="com.ibm.commerce.partner.core.services.impl.DefaultIbmOutboundIntegrationService">
+        <constructor-arg name="restClient" ref="ibmRestClient"/>
+        <constructor-arg name="configurationService" ref="configurationService"/>
+    </bean>
+
+    <alias name="defaultIbmConsumedDestinationService" alias="ibmConsumedDestinationService"/>
+    <bean id="defaultIbmConsumedDestinationService"
+      class="com.ibm.commerce.partner.core.services.impl.DefaultIbmConsumedDestinationService"
+      parent="destinationService">
+        <constructor-arg name="consumedDestinationDao" ref="ibmConsumedDestinationDao"/>
+    </bean>
+
+    <alias name="defaultPartnerPricingOutboundService" alias="partnerPricingOutboundService"/>
+    <bean id="defaultPartnerPricingOutboundService"
+      class="com.ibm.commerce.partner.core.pricing.services.impl.DefaultPartnerPricingOutboundService">
+        <constructor-arg name="entitledPriceLookUpRequestDataConverter"
+          ref="priceLookUpEntitledRequestConverter"/>
+        <constructor-arg name="fullPriceLookUpRequestDataConverter"
+          ref="priceLookUpFullRequestConverter"/>
+        <constructor-arg name="dealRegRequestDataConverter" ref="dealRegRequestConverter"/>
+        <constructor-arg name="consumedDestinationService" ref="ibmConsumedDestinationService"/>
+        <constructor-arg name="outboundIntegrationService" ref="ibmOutboundIntegrationService"/>
+    </bean>
+
+    <alias name="defaultPriceLookUpEntitledRequestPopulator"
+      alias="priceLookUpEntitledRequestPopulator"/>
+    <bean id="defaultPriceLookUpEntitledRequestPopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.request.PriceLookUpEntitledRequestPopulator">
+        <constructor-arg name="priceLookUpHeaderEntitledDataConverter"
+          ref="priceLookUpHeaderEntitledRequestConverter"/>
+        <constructor-arg name="ytyEligibleLicenceTypeCodes" ref="ytyEligibleLicenceTypeCodes"/>
+        <constructor-arg name="priceLookUpItemsDataConverter"
+          ref="priceLookUpItemsEntitledRequestConverter"/>
+    </bean>
+
+    <alias name="defaultPriceLookUpFullRequestPopulator"
+      alias="priceLookUpFullRequestPopulator"/>
+    <bean id="defaultPriceLookUpFullRequestPopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.request.PriceLookUpFullRequestPopulator">
+        <constructor-arg name="priceLookUpHeaderFullDataConverter"
+          ref="priceLookUpHeaderFullRequestConverter"/>
+        <constructor-arg name="priceLookUpItemsDataConverter"
+          ref="priceLookUpItemsFullRequestConverter"/>
+        <constructor-arg name="ytyEligibleLicenceTypeCodes" ref="ytyEligibleLicenceTypeCodes"/>
+    </bean>
+
+    <alias name="defaultPriceLookUpEntitledRequestConverter"
+      alias="priceLookUpEntitledRequestConverter"/>
+    <bean id="defaultPriceLookUpEntitledRequestConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.order.price.data.request.EntitledPriceLookUpRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="priceLookUpEntitledRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPriceLookUpFullRequestConverter" alias="priceLookUpFullRequestConverter"/>
+    <bean id="defaultPriceLookUpFullRequestConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.order.price.data.request.FullPriceLookUpRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="priceLookUpFullRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPriceLookUpHeaderCommonRequestPopulator"
+      alias="priceLookUpHeaderCommonRequestPopulator"/>
+    <bean id="defaultPriceLookUpHeaderCommonRequestPopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.request.PriceLookUpHeaderCommonRequestPopulator">
+    </bean>
+
+    <alias name="defaultPriceLookUpHeaderEntitledRequestPopulator"
+      alias="priceLookUpHeaderEntitledRequestPopulator"/>
+    <bean id="defaultPriceLookUpHeaderEntitledRequestPopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.request.PriceLookUpHeaderEntitledRequestPopulator"
+      parent="priceLookUpHeaderCommonRequestPopulator">
+    </bean>
+    <alias name="defaultPriceLookUpHeaderFullRequestPopulator"
+      alias="priceLookUpHeaderFullRequestPopulator"/>
+    <bean id="defaultPriceLookUpHeaderFullRequestPopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.request.PriceLookUpHeaderFullRequestPopulator"
+      parent="priceLookUpHeaderCommonRequestPopulator">
+    </bean>
+
+
+    <alias name="defaultPriceLookUpHeaderEntitledRequestConverter"
+      alias="priceLookUpHeaderEntitledRequestConverter"/>
+    <bean id="defaultPriceLookUpHeaderEntitledRequestConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.order.price.data.request.PriceLookUpHeaderRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="priceLookUpHeaderEntitledRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPriceLookUpHeaderFullRequestConverter"
+      alias="priceLookUpHeaderFullRequestConverter"/>
+    <bean id="defaultPriceLookUpHeaderFullRequestConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.order.price.data.request.PriceLookUpHeaderRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="priceLookUpHeaderFullRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <alias name="defaultPriceLookUpItemsEntitledRequestPopulator"
+      alias="priceLookUpItemsEntitledRequestPopulator"/>
+    <bean id="defaultPriceLookUpItemsEntitledRequestPopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.request.PriceLookUpItemsEntitledRequestPopulator">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="partnerPidAgreementService" ref="partnerPidAgreementService"/>
+        <constructor-arg name="billingFrequencyMap" ref="billingFrequencyMap"/>
+    </bean>
+
+    <alias name="defaultPriceLookUpItemsFullRequestPopulator"
+      alias="priceLookUpItemsFullRequestPopulator"/>
+    <bean id="defaultPriceLookUpItemsFullRequestPopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.request.PriceLookUpItemsFullRequestPopulator">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="partnerPidAgreementService" ref="partnerPidAgreementService"/>
+        <constructor-arg name="billingFrequencyMap" ref="billingFrequencyMap"/>
+        <constructor-arg name="dealRegMap" ref="dealRegMap"/>
+    </bean>
+
+    <alias name="defaultPriceLookUpItemsRequestPopulator"
+      alias="priceLookUpItemsRequestPopulator"/>
+    <bean id="defaultPriceLookUpItemsRequestPopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.request.PriceLookUpItemsRequestPopulator">
+        <constructor-arg name="sessionService" ref="sessionService"/>
+        <constructor-arg name="ePartLicenceTypeCode" value="${partner.product.licencetype.code.perpetual.e}"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultPriceLookUpItemsEntitledRequestConverter"
+      alias="priceLookUpItemsEntitledRequestConverter"/>
+    <bean id="defaultPriceLookUpItemsEntitledRequestConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.order.price.data.request.EntitledPriceLookUpItemRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="priceLookUpItemsEntitledRequestPopulator"/>
+                <ref bean="priceLookUpItemsRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPriceLookUpItemsFullRequestConverter"
+      alias="priceLookUpItemsFullRequestConverter"/>
+    <bean id="defaultPriceLookUpItemsFullRequestConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.order.price.data.request.FullPriceLookUpItemRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="priceLookUpItemsFullRequestPopulator"/>
+                <ref bean="priceLookUpItemsRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPriceLookUpResponseReversePopulator"
+      alias="priceLookUpResponseReversePopulator"/>
+    <bean id="defaultPriceLookUpResponseReversePopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.response.PriceLookUpResponseReversePopulator">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="priceLookUpService" ref="priceLookUpService"/>
+        <constructor-arg name="priceNotAvailableErrorCodes" ref="priceNotAvailableErrorCodes"/>
+    </bean>
+
+    <util:list id="priceNotAvailableErrorCodes">
+        <value>E001</value>
+        <value>E003</value>
+        <value>028</value>
+    </util:list>
+
+    <alias name="defaultPriceLookUpResponseReverseConverter"
+      alias="priceLookUpResponseReverseConverter"/>
+    <bean id="defaultPriceLookUpResponseReverseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.core.model.order.AbstractOrderModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="priceLookUpResponseReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultDealRegRequestPopulator"
+      alias="dealRegRequestPopulator"/>
+    <bean id="defaultDealRegRequestPopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.request.DealRegRequestPopulator">
+        <constructor-arg name="priceLookUpService" ref="priceLookUpService"/>
+        <constructor-arg name="b2BUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="defaultDistributionChannel"
+          value="${partner.quote.distribution.channel.default}"/>
+        <constructor-arg name="defaultFulfillmentSource"
+          value="${partner.dealreg.fullfilment.source.default}"/>
+    </bean>
+
+    <alias name="defaultDealRegRequestConverter" alias="dealRegRequestConverter"/>
+    <bean id="defaultDealRegRequestConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.order.price.data.request.DealRegRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="dealRegRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultDealRegResponsePopulator"
+      alias="dealRegResponsePopulator"/>
+    <bean id="defaultDealRegResponsePopulator"
+      class="com.ibm.commerce.partner.core.pricing.converters.populators.response.DealRegResponsePopulator">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="productService" ref="ibmProductService"/>
+    </bean>
+
+    <alias name="defaultDealRegResponseConverter" alias="dealRegResponseConverter"/>
+    <bean id="defaultDealRegResponseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.core.model.order.AbstractOrderModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="dealRegResponsePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="partnerB2BCustomerJob"
+      class="com.ibm.commerce.partner.core.cronjob.PartnerB2BCustomerJob"
+      parent="abstractJobPerformable">
+        <constructor-arg name="userService" ref="userService"/>
+    </bean>
+
+    <bean id="partnerCloneBuyerFailedJob"
+      class="com.ibm.commerce.partner.core.cronjob.PartnerCloneBuyerFailedJob"
+      parent="abstractJobPerformable">
+        <constructor-arg name="updateQuoteFromCartStrategy" ref="updateQuoteFromCartStrategy"/>
+        <constructor-arg name="cloneCreatedThresholdTime"
+          value="${partner.quote.clone.created.threshold.seconds}"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="commerceQuoteService" ref="commerceQuoteService"/>
+    </bean>
+
+    <alias name="defaultPartnerUniqueUidKeyGenerator" alias="partnerUniqueUidKeyGenerator"/>
+    <bean id="defaultPartnerUniqueUidKeyGenerator"
+      class="com.ibm.commerce.partner.core.keygenerator.UniqueUidKeyGenerator">
+        <property name="key" value="${keygen.partner.process.code.name}"/>
+        <property name="digits" value="${keygen.partner.process.code.digits}"/>
+        <property name="start" value="${keygen.partner.process.code.start}"/>
+        <property name="type" value="${keygen.partner.process.code.type}"/>
+        <property name="template" value="${keygen.partner.process.code.template}"/>
+    </bean>
+
+    <alias name="defaultPartnerAccountServiceOutboundIntegrationService"
+      alias="partnerAccountServiceOutboundIntegrationService"/>
+    <bean id="defaultPartnerAccountServiceOutboundIntegrationService"
+      class="com.ibm.commerce.partner.core.accountservice.services.impl.DefaultPartnerAccountServiceOutboundIntegrationService">
+        <constructor-arg name="consumedDestinationService" ref="ibmConsumedDestinationService"/>
+        <constructor-arg name="outboundIntegrationService" ref="ibmOutboundIntegrationService"/>
+        <constructor-arg name="integrationRestTemplateFactory"
+          ref="integrationRestTemplateFactory"/>
+    </bean>
+
+    <alias name="defaultAccountServiceIntegrationCertificateRestTemplateCreator"
+      alias="acccountServiceIntegrationCertificateRestTemplateCreator"/>
+    <bean id="defaultAccountServiceIntegrationCertificateRestTemplateCreator"
+      parent="abstractRestTemplateCreator"
+      class="com.ibm.commerce.partner.core.outbound.client.impl.DefaultAccountServiceIntegrationCertificateRestTemplateCreator">
+        <constructor-arg name="mediaService" ref="mediaService"/>
+    </bean>
+
+    <bean id="partnerIntegrationRestTemplateStrategiesListMergeDirective"
+      depends-on="defaultIntegrationRestTemplateStrategiesList"
+      parent="listMergeDirective">
+        <property name="add" ref="acccountServiceIntegrationCertificateRestTemplateCreator"/>
+        <property name="beforeBeanNames">
+            <list>
+                <value>integrationClientCertificateTemplateCreator</value>
+            </list>
+        </property>
+    </bean>
+
+    <alias alias="cloneAbstractOrderStrategy" name="defaultCloneAbstractOrderStrategy"/>
+    <bean id="defaultCloneAbstractOrderStrategy"
+      class="de.hybris.platform.order.strategies.ordercloning.impl.DefaultCloneAbstractOrderStrategy">
+        <constructor-arg name="typeService" ref="typeService"/>
+        <constructor-arg name="itemModelCloneCreator" ref="itemModelCloneCreator"/>
+        <constructor-arg name="abstractOrderEntryTypeService" ref="abstractOrderEntryTypeService"/>
+        <constructor-arg name="skippedAttributes" ref="cloneAbstractOrderSkippedAttributesList"/>
+        <property name="cloneHooks" ref="ibmCartFromQuoteCloneAbstractOrderHookList"/>
+    </bean>
+
+    <alias alias="commerceQuoteService" name="defaultPartnerScpiQuoteService"/>
+    <alias alias="partnerScpiQuoteService" name="defaultPartnerScpiQuoteService"/>
+    <bean id="defaultPartnerScpiQuoteService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerScpiQuoteService"
+      parent="defaultSapCpiQuoteService">
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="partnerCommerceQuoteDao"
+          ref="partnerCommerceQuoteDao"/>
+        <constructor-arg name="partnerQuoteValidationStrategy"
+          ref="partnerQuoteValidationStrategy"/>
+        <constructor-arg name="partnerCommerceCartService"
+          ref="commerceCartService"/>
+    </bean>
+
+    <alias name="defaultPartnerSapSendQuoteAction" alias="sapSendQuoteAction"/>
+    <alias alias="partnerSapSendQuoteAction"
+      name="defaultPartnerSapSendQuoteAction"/>
+    <bean id="defaultPartnerSapSendQuoteAction"
+      class="com.ibm.commerce.partner.core.outbound.actions.PartnerSapCpiSendQuoteAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <property name="quoteService" ref="quoteService"/>
+        <property name="partnerQuoteConversionService"
+          ref="partnerQuoteConversionService"/>
+        <property name="partnerSapCpiOutboundQuoteService"
+          ref="partnerSapCpiOutboundQuoteService"/>
+    </bean>
+
+    <alias alias="partnerQuoteConversionService"
+      name="defaultPartnerQuoteConversionService"/>
+    <bean id="defaultPartnerQuoteConversionService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpiOutboundQuoteConversionService">
+        <property name="partnerSapCpiQuoteMappers"
+          ref="partnerSapCpiQuoteMappers"/>
+    </bean>
+
+    <!-- Quote Mapper util -->
+    <alias alias="partnerSapCpiQuoteMappers"
+      name="partnerSapCpiQuoteMapperServices"/>
+    <util:list id="partnerSapCpiQuoteMapperServices"
+      value-type="com.ibm.commerce.partner.core.outbound.service.PartnerSapCpiQuoteMapperService"/>
+
+    <!-- Quote Mapper service -->
+    <alias alias="partnerSapCpiQuoteMapperService"
+      name="defaultPartnerSapCpiQuoteMapperServices"/>
+    <bean id="defaultPartnerSapCpiQuoteMapperServices"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpiQuoteMapperService">
+    </bean>
+
+    <!-- Quote Mapper service -->
+    <alias alias="partnerSapCpiQuoteInvolvedPartiesMapperService"
+      name="defaultPartnerSapCpiQuoteInvolvedPartiesMapperService"/>
+    <bean id="defaultPartnerSapCpiQuoteInvolvedPartiesMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpiQuoteInvolvedPartiesMapperService">
+    </bean>
+
+    <alias alias="partnerSapCpiQuoteCustomFieldsMapperService"
+      name="defaultPartnerSapCpiQuoteCustomFieldsMapperService"/>
+    <bean id="defaultPartnerSapCpiQuoteCustomFieldsMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpiQuoteCustomFieldsMapperService">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="defaultDestinationChannel"
+          value="${partner.quote.distribution.channel.default}"/>
+        <constructor-arg name="defaultFulfillmentSource"
+          value="${partner.quote.fullfilment.source.default}"/>
+        <constructor-arg name="defaultJustificationCode"
+          value="${partner.quote.justification.default}"/>
+        <constructor-arg name="defaultOpportunityId"
+          value="${partner.quote.opportunity.id.default}"/>
+        <constructor-arg name="defaultSalesOrganization"
+          value="${partner.quote.sales.organization.default}"/>
+        <constructor-arg name="defaultTransactionPriceLevel"
+          value="${partner.quote.transaction.price.level.default}"/>
+        <constructor-arg name="defaultSalesApplication"
+          value="${partner.quote.sales.application.default}"/>
+        <constructor-arg name="enumerationService" ref="enumerationService"/>
+    </bean>
+
+
+    <alias alias="partnerSapCpiQuoteProductMapperService"
+      name="defaultPartnerSapCpiQuoteProductMapperService"/>
+    <bean id="defaultPartnerSapCpiQuoteProductMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpiQuoteProductMapperService">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="defaultTransactionType"
+          value="${partner.quote.transaction.type.default}"/>
+    </bean>
+
+
+    <alias alias="partnerSapCpiQuotePricesMapperService"
+      name="defaultPartnerSapCpiQuotePricesMapperService"/>
+    <bean id="defaultPartnerSapCpiQuotePricesMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpiQuotePricesMapperService">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+    </bean>
+
+    <alias alias="partnerSapCpiQuoteSpecialBidMapperService"
+      name="defaultPartnerSapCpiQuoteSpecialBidMapperService"/>
+    <bean id="defaultPartnerSapCpiQuoteSpecialBidMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpiQuoteSpecialBidMapperService">
+    </bean>
+
+
+    <!-- Quote Mapper -->
+    <bean id="partnerSapCpiQuoteMapper"
+      depends-on="partnerSapCpiQuoteMappers" parent="listMergeDirective">
+        <property name="add" ref="partnerSapCpiQuoteMapperService"/>
+    </bean>
+
+    <bean id="partnerSapCpiQuoteInvolvedPartiesMapper"
+      depends-on="partnerSapCpiQuoteMappers" parent="listMergeDirective">
+        <property name="add" ref="partnerSapCpiQuoteInvolvedPartiesMapperService"/>
+    </bean>
+    <bean id="partnerSapCpiQuoteCustomFieldsMapper"
+      depends-on="partnerSapCpiQuoteMappers" parent="listMergeDirective">
+        <property name="add" ref="partnerSapCpiQuoteCustomFieldsMapperService"/>
+    </bean>
+    <bean id="partnerSapCpiQuoteProductMapper"
+      depends-on="partnerSapCpiQuoteMappers" parent="listMergeDirective">
+        <property name="add" ref="partnerSapCpiQuoteProductMapperService"/>
+    </bean>
+    <bean id="partnerSapCpiQuotePricesMapper"
+      depends-on="partnerSapCpiQuoteMappers" parent="listMergeDirective">
+        <property name="add" ref="partnerSapCpiQuotePricesMapperService"/>
+    </bean>
+    <bean id="partnerSapCpiQuoteSpecialBidMapper"
+      depends-on="partnerSapCpiQuoteMappers" parent="listMergeDirective">
+        <property name="add" ref="partnerSapCpiQuoteSpecialBidMapperService"/>
+    </bean>
+
+    <bean id="partnerSapCpiQuoteGoeQuestionsMapper"
+      depends-on="partnerSapCpiQuoteMappers" parent="listMergeDirective">
+        <property name="add" ref="partnerSapCpiQuoteGoeQuestionsMapperService"/>
+    </bean>
+
+
+    <alias alias="partnerSapCpiOutboundQuoteService"
+      name="defaultPartnerSapCpiOutboundQuoteService"/>
+    <bean id="defaultPartnerSapCpiOutboundQuoteService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpiOutboundQuoteService">
+        <constructor-arg name="outboundIntegrationService"
+          ref="ibmOutboundIntegrationService"/>
+        <constructor-arg name="destinationSearchService"
+          ref="destinationSearchService"/>
+        <constructor-arg name="integrationRestTemplateFactory"
+          ref="integrationQuoteRestTemplateFactory"/>
+        <constructor-arg name="configurationService"
+          ref="configurationService"/>
+    </bean>
+
+    <alias name="defaultIntegrationQuoteRestTemplateFactory"
+      alias="integrationQuoteRestTemplateFactory"/>
+    <bean id="defaultIntegrationQuoteRestTemplateFactory"
+      class="de.hybris.platform.outboundservices.client.impl.DefaultIntegrationRestTemplateFactory">
+        <property name="restTemplateCreators" ref="integrationQuoteRestTemplateStrategiesList"/>
+    </bean>
+
+    <alias name="defaultIntegrationQuoteRestTemplateStrategiesList"
+      alias="integrationQuoteRestTemplateStrategiesList"/>
+    <util:list id="defaultIntegrationQuoteRestTemplateStrategiesList"
+      value-type="de.hybris.platform.outboundservices.client.IntegrationRestTemplateCreator">
+        <ref bean="integrationNoCredentialRestTemplateCreator"/>
+        <ref bean="integrationQuoteBasicRestTemplateCreator"/>
+        <ref bean="integrationOAuth2RestTemplateCreator"/>
+    </util:list>
+
+    <alias name="defaultIntegrationQuoteBasicRestTemplateCreator"
+      alias="integrationQuoteBasicRestTemplateCreator"/>
+    <bean id="defaultIntegrationQuoteBasicRestTemplateCreator"
+      parent="abstractQuoteRestTemplateCreator"
+      class="de.hybris.platform.outboundservices.client.impl.DefaultIntegrationBasicRestTemplateCreator">
+    </bean>
+
+    <alias name="defaultQuoteAbstractRestTemplateCreator" alias="abstractQuoteRestTemplateCreator"/>
+    <bean id="defaultQuoteAbstractRestTemplateCreator" abstract="true"
+      class="de.hybris.platform.outboundservices.client.impl.AbstractRestTemplateCreator">
+        <property name="clientHttpRequestFactory" ref="outboundClientHttpRequestFactory"/>
+        <property name="messageConverters">
+            <list>
+            </list>
+        </property>
+        <property name="requestInterceptors" ref="restTemplateHeaderInterceptors"/>
+        <property name="cache" ref="outboundRestTemplateCache"/>
+    </bean>
+
+    <alias name="defaultPartnerProductConfigurationPlaceOrderHookImpl"
+      alias="sapProductConfigPlaceOrderHook"/>
+    <bean id="defaultPartnerProductConfigurationPlaceOrderHookImpl"
+      class="com.ibm.commerce.partner.core.sap.productconfig.services.impl.PartnerProductConfigurationPlaceOrderHookImpl"
+      parent="sapProductConfigDefaultPlaceOrderHook"/>
+
+    <bean id="defaultBuyerListViewQuoteActionAllowedStateMapMerge"
+      depends-on="defaultBuyerQuoteActionAllowedStateMap" parent="mapMergeDirective">
+        <property name="key" value="LISTVIEW"/>
+        <property name="value">
+            <set value-type="de.hybris.platform.core.enums.QuoteState">
+                <value>BUYER_DRAFT</value>
+                <value>BUYER_SUBMITTED</value>
+                <value>BUYER_OFFER</value>
+                <value>BUYER_ACCEPTED</value>
+                <value>BUYER_REJECTED</value>
+                <value>BUYER_APPROVED</value>
+                <value>BUYER_ORDERED</value>
+                <value>DRAFT</value>
+                <value>IN_REVIEW</value>
+                <value>NOT_APPROVED</value>
+                <value>READY_TO_ORDER</value>
+                <value>EXPIRED</value>
+                <value>CLONE_BUYER_FAILED</value>
+                <value>CLONE_BUYER_SUCCESS</value>
+                <value>ORDERED</value>
+                <value>CREATED</value>
+                <value>ERROR_CPI_TO_CPQ_QUOTE_SYNC</value>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="defaultBuyerViewQuoteActionAllowedStateMapMerge"
+      depends-on="defaultBuyerQuoteActionAllowedStateMap" parent="mapMergeDirective">
+        <property name="key" value="VIEW"/>
+        <property name="value">
+            <set value-type="de.hybris.platform.core.enums.QuoteState" merge="true">
+                <value>DRAFT</value>
+                <value>IN_REVIEW</value>
+                <value>NOT_APPROVED</value>
+                <value>READY_TO_ORDER</value>
+                <value>EXPIRED</value>
+                <value>BUYER_DRAFT</value>
+                <value>BUYER_SUBMITTED</value>
+                <value>BUYER_OFFER</value>
+                <value>BUYER_ACCEPTED</value>
+                <value>BUYER_REJECTED</value>
+                <value>BUYER_APPROVED</value>
+                <value>BUYER_ORDERED</value>
+                <value>CANCELLED</value>
+                <value>EXPIRED</value>
+                <value>CLONE_BUYER_CREATED</value>
+                <value>CLONE_BUYER_FAILED</value>
+                <value>CLONE_BUYER_DRAFT</value>
+                <value>CLONE_BUYER_SUCCESS</value>
+                <value>ORDERED</value>
+                <value>CREATED</value>
+                <value>ERROR_CPI_TO_CPQ_QUOTE_SYNC</value>
+            </set>
+        </property>
+    </bean>
+
+    <bean id="defaultBuyerEditQuoteActionAllowedStateMapMerge"
+      depends-on="defaultBuyerQuoteActionAllowedStateMap" parent="mapMergeDirective">
+        <property name="key" value="EDIT"/>
+        <property name="value">
+            <set value-type="de.hybris.platform.core.enums.QuoteState" merge="true">
+                <value>BUYER_DRAFT</value>
+                <value>BUYER_OFFER</value>
+                <value>EXPIRED</value>
+                <value>CLONE_BUYER_CREATED</value>
+                <value>CLONE_BUYER_DRAFT</value>
+                <value>CLONE_BUYER_SUCCESS</value>
+            </set>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerCommerceCloneSavedCartMethodHook"
+      alias="partnerCommerceCloneSavedCartMethodHook"/>
+    <bean id="defaultPartnerCommerceCloneSavedCartMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.DefaultPartnerCommerceCloneSavedCartMethodHook">
+        <constructor-arg name="cloneAbstractOrderStrategy" ref="cloneAbstractOrderStrategy"/>
+        <constructor-arg name="keyGenerator" ref="orderCodeGenerator"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultPartnerCommerceCloneSavedCartBasicMethodHook"
+      alias="partnerCommerceCloneSavedCartBasicMethodHook"/>
+    <bean id="defaultPartnerCommerceCloneSavedCartBasicMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.DefaultPartnerCommerceCloneSavedCartBasicMethodHook">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <bean id="partnerCommerceCloneSavedCartMethodHooksListMergeDirective"
+      depends-on="commerceCloneSavedCartMethodHooks" parent="listMergeDirective">
+        <property name="add" ref="partnerCommerceCloneSavedCartMethodHook"/>
+    </bean>
+
+    <bean id="partnerCommerceCloneSavedCartBasicMethodHooksListMergeDirective"
+      depends-on="commerceCloneSavedCartMethodHooks" parent="listMergeDirective">
+        <property name="add" ref="partnerCommerceCloneSavedCartBasicMethodHook"/>
+    </bean>
+
+    <bean id="partnerQuoteStatusPrePersistHook"
+      class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.PartnerQuoteStatusPrePersistHook">
+        <constructor-arg name="quoteService" ref="quoteService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+
+    <alias name="defaultRemoveErrorMessageAction"
+      alias="removeErrorMessageToCartAction"/>
+    <bean id="defaultRemoveErrorMessageAction"
+      class="com.ibm.commerce.partner.core.actions.order.RemoveErrorMessageToCartAction"
+      parent="partnerAbstractSimpleDecisionAction">
+    </bean>
+
+    <alias name="defaultAddErrorMessageAction"
+      alias="addErrorMessageToCartAction"/>
+    <bean id="defaultAddErrorMessageAction"
+      class="com.ibm.commerce.partner.core.actions.order.AddErrorMessageToCartAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="configurationService" ref="configurationService"/>
+    </bean>
+
+    <alias name="defaultCategoryJsonValueResolver" alias="partnerCategoryJsonValueResolver"/>
+    <bean id="defaultCategoryJsonValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.CategoryJsonValueResolver"
+      parent="abstractValueResolver">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="categoryFacetDataConverter" ref="partnerCategoryFacetDataConverter"/>
+    </bean>
+
+    <alias name="defaultPartnerCategoryFacetDataPopulator"
+      alias="partnerCategoryFacetDataPopulator"/>
+    <bean id="defaultPartnerCategoryFacetDataPopulator"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.populators.CategoryFacetDataPopulator"/>
+
+    <alias name="defaultPartnerCategoryFacetDataConverter"
+      alias="partnerCategoryFacetDataConverter"/>
+    <bean id="defaultPartnerCategoryFacetDataConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.facet.category.data.CategoryFacetData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerCategoryFacetDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerSearchResponseRootCategoryDataSearchPopulator"
+      alias="partnerSearchResponseRootCategoryDataSearchPopulator"/>
+    <bean id="defaultPartnerSearchResponseRootCategoryDataSearchPopulator"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.populators.PartnerSearchResponseRootCategoryDataSearchPopulator">
+        <constructor-arg name="categoryJsonCode"
+          value="${partner.search.facet.categoriesjson.code}"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="defaultCommerceSolrSearchResponseConverter"/>
+        <property name="add" ref="partnerSearchResponseRootCategoryDataSearchPopulator"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="defaultCommerceSolrSearchResponseConverter"/>
+        <property name="add" ref="partnerSearchResponseCategoryJsonFilterPopulator"/>
+    </bean>
+
+    <alias name="defaultIbmIdOutboundIntegration" alias="ibmIdOutboundIntegration"/>
+    <bean id="defaultIbmIdOutboundIntegration"
+      class="com.ibm.commerce.partner.core.login.services.impl.DefaultIbmIdOutboundIntegration">
+        <constructor-arg name="consumedDestinationService" ref="ibmConsumedDestinationService"/>
+        <constructor-arg name="outboundIntegrationService" ref="ibmOutboundIntegrationService"/>
+    </bean>
+    <bean id="partnerCartDynamicAttributeHandler"
+      class="com.ibm.commerce.partner.core.handlers.PartnerCartPriceStaleDynamicAttributeHandler"/>
+
+    <alias name="defaultPartnerSpecialBidReasonService" alias="partnerSpecialBidReasonService"/>
+    <bean id="defaultPartnerSpecialBidReasonService"
+      class="com.ibm.commerce.partner.core.specialbidreason.service.impl.DefaultPartnerSpecialBidReasonService">
+        <constructor-arg name="specialBidReasonDao" ref="partnerSpecialBidReasonDao"/>
+    </bean>
+
+    <alias name="partnerSaveCartTextGenerationStrategy"
+      alias="commerceSaveCartTextGenerationStrategy"/>
+    <bean id="partnerSaveCartTextGenerationStrategy"
+      class="com.ibm.commerce.partner.core.strategy.impl.PartnerSaveCartTextGenerationStrategy"/>
+
+    <alias name="defaultPartnerOpportunityOutboundService"
+      alias="partnerOpportunityOutboundService"/>
+    <bean id="defaultPartnerOpportunityOutboundService"
+      class="com.ibm.commerce.partner.core.opportunity.service.impl.DefaultPartnerOpportunityOutboundService">
+        <constructor-arg name="consumedDestinationService" ref="ibmConsumedDestinationService"/>
+        <constructor-arg name="outboundIntegrationService" ref="ibmOutboundIntegrationService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <bean id="partnerSpecialBidCartDynamicAttributeHandler"
+      class="com.ibm.commerce.partner.core.handlers.PartnerSpecialBidCartDynamicAttributeHandler"/>
+
+    <bean id="partnerSpecialBidQuoteDynamicAttributeHandler"
+      class="com.ibm.commerce.partner.core.handlers.PartnerSpecialBidQuoteDynamicAttributeHandler"/>
+
+
+    <alias name="defaultPartnerSapCpqQuoteService" alias="partnerSapCpqQuoteService"/>
+    <bean id="defaultPartnerSapCpqQuoteService"
+      class="com.ibm.commerce.partner.core.quote.services.impl.DefaultPartnerSapCpqQuoteService">
+        <constructor-arg name="consumedDestinationService" ref="ibmConsumedDestinationService"/>
+        <constructor-arg name="outboundIntegrationService" ref="ibmOutboundIntegrationService"/>
+        <constructor-arg name="partnerCPQCreateQuoteRequestDataConverter"
+          ref="partnerCPQCreateQuoteRequestDataConverter"/>
+    </bean>
+
+    <bean id="partnerCPQCreateQuoteRequestDataConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCPQCreateQuoteRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerCPQCreateQuoteRequestDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="partnerCPQCreateQuoteRequestDataPopulator"
+      class="com.ibm.commerce.partner.core.cart.populator.PartnerCPQCreateQuoteRequestDataPopulator">
+    </bean>
+
+    <alias name="defaultPartnerQuoteService" alias="partnerQuoteService"/>
+    <bean id="defaultPartnerQuoteService"
+      class="com.ibm.commerce.partner.core.quote.services.impl.DefaultPartnerQuoteService">
+        <constructor-arg name="partnerPricingOutboundService" ref="partnerPricingOutboundService"/>
+    </bean>
+
+    <!--CPQ JSON Quote -->
+    <alias alias="quoteCpqConversionService"
+      name="defaultPartnerCpqQuoteConversionService"/>
+    <bean id="defaultPartnerCpqQuoteConversionService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpqCpiOutboundQuoteConversionService">
+        <constructor-arg name="partnerCpqCpiQuoteMappers" ref="partnerCpqCpiQuoteMappers"/>
+        <constructor-arg name="partnerCpqCpiQuoteEntryMappers"
+          ref="partnerCpqCpiQuoteEntryMappers"/>
+    </bean>
+
+
+    <alias alias="partnerCpqCpiQuoteMapperService"
+      name="defaultPartnerCpqCpiQuoteMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteMapperService">
+        <constructor-arg name="defaultDestinationChannel"
+          value="${partner.quote.distribution.channel.default}"/>
+        <constructor-arg name="defaultFulfillmentSource"
+          value="${partner.quote.fullfilment.source.default}"/>
+        <constructor-arg name="defaultJustificationCode"
+          value="${partner.quote.justification.default}"/>
+        <constructor-arg name="defaultOpportunityId"
+          value="${partner.quote.opportunity.id.default}"/>
+        <constructor-arg name="defaultSalesOrganization"
+          value="${partner.quote.sales.organization.default}"/>
+        <constructor-arg name="defaultTransactionPriceLevel"
+          value="${partner.quote.transaction.price.level.default}"/>
+        <constructor-arg name="defaultSalesApplication"
+          value="${partner.quote.sales.application.default}"/>
+        <constructor-arg name="enumerationService" ref="enumerationService"/>
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteSpecialBidReasonMapperService"
+      name="defaultPartnerCpqCpiQuoteSpecialBidReasonMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteSpecialBidReasonMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteSpecialBidReasonMapperService">
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteAgreementDetailsMapperService"
+      name="defaultPartnerCpqCpiQuoteAgreementDetailsMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteAgreementDetailsMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteAgreementDetailsMapperService">
+    </bean>
+
+    <alias alias="partnerCpqCpiQuotePriceMapperService"
+      name="defaultCpqCpiQuotePriceMapperService"/>
+    <bean id="defaultCpqCpiQuotePriceMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuotePriceMapperService">
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteCustomersMapperService"
+      name="defaultCpqCpiQuoteCustomersMapperService"/>
+    <bean id="defaultCpqCpiQuoteCustomersMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteCustomersMapperService">
+        <constructor-arg name="partnerCpqCpiQuoteCustomerMappers"
+          ref="partnerCpqCpiQuoteCustomerMappers"/>
+    </bean>
+
+    <!-- Quote Mappers -->
+    <alias alias="partnerCpqCpiQuoteMappers"
+      name="partnerCpqCpiQuoteMapperServices"/>
+    <util:list id="partnerCpqCpiQuoteMapperServices"
+      value-type="com.ibm.commerce.partner.core.outbound.service.PartnerCpqCpiQuoteMapperService">
+        <ref bean="partnerCpqCpiQuoteMapperService"/>
+        <ref bean="partnerCpqCpiQuoteSpecialBidReasonMapperService"/>
+        <ref bean="partnerCpqCpiQuoteAgreementDetailsMapperService"/>
+        <ref bean="partnerCpqCpiQuotePriceMapperService"/>
+        <ref bean="partnerCpqCpiQuoteCustomersMapperService"/>
+        <ref bean="partnerCpqCpiQuoteGoeQuestionsMapperService"/>
+        <ref bean="partnerCpqCpiQuoteSpecialBidQuestionsMapperService"/>
+        <ref bean="partnerCpqCpiQuoteProvisionFormMapperService"/>
+    </util:list>
+
+
+    <alias alias="partnerCpqCpiQuoteCustomerMappers"
+      name="partnerCpqCpiQuoteCustomerMapperServices"/>
+    <util:list id="partnerCpqCpiQuoteCustomerMapperServices"
+      value-type="com.ibm.commerce.partner.core.outbound.service.PartnerCpqCpiQuoteCustomerMapperService">
+        <ref bean="partnerCpqCpiQuoteCreaterMapperService"/>
+        <ref bean="partnerCpqCpiQuoteSubmitterMapperService"/>
+        <ref bean="partnerCpqCpiQuoteOwnerMapperService"/>
+        <ref bean="partnerCpqCpiQuoteEndCustomerMapperService"/>
+        <ref bean="partnerCpqCpiQuoteDistributorMapperService"/>
+        <ref bean="partnerCpqCpiQuoteResellerMapperService"/>
+    </util:list>
+
+    <!-- Add Quote Customer Mapper -->
+    <alias alias="partnerCpqCpiQuoteCreaterMapperService"
+      name="defaultPartnerCpqCpiQuoteCreaterMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteCreaterMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteCreaterMapperService">
+        <constructor-arg name="customerEmailResolutionService" ref="customerEmailResolutionService"/>
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteSubmitterMapperService"
+      name="defaultPartnerCpqCpiQuoteSubmitterMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteSubmitterMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteSubmitterMapperService">
+        <constructor-arg name="customerEmailResolutionService"
+          ref="customerEmailResolutionService"/>
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteOwnerMapperService"
+      name="defaultPartnerCpqCpiQuoteOwnerMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteOwnerMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteOwnerMapperService">
+        <constructor-arg name="customerEmailResolutionService" ref="customerEmailResolutionService"/>
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteEndCustomerMapperService"
+      name="defaultPartnerCpqCpiQuoteEndCustomerMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteEndCustomerMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteEndCustomerMapperService">
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteDistributorMapperService"
+      name="defaultPartnerCpqCpiQuoteDistributorMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteDistributorMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteDistributorMapperService">
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteResellerMapperService"
+      name="defaultPartnerCpqCpiQuoteResellerMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteResellerMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteResellerMapperService">
+    </bean>
+
+
+    <alias alias="partnerCpqCpiQuoteEntryPriceMapperService"
+      name="defaultCpqCpiQuoteEntryPriceMapperService"/>
+    <bean id="defaultCpqCpiQuoteEntryPriceMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteEntryPriceMapperService">
+        <constructor-arg name="partnerPricingOutboundService" ref="partnerPricingOutboundService"/>
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteEntryMappers"
+      name="partnerCpqCpiQuoteEntryMapperServices"/>
+    <util:list id="partnerCpqCpiQuoteEntryMapperServices"
+      value-type="com.ibm.commerce.partner.core.outbound.service.PartnerCpqCpiQuoteEntryMapperService">
+        <ref bean="partnerCpqCpiQuoteEntryMapperService"/>
+        <ref bean="partnerCpqCpiQuoteEntryPriceMapperService"/>
+        <ref bean="partnerCpqCpiQuoteSaasEntryMapperService"/>
+    </util:list>
+
+    <!-- Quote Entry Mapper -->
+    <alias alias="partnerCpqCpiQuoteEntryMapperService"
+      name="defaultPartnerCpqCpiQuoteEntryMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteEntryMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteEntryMapperService">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="defaultTransactionType"
+          value="${partner.quote.transaction.type.default}"/>
+        <constructor-arg name="partnerPricingOutboundService" ref="partnerPricingOutboundService"/>
+        <constructor-arg name="partnerQuoteService" ref="partnerQuoteService"/>
+        <constructor-arg name="catalogVersionService" ref="catalogVersionService"/>
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteSaasEntryMapperService"
+      name="defaultPartnerCpqCpiQuoteSaasEntryMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteSaasEntryMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteSaasEntryMapperService">
+        <constructor-arg name="partnerQuoteService" ref="partnerQuoteService"/>
+        <constructor-arg name="partnerPricingOutboundService" ref="partnerPricingOutboundService"/>
+    </bean>
+
+    <alias name="defaultPartnerQuestionService" alias="partnerQuestionService"/>
+    <bean id="defaultPartnerQuestionService"
+      class="com.ibm.commerce.partner.core.partnerquestions.service.impl.DefaultPartnerQuestionService">
+        <constructor-arg name="questionDao" ref="partnerQuestionDao"/>
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="commerceCartService" ref="commerceCartService"/>
+        <constructor-arg name="questionsMappingToSelectionReverseConverter" ref="partnerQuestionMappingToQuestionSelectionReverseConverter"/>
+        <constructor-arg name="questionToSelectionReverseConverter" ref="partnerQuestionsToQuestionSelectionReverseConverter"/>
+    </bean>
+
+    <alias alias="partnerSapCpiQuoteGoeQuestionsMapperService"
+      name="defaultPartnerSapCpiQuoteGoeQuestionsMapperService"/>
+    <bean id="defaultPartnerSapCpiQuoteGoeQuestionsMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerSapCpiQuoteGoeQuestionsMapperService">
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteGoeQuestionsMapperService"
+      name="defaultPartnerCpqCpiQuoteGoeQuestionsMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteGoeQuestionsMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiPartnerGoeQuestionsMapperService">
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteSpecialBidQuestionsMapperService"
+      name="defaultPartnerCpqCpiQuoteSpecialBidQuestionsMapperService"/>
+    <bean id="defaultPartnerCpqCpiQuoteSpecialBidQuestionsMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiPartnerSpecialBidQuestionsMapperService">
+    </bean>
+
+    <alias alias="partnerCpqCpiQuoteProvisionFormMapperService"
+      name="DefaultPartnerCpqCpiQuoteProvisionFormMapperService"/>
+    <bean id="DefaultPartnerCpqCpiQuoteProvisionFormMapperService"
+      class="com.ibm.commerce.partner.core.outbound.service.impl.DefaultPartnerCpqCpiQuoteProvisionFormMapperService">
+    </bean>
+
+    <alias alias="partnerCommerceQuoteDao"
+      name="DefaultPartnerSapCpiQuoteDao"/>
+    <bean id="DefaultPartnerSapCpiQuoteDao"
+      class="com.ibm.commerce.partner.core.order.dao.DefaultPartnerSapCpiQuoteDao"
+      parent="commerceQuoteDao">
+        <constructor-arg name="pagedFlexibleSearchService" ref="pagedFlexibleSearchService"/>
+        <constructor-arg name="partnerQuoteCloneActiveStatus"
+          value="${partner.quote.clone.active.status}"/>
+    </bean>
+
+    <alias name="defaultPartnerQuoteValidationStrategy"
+      alias="partnerQuoteValidationStrategy"/>
+    <bean id="defaultPartnerQuoteValidationStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultPartnerQuoteValidationStrategy">
+        <constructor-arg name="partnerProcessService" ref="partnerProcessService"/>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="quoteEditLimitThresholdMinutes"
+          value="${partner.quote.edit.limit.threshold.minutes}"/>
+        <constructor-arg name="timeService" ref="timeService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="customerEmailResolutionService"
+          ref="customerEmailResolutionService"/>
+    </bean>
+
+    <alias alias="commerceCartService" name="defaultIbmCommerceCartService"/>
+    <bean id="defaultIbmCommerceCartService"
+      class="com.ibm.commerce.partner.core.cart.services.impl.DefaultIbmCommerceCartService"
+      parent="defaultCommerceCartService">
+        <constructor-arg name="commerceCartDao" ref="commerceCartDao"/>
+        <constructor-arg name="provisionFormResponseReverseConverter" ref="provisionFormResponseReverseConverter"/>
+        <constructor-arg name="provisionFormRequestDataConverter" ref="provisionFormRequestDataConverter"/>
+        <constructor-arg name="provisionFormItemPatchRequestDataConverter" ref="provisionFormItemPatchRequestDataConverter"/>
+        <constructor-arg name="partnerProvisionFormOutboundIntegrationService" ref="partnerProvisionFormOutboundIntegrationService"/>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="provisionformErrorMessage" value="${mr3-provisionforms-feature-error-message}"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="customerEmailResolutionService"
+          ref="customerEmailResolutionService"/>
+        <constructor-arg name="cartUpdateQuestionSelectionStrategy" ref="partnerCartUpdateQuestionSelectionStrategy"/>
+        <constructor-arg name="cart1MilPriceValue" value="${partner.cart.usd.1mil.value}"/>
+    </bean>
+
+    <alias alias="commerceCartDao" name="defaultIbmCommerceCartDao"/>
+    <bean id="defaultIbmCommerceCartDao"
+      class="com.ibm.commerce.partner.core.cart.dao.impl.DefaultIbmCommerceCartDao"
+      parent="defaultCommerceCartDao">
+    </bean>
+
+    <alias name="defaultPartnerQuoteUpdateStateStrategy" alias="quoteUpdateStateStrategy"/>
+    <bean id="defaultPartnerQuoteUpdateStateStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultPartnerQuoteUpdateStateStrategy"
+      parent="defaultQuoteUpdateStateStrategy">
+        <constructor-arg name="quoteStatusOrderedList" value="${quote.status.ordered.list}"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <bean id="partnerQuoteSearchStrategy"
+      class="com.ibm.commerce.partner.core.quote.search.services.impl.DefaultPartnerQuoteSearchStrategy">
+        <constructor-arg name="searchQueryPageableConverter"
+          ref="partnerQuoteSearchQueryPageableConverter"/>
+        <constructor-arg name="searchRequestConverter" ref="commerceSolrSearchRequestConverter"/>
+        <constructor-arg name="searchResponseConverter"
+          ref="partnerQuoteSolrSearchResponseConverter"/>
+        <constructor-arg name="facetSearchConfigService"
+          ref="facetSearchConfigService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+        <constructor-arg name="solrAutoSuggestService"
+          ref="solrAutoSuggestService"/>
+        <constructor-arg name="solrIndexedTypeCodeResolver"
+          ref="solrIndexedTypeCodeResolver"/>
+        <constructor-arg name="solrFacetSearchConfigSelectionStrategy"
+          ref="solrFacetSearchConfigSelectionStrategy"/>
+        <constructor-arg name="baseStoreService" ref="baseStoreService"/>
+        <constructor-arg name="baseSiteService" ref="baseSiteService"/>
+        <constructor-arg name="sessionService" ref="sessionService"/>
+    </bean>
+
+    <bean id="partnerQuoteSolrFacetSearchConfigSelectionStrategy"
+      class="com.ibm.commerce.partner.core.quote.search.services.impl.PartnerQuoteSolrFacetSearchConfigSelectionStrategy">
+        <property name="flexibleSearchService"
+          ref="flexibleSearchService"/>
+    </bean>
+
+    <bean id="partnerQuoteSearchQueryPageableConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commerceservices.search.solrfacetsearch.data.SolrSearchRequest"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuoteSearchSolrQueryPopulator"/>
+                <ref bean="commerceSearchPagePopulator"/>
+                <ref bean="commerceSearchSortPopulator"/>
+                <ref bean="commerceSearchTextPopulator"/>
+                <ref bean="commerceSearchFiltersPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="partnerQuoteSolrSearchResponseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.search.facetdata.PartnerQuoteSearchPageData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuoteSearchResponseRemoveFiltersPopulator"/>
+                <ref bean="commerceSearchResponseQueryPopulator"/>
+                <ref bean="commerceSearchResponsePaginationPopulator"/>
+                <ref bean="commerceSearchResponseResultsPopulator"/>
+                <ref bean="commerceSearchResponseFacetsPopulator"/>
+                <ref bean="commerceSearchResponseFacetFilterPopulator"/>
+                <ref bean="commerceSearchResponseBreadcrumbsPopulator"/>
+                <ref bean="commerceSearchResponseSortsPopulator"/>
+                <ref bean="partnerQuoteSearchResponseFreeTextSearchPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="partnerQuoteSearchSolrQueryPopulator"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.populators.PartnerQuoteSearchSolrQueryPopulator">
+        <constructor-arg name="baseSiteService" ref="baseSiteService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+        <constructor-arg name="baseStoreService" ref="baseStoreService"/>
+        <constructor-arg name="facetSearchService" ref="facetSearchService"/>
+        <constructor-arg name="facetSearchConfigService" ref="facetSearchConfigService"/>
+        <constructor-arg name="solrFacetSearchConfigSelectionStrategy"
+          ref="partnerQuoteSolrFacetSearchConfigSelectionStrategy"/>
+        <constructor-arg name="searchQueryTemplateNameResolver"
+          ref="searchQueryTemplateNameResolver"/>
+    </bean>
+
+    <bean id="partnerQuoteSearchResponseFreeTextSearchPopulator"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.populators.PartnerQuoteSearchResponseFreeTextSearchPopulator">
+    </bean>
+
+    <bean id="partnerQuoteSearchService"
+      class="com.ibm.commerce.partner.core.quote.search.services.impl.DefaultPartnerQuoteSearchService">
+        <constructor-arg name="partnerQuoteSearchStrategyFactory"
+          ref="partnerQuoteSearchStrategyFactory"/>
+    </bean>
+
+    <bean id="partnerQuoteSearchStrategyFactory"
+      class="com.ibm.commerce.partner.core.quote.search.services.impl.DefaultPartnerQuoteSearchStrategyFactory">
+        <constructor-arg name="partnerQuoteSearchStrategy" ref="partnerQuoteSearchStrategy"/>
+    </bean>
+
+    <bean id="partnerQuoteStatusPostPersistHook"
+      class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.PartnerQuoteStatusPostPersistHook">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="quoteService" ref="quoteService"/>
+        <constructor-arg name="quoteUpdateStateStrategy" ref="quoteUpdateStateStrategy"/>
+    </bean>
+    <bean id="partnerQuoteStatusUpdatePrePersistHook"
+      class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.PartnerQuoteStatusUpdatePrePersistHook">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+
+    <alias name="defaultPartnerQuoteSearchResponseRemoveFiltersPopulator"
+      alias="partnerQuoteSearchResponseRemoveFiltersPopulator"/>
+    <bean id="defaultPartnerQuoteSearchResponseRemoveFiltersPopulator"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.populators.PartnerSearchResponseRemoveFiltersPopulator">
+        <constructor-arg name="removeInternalFilterCodes" ref="removeInternalFilterCodes"/>
+    </bean>
+
+    <bean id="facetSearchQueryFacetsPopulator"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.populators.PartnerCustomSearchQueryFacetsPopulator"
+      parent="abstractFacetSearchQueryPopulator">
+        <property name="configurationService" ref="configurationService"/>
+    </bean>
+
+
+    <util:list id="removeInternalFilterCodes">
+        <value>quoteAccessToSites</value>
+        <value>quoteTypeQuoteCreator</value>
+        <value>quoteIndexActive</value>
+        <value>quoteCreationDate</value>
+    </util:list>
+    <bean id="partnerQuoteProgramTypeValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.PartnerQuoteProgramTypeValueResolver"
+      parent="abstractValueResolver"/>
+
+    <bean id="partnerQuoteCreatorValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.PartnerQuoteCreatorValueResolver"
+      parent="abstractValueResolver"/>
+
+    <bean id="partnerQuoteResellerSiteIdValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.PartnerQuoteResellerSiteIdValueResolver"
+      parent="abstractValueResolver"/>
+
+    <bean id="partnerQuoteCartReferenceIdValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.PartnerQuoteCartReferenceIdValueResolver"
+      parent="abstractValueResolver"/>
+
+    <bean id="partnerQuoteCreationTimeValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.PartnerQuoteCreationTimeValueResolver"
+      parent="abstractValueResolver"/>
+
+    <bean id="partnerQuoteOrderIdValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.PartnerQuoteOrderIdValueResolver"
+      parent="abstractValueResolver">
+        <constructor-arg name="commerceOrderService" ref="commerceOrderService"/>
+    </bean>
+
+    <bean id="partnerOrderCreationPostPersistHook"
+      class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.PartnerOrderCreationPostPersistHook">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="quoteService" ref="quoteService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+        <constructor-arg name="customerAccountDao" ref="customerAccountDao"/>
+    </bean>
+
+    <alias name="defaultPartnerCommerceOrderService" alias="commerceOrderService"/>
+    <bean id="defaultPartnerCommerceOrderService"
+      class="com.ibm.commerce.partner.core.order.services.impl.DefaultPartnerCommerceOrderService"
+      parent="defaultCommerceOrderService">
+        <constructor-arg name="commerceOrderDao" ref="commerceOrderDao"/>
+        <constructor-arg name="searchRestrictionService" ref="searchRestrictionService"/>
+    </bean>
+
+    <bean id="partnerQuoteCreationPostPersistHook"
+      class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.PartnerQuoteCreationPostPersistHook">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerQuoteCreationMappers" ref="partnerQuoteCreationMappers"/>
+        <constructor-arg name="quoteService" ref="quoteService"/>
+    </bean>
+
+    <alias alias="partnerQuoteCreationMappers"
+      name="partnerQuoteCreationMappersServices"/>
+    <util:list id="partnerQuoteCreationMappersServices"
+      value-type="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.PartnerQuoteCreationMapperService">
+        <ref bean="partnerQuoteCreationBasicDetailsMapperService"/>
+        <ref bean="partnerQuoteCreationAgreementDetailsMapperService"/>
+        <ref bean="partnerQuoteCreationBillToMapperService"/>
+        <ref bean="partnerQuoteCreationShipToUnitMapperService"/>
+        <ref bean="partnerQuoteCreationSoldThroughUnitMapperService"/>
+        <ref bean="partnerQuoteCreationEntryMapperService"/>
+        <ref bean="partnerQuoteCreationHeaderPriceMapperService"/>
+        <ref bean="partnerQuoteCreationSpecialBidQuestionsMapperService"/>
+        <ref bean="partnerQuoteCreationSpecialBidMapperService"/>
+        <ref bean="partnerQuoteCreationProvisioningFormMapperService"/>
+    </util:list>
+
+    <alias name="defaultQuoteCreationBasicDetailsMapperService" alias="partnerQuoteCreationBasicDetailsMapperService"/>
+    <bean id="defaultQuoteCreationBasicDetailsMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationBasicDetailsMapperService">
+        <constructor-arg name="partnerUserService" ref="partnerUserService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+        <constructor-arg name="baseStoreService" ref="baseStoreService"/>
+        <constructor-arg name="quoteUpdateStateStrategy" ref="quoteUpdateStateStrategy"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationAgreementDetailsMapperService" alias="partnerQuoteCreationAgreementDetailsMapperService"/>
+    <bean id="defaultQuoteCreationAgreementDetailsMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationAgreementDetailsMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerB2BUnitService" ref="partnerB2BUnitService"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationBillToUnitMapperService" alias="partnerQuoteCreationBillToMapperService"/>
+    <bean id="defaultQuoteCreationBillToUnitMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationBillToUnitMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerB2BUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationEntryMapperService" alias="partnerQuoteCreationEntryMapperService"/>
+    <bean id="defaultQuoteCreationEntryMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationEntryMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="catalogVersionService" ref="catalogVersionService"/>
+        <constructor-arg name="priceMappers" ref="partnerQuoteCreationEntryPricesMapperService"/>
+        <constructor-arg name="pidQuoteKeyGenerator" ref="pidQuoteCodeGenerator"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationEntryPricesMapperService" alias="partnerQuoteCreationEntryPricesMapperService"/>
+    <bean id="defaultQuoteCreationEntryPricesMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationEntryPricesMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationShipToUnitMapperService" alias="partnerQuoteCreationShipToUnitMapperService"/>
+    <bean id="defaultQuoteCreationShipToUnitMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationShipToUnitMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerB2BUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationSoldThroughUnitMapperService" alias="partnerQuoteCreationSoldThroughUnitMapperService"/>
+    <bean id="defaultQuoteCreationSoldThroughUnitMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationSoldThroughUnitMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerB2BUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationHeaderPriceMapperService" alias="partnerQuoteCreationHeaderPriceMapperService"/>
+    <bean id="defaultQuoteCreationHeaderPriceMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationHeaderPriceMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationGoeQuestionsMapperService" alias="partnerQuoteCreationGoeQuestionsMapperService"/>
+    <bean id="defaultQuoteCreationGoeQuestionsMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationGoeQuestionsMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerQuestionService" ref="partnerQuestionService"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationSpecialBidQuestionsMapperService"
+      alias="partnerQuoteCreationSpecialBidQuestionsMapperService"/>
+    <bean id="defaultQuoteCreationSpecialBidQuestionsMapperService"
+      class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationSpecialBidQuestionsMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerQuestionService" ref="partnerQuestionService"/>
+    </bean>
+
+    <alias name="defaultQuoteCreationSpecialBidMapperService" alias="partnerQuoteCreationSpecialBidMapperService"/>
+    <bean id="defaultQuoteCreationSpecialBidMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationSpecialBidMapperService">
+    </bean>
+
+
+
+
+    <alias name="defaultPartnerPartEntryGroupStrategy" alias="partnerPartEntryGroupStrategy"/>
+    <bean id="defaultPartnerPartEntryGroupStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultPartnerPartEntryGroupStrategy">
+        <constructor-arg name="entryGroupService" ref="partnerEntryGroupService"/>
+        <constructor-arg name="ytyEligibleLicenceTypeCodes" ref="ytyEligibleLicenceTypeCodes"/>
+        <constructor-arg name="ePartLicenceTypeCode" value="${partner.product.licencetype.code.perpetual.e}"/>
+    </bean>
+
+    <alias name="defaultPartnerProductYtyEntryGroupAddToCartMethodHook"
+      alias="partnerProductYtyEntryGroupAddToCartMethodHook"/>
+    <bean id="defaultPartnerProductYtyEntryGroupAddToCartMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.PartnerProductYtyEntryGroupAddToCartMethodHook">
+        <constructor-arg name="entryGroupStrategy" ref="partnerPartEntryGroupStrategy"/>
+    </bean>
+
+    <bean id="partnerYtyEntryGroupAddToCartMethodHookMergeDirective"
+      depends-on="commerceAddToCartMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="partnerProductYtyEntryGroupAddToCartMethodHook"/>
+    </bean>
+
+    <alias name="defaultPartnerItemHotIndexUpdateEventListener"
+      alias="partnerItemHotIndexUpdateEventListener"/>
+    <bean id="defaultPartnerItemHotIndexUpdateEventListener"
+      class="com.ibm.commerce.partner.core.event.solr.listener.PartnerItemHotIndexUpdateEventListener"
+      parent="abstractEventListener">
+        <constructor-arg name="facetSearchConfigService" ref="facetSearchConfigService"/>
+        <constructor-arg name="indexerService" ref="indexerService"/>
+    </bean>
+
+    <bean id="partnerQuoteAfterSaveEventListener" class="com.ibm.commerce.partner.core.event.solr.listener.PartnerQuoteAfterSaveEventListener">
+        <constructor-arg name="itemModelSearchService" ref="itemModelSearchService"/>
+        <constructor-arg name="commerceQuoteService" ref="commerceQuoteService"/>
+    </bean>
+
+    <bean id="partnerQuoteSalesApplicationValueResolver"
+      class="com.ibm.commerce.partner.core.search.solrfacetsearch.resolvers.impl.PartnerQuoteSalesApplicationValueResolver"
+      parent="abstractValueResolver"/>
+
+    <alias name="sapProductConfigDefaultUpdateCartEntryHook"
+      alias="sapProductConfigUpdateCartEntryHook"/>
+    <bean id="sapProductConfigDefaultUpdateCartEntryHook"
+      class="com.ibm.commerce.partner.core.productConfig.hook.PartnerProductConfigurationUpdateCartEntryHookImpl">
+        <property name="productConfigurationService" ref="sapProductConfigConfigurationService" />
+        <property name="abstractOrderEntryLinkStrategy" ref="sapProductConfigAbstractOrderEntryLinkStrategy" />
+        <property name="recorder" ref="sapProductConfigTrackingRecorder"></property>
+    </bean>
+
+    <bean id="productConfigurationRemoveInterceptor"
+      class="com.ibm.commerce.partner.core.interceptor.PartnerProductConfigurationRemoveInterceptor">
+        <property name="productConfigurationPersistenceService"
+          ref="sapProductConfigProductConfigurationPersistenceService"/>
+    </bean>
+
+    <bean id="cartRemoveInterceptor"
+      class="com.ibm.commerce.partner.core.interceptor.PartnerCartRemoveInterceptor">
+    </bean>
+
+    <bean class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+        <property name="interceptor" ref="productConfigurationRemoveInterceptor"/>
+        <property name="typeCode" value="ProductConfiguration"/>
+    </bean>
+
+    <bean class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+        <property name="interceptor" ref="cartRemoveInterceptor"/>
+        <property name="typeCode" value="IbmPartnerCart"/>
+    </bean>
+
+    <alias name="defaultPartnerMediaCodeKeyGenerator" alias="partnerMediaCodeKeyGenerator"/>
+    <bean id="defaultPartnerMediaCodeKeyGenerator"
+      class="de.hybris.platform.servicelayer.keygenerator.impl.PersistentKeyGenerator">
+        <property name="key" value="${keygen.partner.media.code.name}"/>
+        <property name="digits" value="${keygen.partner.media.code.digits}"/>
+        <property name="start" value="${keygen.partner.media.code.start}"/>
+        <property name="type" value="${keygen.partner.media.code.type}"/>
+        <property name="template" value="${keygen.partner.media.code.template}"/>
+    </bean>
+
+    <util:set id="ytyEligibleLicenceTypeCodes">
+        <value>${partner.product.licencetype.code.perpetual.d}</value>
+        <value>${partner.product.licencetype.code.perpetual.e}</value>
+    </util:set>
+
+    <alias name="defaultProvisionFormRequestDataConverter"
+      alias="provisionFormRequestDataConverter"/>
+    <bean id="defaultProvisionFormRequestDataConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="provisionFormItemDetailsRequestConverter"/>
+                <ref bean="provisionFormRequestConverter"/>
+                <ref bean="provisionFormBasicDetailsRequestConverter"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultProvisionFormBasicDetailsRequestConverter"
+      alias="provisionFormBasicDetailsRequestConverter"/>
+    <bean id="defaultProvisionFormBasicDetailsRequestConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormBasicDetailsRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="provisionFormBasicDetailsRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultProvisionFormBasicDetailsRequestPopulator"
+      alias="provisionFormBasicDetailsRequestPopulator"/>
+    <bean id="defaultProvisionFormBasicDetailsRequestPopulator"
+      class="com.ibm.commerce.partner.core.provisionform.convertors.populators.ProvisionFormBasicDetailsRequestPopulator">
+    </bean>
+
+
+    <alias name="defaultProvisionFormItemDetailsRequestConverter"
+      alias="provisionFormItemDetailsRequestConverter"/>
+    <bean id="defaultProvisionFormItemDetailsRequestConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormItemsRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="provisionFormItemDetailsRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultProvisionFormItemDetailsRequestPopulator"
+      alias="provisionFormItemDetailsRequestPopulator"/>
+    <bean id="defaultProvisionFormItemDetailsRequestPopulator"
+      class="com.ibm.commerce.partner.core.provisionform.convertors.populators.ProvisionFormItemDetailsRequestPopulator">
+        <constructor-arg name="sessionService" ref="sessionService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+
+    <alias name="defaultProvisionFormRequestDataRequestConverter"
+      alias="provisionFormRequestConverter"/>
+    <bean id="defaultProvisionFormRequestDataRequestConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="provisionFormRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultProvisionFormRequestPopulator"
+      alias="provisionFormRequestPopulator"/>
+    <bean id="defaultProvisionFormRequestPopulator"
+      class="com.ibm.commerce.partner.core.provisionform.convertors.populators.ProvisionFormRequestPopulator">
+        <constructor-arg name="customerEmailResolutionService"
+          ref="customerEmailResolutionService"/>
+    </bean>
+
+    <alias name="defaultPartnerCurrencyService" alias="partnerCurrencyService"/>
+    <bean id="defaultPartnerCurrencyService"
+      class="com.ibm.commerce.partner.core.currency.services.impl.DefaultPartnerCurrencyService">
+        <constructor-arg name="currencyDao" ref="partnerCurrencyDao"/>
+    </bean>
+
+    <alias name="defaultPartnerSalesOrgService" alias="partnerSalesOrgService"/>
+    <bean id="defaultPartnerSalesOrgService"
+      class="com.ibm.commerce.partner.core.partnerSalesOrg.service.impl.DefaultPartnerSalesOrgService">
+        <constructor-arg name="salesOrgDao" ref="partnerSalesOrgDao"/>
+    </bean>
+
+    <alias name="defaultPartnerProvisionFormOutboundIntegrationService"
+      alias="partnerProvisionFormOutboundIntegrationService"/>
+    <bean id="defaultPartnerProvisionFormOutboundIntegrationService"
+      class="com.ibm.commerce.partner.core.provisionform.services.impl.DefaultPartnerProvisionFormOutboundIntegrationService">
+        <constructor-arg name="consumedDestinationService" ref="ibmConsumedDestinationService"/>
+        <constructor-arg name="outboundIntegrationService" ref="ibmOutboundIntegrationService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="provisionFormResponseReversePopulator"
+      alias="provisionFormResponseReversePopulator"/>
+    <bean id="provisionFormResponseReversePopulator"
+      class="com.ibm.commerce.partner.core.provisionform.convertors.populators.ProvisionFormResponseReversePopulator">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="sessionService" ref="sessionService"/>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="customerEmailResolutionService" ref="customerEmailResolutionService"/>
+    </bean>
+
+    <alias name="provisionFormResponseReverseConverter"
+      alias="provisionFormResponseReverseConverter"/>
+    <bean id="provisionFormResponseReverseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.core.model.order.AbstractOrderModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="provisionFormResponseReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultProvisionFormItemPatchRequestDataConverter"
+      alias="provisionFormItemPatchRequestDataConverter"/>
+    <bean id="defaultProvisionFormItemPatchRequestDataConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormItemsRequestData"/>
+        <property name="populators">
+            <list>
+                <ref bean="provisionFormItemDetailsRequestPopulator"/>
+            </list>
+        </property>
+    </bean>
+    <alias name="defaultQuoteCreationProvisioningFormMapperService" alias="partnerQuoteCreationProvisioningFormMapperService"/>
+    <bean id="defaultQuoteCreationProvisioningFormMapperService" class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.service.impl.DefaultQuoteCreationProvisioningFormMapperService">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerProvisionFormService" ref="partnerProvisionFormService"/>
+
+    </bean>
+    <alias name="defaultPartnerProvisionFormService"
+      alias="partnerProvisionFormService"/>
+    <bean id="defaultPartnerProvisionFormService"
+      class="com.ibm.commerce.partner.core.provisionform.services.impl.DefaultPartnerProvisionFormService">
+        <constructor-arg name="partnerProvisionFormDao" ref="partnerProvisionFormDao"/>
+    </bean>
+
+    <alias name="defaultPartnerAddIbmSellerCollaboratorAction"
+      alias="partnerAddIbmSellerCollaboratorAction"/>
+    <bean id="defaultPartnerAddIbmSellerCollaboratorAction"
+      class="com.ibm.commerce.partner.core.outbound.actions.PartnerAddIbmSellerCollaboratorAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <property name="quoteService" ref="quoteService"/>
+        <property name="partnerSapCpqQuoteService"
+          ref="partnerSapCpqQuoteService"/>
+    </bean>
+
+    <bean id="partnerQuoteSubmitProcessDefinitionResource"
+      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource"
+          value="classpath:/partnercore/processes/order/partner-quote-submit-process.xml"/>
+    </bean>
+
+    <bean id="quoteSubmittedEventListener"
+      class="com.ibm.commerce.partner.core.event.QuoteSubmittedEventListener"
+      parent="abstractEventListener">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="businessProcessService" ref="businessProcessService"/>
+        <constructor-arg name="processCodeGenerator" ref="partnerUniqueUidKeyGenerator"/>
+    </bean>
+
+    <alias name="defaultProductAdditionalInfoStrategy" alias="productAdditionalInfoStrategy"/>
+    <bean id="defaultProductAdditionalInfoStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultProductAdditionalInfoStrategy">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+    <alias name="defaultProductAdditionalInfoAddToCartMethodHook" alias="productAdditionalInfoAddToCartMethodHook"/>
+    <bean id="defaultProductAdditionalInfoAddToCartMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.ProductAdditionalInfoAddToCartMethodHook">
+        <constructor-arg name="productAdditionalInfoStrategy" ref="productAdditionalInfoStrategy"/>
+    </bean>
+    <bean id="productAdditionalInfoAddToCartMethodHooksListMergeDirective"
+      depends-on="commerceAddToCartMethodHooks" parent="listMergeDirective">
+        <property name="add" ref="productAdditionalInfoAddToCartMethodHook"/>
+    </bean>
+    <alias name="provisionFormUpdateToCartMethodHook" alias="provisionFormUpdateToCartMethodHook"/>
+    <bean id="provisionFormUpdateToCartMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.ProvisionFormUpdateToCartMethodHook">
+        <constructor-arg name="partnerCommerceCartService" ref="commerceCartService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <bean id="provisionFormUpdateToCartMethodHookMergeDirective"
+      depends-on="commerceUpdateCartEntryMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="provisionFormUpdateToCartMethodHook"/>
+    </bean>
+
+    <alias alias="partnerProductSearchAvailabilityService"
+      name="defaultPartnerProductSearchAvailabilityService"/>
+    <bean id="defaultPartnerProductSearchAvailabilityService"
+      class="com.ibm.commerce.partner.core.services.impl.DefaultPartnerProductSearchAvailabilityService">
+        <constructor-arg name="productService" ref="ibmProductService"/>
+        <constructor-arg name="deploymentTypeService" ref="ibmDeploymentTypeService"/>
+
+    </bean>
+    <alias name="defaultPartnerOutboundRequestDecorator" alias="partnerOutboundRequestDecorator"/>
+    <bean id="defaultPartnerOutboundRequestDecorator"
+      class="com.ibm.commerce.partner.core.outbound.decorator.DefaultPartnerOutboundRequestDecorator">
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultPartnerOutboundRequestDecoratorList" alias="outboundRequestDecoratorList"/>
+    <util:list id="defaultPartnerOutboundRequestDecoratorList"
+      value-type="de.hybris.platform.outboundservices.decorator.OutboundRequestDecorator">
+        <ref bean="outboundMonitoringRequestDecorator"/>
+        <ref bean="contextErrorDecorator"/>
+        <ref bean="buildPayloadRequestDecorator"/>
+        <ref bean="acceptHeaderRequestDecorator"/>
+        <ref bean="sapPassportRequestDecorator"/>
+        <ref bean="csrfOutboundRequestDecorator"/>
+        <ref bean="partnerOutboundRequestDecorator"/>
+    </util:list>
+    <util:map id="billingFrequencyMap" key-type="java.lang.String"
+      value-type="java.lang.String">
+        <entry key="Annually" value="A"/>
+        <entry key="Upfront" value="U"/>
+        <entry key="Quarterly" value="Q"/>
+        <entry key="Monthly" value="M"/>
+    </util:map>
+    <util:map id="dealRegMap" key-type="java.lang.String" value-type="java.lang.String">
+        <entry key="Y" value="true"/>
+        <entry key="N" value="false"/>
+        <entry key="NA" value="NA"/>
+    </util:map>
+
+    <bean id="partnerQuoteValidationSubmitProcessDefinitionResource"
+      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource"
+          value="classpath:/partnercore/processes/order/sap-cpq-quote-common-validate-submit-process.xml"/>
+    </bean>
+
+    <alias alias="sapCpqCpiQuoteValidateSubmitEventListener"
+      name="sapCpqCpiQuoteValidateSubmitEventListener"/>
+    <bean id="sapCpqCpiQuoteValidateSubmitEventListener"
+      class="com.ibm.commerce.partner.core.event.QuoteValidateSubmitEventListener"
+      parent="abstractEventListener">
+        <property name="modelService" ref="modelService"/>
+        <property name="businessProcessService"
+          ref="businessProcessService"/>
+    </bean>
+
+    <alias alias="partnerQuoteValidationAction"
+      name="partnerQuoteValidationAction"/>
+    <bean id="partnerQuoteValidationAction"
+      class="com.ibm.commerce.partner.core.outbound.actions.PartnerQuoteValidationAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <property name="quoteService" ref="quoteService"/>
+        <property name="partnerSapCpqQuoteService"
+          ref="partnerSapCpqQuoteService"/>
+    </bean>
+
+    <alias alias="partnerQuoteSubmitAction"
+      name="partnerQuoteSubmitAction"/>
+    <bean id="partnerQuoteSubmitAction"
+      class="com.ibm.commerce.partner.core.outbound.actions.PartnerQuoteSubmitAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <property name="quoteService" ref="quoteService"/>
+        <property name="partnerSapCpqQuoteService"
+          ref="partnerSapCpqQuoteService"/>
+    </bean>
+
+    <alias name="defaultPartnerPidAgreementService" alias="partnerPidAgreementService"/>
+    <bean id="defaultPartnerPidAgreementService"
+      class="com.ibm.commerce.partner.core.partnerPidAgreement.service.impl.DefaultPartnerPidAgreementService">
+        <constructor-arg name="partnerPidAgreementDao" ref="partnerPidAgreementDao"/>
+    </bean>
+
+    <alias name="defaultPartnerB2BCustomerEmailResolutionService" alias="customerEmailResolutionService"/>
+    <alias name="defaultPartnerB2BCustomerEmailResolutionService" alias="b2bCustomerEmailResolutionService"/>
+    <alias name="defaultPartnerB2BCustomerEmailResolutionService" alias="partnerB2BCustomerEmailResolutionService"/>
+    <bean id="defaultPartnerB2BCustomerEmailResolutionService" class="com.ibm.commerce.partner.core.customer.impl.DefaultPartnerB2BCustomerEmailResolutionService">
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultPartnerUserPropertyMatchingStrategy"
+      alias="partnerUserPropertyMatchingStrategy"/>
+    <bean id="defaultPartnerUserPropertyMatchingStrategy"
+      class="com.ibm.commerce.partner.core.strategy.DefaultPartnerUserPropertyMatchingStrategy">
+        <constructor-arg name="customerService" ref="customerService"/>
+    </bean>
+
+    <alias name="defaultIbmPartnerProductService" alias="productService"/>
+    <alias name="defaultIbmPartnerProductService" alias="ibmProductService"/>
+    <bean id="defaultIbmPartnerProductService"
+      class="com.ibm.commerce.partner.core.product.service.impl.DefaultIbmPartnerProductService"
+      parent="defaultIbmProductService"/>
+
+
+    <bean id="entryGroupUpdateCartMethodHookMergeDirective"
+      depends-on="commerceUpdateCartEntryMethodHooks"
+      parent="listMergeDirective">
+        <property name="add" ref="entryGroupUpdateCartMethodHook"/>
+        <property name="beforeBeanNames">
+            <list>
+                <value>sapProductConfigUpdateCartEntryHook</value>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerCommerceRemoveEntryGroupMethodHook"
+      alias="partnerCommerceRemoveEntryGroupMethodHook"/>
+    <bean id="defaultPartnerCommerceRemoveEntryGroupMethodHook"
+      class="com.ibm.commerce.partner.core.order.hook.PartnerCommerceRemoveEntryGroupMethodHook">
+        <constructor-arg name="cartService" ref="commerceCartService"/>
+        <constructor-arg name="priceLookUpService" ref="priceLookUpService"/>
+        <constructor-arg name="eventService" ref="eventService"/>
+    </bean>
+
+    <bean id="partnerCommerceRemoveEntryGroupBundleMergeDirective"
+      depends-on="commerceRemoveEntryGroupMethodHooks" parent="listMergeDirective">
+        <property name="add" ref="partnerCommerceRemoveEntryGroupMethodHook"/>
+    </bean>
+
+    <alias name="defaultPartnerCommerceAddToCartStrategy" alias="commerceAddToCartStrategy"/>
+    <bean id="defaultPartnerCommerceAddToCartStrategy"
+      class="com.ibm.commerce.partner.core.strategy.DefaultPartnerCommerceAddToCartStrategy"
+      parent="defaultCommerceAddToCartStrategy">
+    </bean>
+
+    <util:list id="partnerCreditBillOverrideQuestions" value-type="java.lang.String">
+        <value>IBM_SBQ_QKEY_7_44</value>
+        <value>IBM_STQ_QKEY_6</value>
+    </util:list>
+
+    <alias name="defaultPartnerCartUpdateQuestionSelectionStrategy" alias="partnerCartUpdateQuestionSelectionStrategy"/>
+    <bean id="defaultPartnerCartUpdateQuestionSelectionStrategy" class="com.ibm.commerce.partner.core.cart.strategies.impl.DefaultPartnerCartUpdateStrategy">
+        <constructor-arg name="creditBillReasonCode" value="${partner.special.bid.reason.credit.bill.code}"/>
+        <constructor-arg name="creditBillReasonMaxPriceValue" value="${partner.special.bid.reason.credit.bill.price.check.value.max}"/>
+        <constructor-arg name="creditBillQuestionCodes" ref="partnerCreditBillOverrideQuestions"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+
+    </bean>
+
+    <alias name="defaultPartnerCartUpdateReasonSelectionStrategy" alias="partnerCartUpdateReasonSelectionStrategy"/>
+    <bean id="defaultPartnerCartUpdateReasonSelectionStrategy"
+      class="com.ibm.commerce.partner.core.cart.strategies.impl.DefaultPartnerCartUpdateReasonSelectionStrategy">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="commerceCartService" ref="commerceCartService"/>
+        <constructor-arg name="questionService" ref="partnerQuestionService"/>
+        <constructor-arg name="significantCompetitiveReasonCode"
+          value="${partner.special.bid.reason.significant.competitive.bill.code}"/>
+    </bean>
+
+
+    <alias name="defaultPartnerQuestionMappingToQuestionSelectionReversePopulator" alias="partnerQuestionMappingToQuestionSelectionReversePopulator"/>
+    <bean id="defaultPartnerQuestionMappingToQuestionSelectionReversePopulator" class="com.ibm.commerce.partner.core.partnerquestions.converter.populator.PartnerQuestionMappingToQuestionSelectionReversePopulator"/>
+
+    <alias name="defaultPartnerQuestionMappingToQuestionSelectionReverseConverter" alias="partnerQuestionMappingToQuestionSelectionReverseConverter"/>
+    <bean id="defaultPartnerQuestionMappingToQuestionSelectionReverseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.PartnerQuestionsSelectionModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuestionMappingToQuestionSelectionReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerQuestionsToQuestionSelectionReversePopulator" alias="partnerQuestionsToQuestionSelectionReversePopulator"/>
+    <bean id="defaultPartnerQuestionsToQuestionSelectionReversePopulator" class="com.ibm.commerce.partner.core.partnerquestions.converter.populator.PartnerQuestionsToQuestionSelectionReversePopulator"/>
+
+
+    <alias name="defaultPartnerQuestionsToQuestionSelectionReverseConverter"
+      alias="partnerQuestionsToQuestionSelectionReverseConverter"/>
+    <bean id="defaultPartnerQuestionsToQuestionSelectionReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.PartnerQuestionsSelectionModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuestionsToQuestionSelectionReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="ibmProductRemoveSuperCategoriesPrePersistHook"
+      class="com.ibm.commerce.partner.core.inboundservices.persistence.hook.IbmProductRemoveSuperCategoriesPrePersistHook">
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="ibmCommerceUpdateCartEntryStrategy" alias="commerceUpdateCartEntryStrategy"/>
+    <bean id="ibmCommerceUpdateCartEntryStrategy"
+      class="com.ibm.commerce.partner.core.order.strategies.impl.DefaultIbmCommerceUpdateCartEntryStrategy">
+        <!--parent="defaultCommerceUpdateCartEntryStrategy" -->
+        <property name="partnerSapCpqQuoteService" ref="partnerSapCpqQuoteService"/>
+        <property name="modelService" ref="modelService"/>
+        <property name="configurationService" ref="ibmCommonConfigurationService"/>
+        <property name="defaultSapCommerceUpdateCartEntryStrategy" ref="defaultSapCommerceUpdateCartEntryStrategy"/>
+    </bean>
+</beans>
