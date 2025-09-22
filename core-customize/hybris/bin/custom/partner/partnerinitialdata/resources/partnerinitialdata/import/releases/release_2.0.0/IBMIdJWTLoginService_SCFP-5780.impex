@@ -1,0 +1,9 @@
+INSERT_UPDATE DestinationTarget; id[unique = true]; registrationStatus; destinationChannel(code)
+                               ; prmService       ;                   ; PRMSERVICE
+
+INSERT_UPDATE Endpoint; id[unique = true]                             ; version[unique = true]; name                                          ; specUrl
+                      ; ibmIdJwtLoginJwksPublicKeyConsumedDestination ; 1                     ; ibmIdJwtLoginJwksPublicKeyConsumedDestination ; ibmIdJwtLoginJwksPublicKeyConsumedDestination
+
+
+INSERT_UPDATE IbmConsumedDestination; id[unique = true]                             ; url; endpoint(id, version)                           ; credential(id); destinationTarget(id)[default = prmService]; additionalProperties(key, value)[map-delimiter = |]; active[default = true]
+                                    ; ibmIdJwtLoginJwksPublicKeyConsumedDestination ;    ; ibmIdJwtLoginJwksPublicKeyConsumedDestination:1 ;               ;                                            ;

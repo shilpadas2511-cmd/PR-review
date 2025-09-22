@@ -1,0 +1,247 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$productCatalog = partnerProductCatalog
+$productCV = catalogVersion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$medias = medias(code, $contentCV);
+$mediaContainer = media(qualifier, $contentCV);
+$product = product(code, $productCV)
+$category = category(code, $productCV)
+
+# Site Logo Component
+INSERT_UPDATE SimpleBannerComponent; $contentCV[unique = true]; uid[unique = true]; name                ; &componentRef     ; urlLink
+                                   ;                          ; SiteLogoComponent ; Site Logo Component ; SiteLogoComponent ; "/"
+
+
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]; $contentCV[unique = true]; name ; children(uid, $contentCV)[mode = append]
+                               ; root              ;                          ; root ; ;
+
+##- level 1. SiteRoot -##
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]; $contentCV[unique = true]; name         ; parent(uid, $contentCV); links(&componentRef); &nodeRef
+                               ; SiteRootNode      ;                          ; SiteRootNode ; root                   ;                     ; SiteRootNode
+
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]; $contentCV[unique = true]; name         ; parent(uid, $contentCV); links(&componentRef); &nodeRef
+                               ; PartnerNavNode    ;                          ; Partner Site ; SiteRootNode           ;                     ; PartnerNavNode
+
+INSERT_UPDATE CMSNavigationNode; uid[unique = true] ; $contentCV[unique = true]; name            ; parent(uid, $contentCV); links(&componentRef); &nodeRef
+                               ; PartnerMainNavNode ;                          ; Main Categories ; PartnerNavNode         ;                     ; PartnerMainNavNode
+
+INSERT_UPDATE PartnerCMSLinkComponent; $contentCV[unique = true]; uid[unique = true]                 ; name                                ; url                                                                                                    ; &linkRef                   ; target(code)[default = 'sameWindow']; external[default = 'false']
+                                     ;                          ; DealRegistrationLink               ; Deal Registration link              ; https://partnerportal.ibm.com/s/new-deal-registration                                                  ; DealRegistrationLink
+                                     ;                          ; CPQHubLink                         ; CPQ hub Link                        ; https://cpqhub.ibm.com/                                                                                ; CPQHubLink
+                                     ;                          ; PartnerGuidedSellingLink           ; Parner Guided Selling               ; https://www-112.ibm.com/software/howtobuy/passportadvantage/paoreseller/guidedselling/quotePartner.wss ; PartnerGuidedSellingLink
+                                     ;                          ; SoftwareQuotingLink                ; SoftwareQuoting                     ; https://partnerportal.ibm.com/commerce                                                                 ; SoftwareQuotingLink
+
+                                     ;                          ; IncentivesExplainedLink            ; Incentives Explained                ; https://www.ibm.com/partnerplus/incentives/                                                            ; IncentivesExplainedLink
+                                     ;                          ; PromotionsLink                     ; Incentives Explained                ; https://www.ibm.com/partnerplus/incentives/promotions                                                  ; PromotionsLink
+                                     ;                          ; LearningHubLink                    ; Learning  hub                       ; https://www.ibm.com/partnerplus/incentives/promotions                                                  ; LearningHubLink
+                                     ;                          ; PersonalCredentialsLink            ; Personal Credentials                ; https://www.ibm.com/training/BPlearn                                                                   ; PersonalCredentialsLink
+                                     ;                          ; NewsandupdatesLink                 ; News and updates                    ; https://ibm.seismic.com/Link/Content/DC339WHmXXB338FBDGRg89FTjmq3                                      ; NewsandupdatesLink         ;                                     ; true
+                                     ;                          ; SeismicIBMLink                     ; Seismic at IBM                      ; https://ibm.seismic.com/                                                                               ; SeismicIBMLink             ;                                     ; true
+                                     ;                          ; BenefitsExplainedLink              ; Benefits explained                  ; https://www.ibm.com/partnerplus/benefits                                                               ; BenefitsExplainedLink
+                                     ;                          ; PartnerStatusMarkLink              ; Partner status mark                 ; https://partnerportal.ibm.com/s/partner-status-mark                                                    ; PartnerStatusMarkLink
+                                     ;                          ; Co-MarketingLink                   ; Co-Marketing                        ; https://www.ibm.com/partnerplus/marketing/co-marketing-overview                                        ; Co-MarketingLink
+                                     ;                          ; MyDigitalMarketingLink             ; My Digital Marketing                ; https://www.mydmportal.com/                                                                            ; MyDigitalMarketingLink
+                                     ;                          ; SoftwareAccessCatalogLink          ; SoftwareAccessCatalog               ; https://www.ibm.com/partnerworld/partnertools/eorderweb/ordersw.do                                     ; SoftwareAccessCatalogLink
+                                     ;                          ; CloudcreditsLink                   ; Cloud credits                       ; https://partnerportal.ibm.com/s/cloud-credits                                                          ; CloudcreditsLink           ;                                     ; true
+                                     ;                          ; TechnicalExpertEngagementLink      ; Technical expert engagement         ; https://partnerportal.ibm.com/s/technical-expert-engagement                                            ; TechnicalExpertEngagementLink
+                                     ;                          ; ProofofconceptcreationLink         ; Proof of concept co-creation        ; https://partnerportal.ibm.com/s/proof-of-experience-co-creation-form                                   ; ProofofconceptcreationLink
+
+
+                                     ;                          ; InnovationStudioAccessLink         ; Innovation Studio access            ; https://partnerportal.ibm.com/s/innovation-studio                                                      ; InnovationStudioAccessLink
+
+                                     ;                          ; CoSellsupportLink                  ; Co-Sell support                     ; https://partnerportal.ibm.com/s/co-sell-support-for-partner-solutions                                  ; CoSellsupportLink
+
+                                     ;                          ; CustomerSuccessPremierProgramLink  ; Customer Success Premier program    ; https://partnerportal.ibm.com/s/cs-premier                                                             ; CustomerSuccessPremierProgramLink
+
+                                     ;                          ; PartnerAdvocacyProgramLink         ; Partner advocacy program            ; https://www.ibm.com/partnerworld/public/sales-partner-advocacy/reporting/orders                        ; PartnerAdvocacyProgramLink ;                                     ; true
+
+                                     ;                          ; ExpertLabsservicepartscreationLink ; Expert Labs service parts creation  ; https://partnerportal.ibm.com/s/expert-labs-parts                                                      ; ExpertLabsservicepartscreationLink
+
+                                     ;                          ; PractitionerAdvancedTrainingLink   ; Practitioner advanced training      ; https://partnerportal.ibm.com/s/practitioner-advanced-deployment-training                              ; PractitionerAdvancedTrainingLink
+                                     ;                          ; ServiceSolutionsAcceleratorLink    ; Service solutions accelerator       ; https://partnerportal.ibm.com/s/service-solutions-accelerator                                          ; ServiceSolutionsAcceleratorLink
+                                     ;                          ; ServiceTechnicalAssetcreationLink  ; Service technical asset co-creation ; https://partnerportal.ibm.com/s/service-technical-asset-co-creation                                    ; ServiceTechnicalAssetcreationLink
+                                     ;                          ; ContractsLink                      ; Contracts profile                   ; https://partnerportal.ibm.com/s/company-profile                                                        ; ContractsLink
+                                     ;                          ; CompanyprofileLink                 ; Company profile                     ; https://partnerportal.ibm.com/s/company-profile                                                        ; CompanyprofileLink         ;                                     ; true
+                                     ;                          ; PartnerSupportLink                 ; Partner support                     ; https://www.ibm.com/partnerplus/support                                                                ; PartnerSupportLink         ;                                     ; true
+
+                                     ;                          ; NotificationsLink                  ; Notifications                       ; https://partnerportal.ibm.com/s/notifications-list                                                     ; NotificationsLink
+
+
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]                   ; $contentCV[unique = true]; name                                 ; parent(uid, $contentCV)  ; links(&linkRef); &nodeRef
+                               ; DealsNavNode                         ;                          ; Deals Category                       ; PartnerMainNavNode       ;                ; DealsNavNode
+                               ; DealManagementNode                   ;                          ; Deals Management Category            ; DealsNavNode             ;                ; DealManagementNode
+                               ; DealregistrationNavNode              ;                          ; Deal registration Category           ; DealManagementNode       ;                ; DealregistrationNavNode
+
+                               ; QuoteNavNode                         ;                          ; Quote Category                       ; DealsNavNode             ;                ; QuoteNavNode
+                               ; CPQNavNode                           ;                          ; CAQ hub Category                     ; QuoteNavNode             ;                ; CPQNavNode
+                               ; PartnerGuidedNavNode                 ;                          ; Partner Guided Category              ; QuoteNavNode             ;                ; PartnerGuidedNavNode
+                               ; SoftwareQuotingNavNode               ;                          ; Software quote Category              ; QuoteNavNode             ;                ; SoftwareQuotingNavNode
+
+                               ; IncentivesNavNode                    ;                          ; Incentive Category                   ; PartnerMainNavNode       ;                ; IncentivesNavNode
+                               ; IncentiveExplainedNavNode            ;                          ; Incentive Category                   ; IncentivesNavNode        ;                ; IncentiveExplainedNavNode
+                               ; PromotionsNavNode                    ;                          ; Promotion Category                   ; IncentivesNavNode        ;                ; PromotionsNavNode
+
+                               ; LearningEducationNavNode             ;                          ; LearningEducation Category           ; PartnerMainNavNode       ;                ; LearningEducationNavNode
+                               ; LearningHubNavNode                   ;                          ; LearningHub Category                 ; LearningEducationNavNode ;                ; LearningHubNavNode
+                               ; PersonalCredentialsSubNavNode        ;                          ; Personal Credentils Category         ; LearningEducationNavNode ;                ; PersonalCredentialsSubNavNode
+                               ; NewsandupdatesNavNode                ;                          ; Newsandupdates Category              ; LearningEducationNavNode ;                ; NewsandupdatesNavNode
+                               ; SeismicIBMNavNode                    ;                          ; SeismicIBM Category                  ; LearningEducationNavNode ;                ; SeismicIBMNavNode
+
+                               ; BenefitsNavNode                      ;                          ; Benefits Category                    ; PartnerMainNavNode       ;                ; BenefitsNavNode
+                               ; BenefitsExplainedNavNode             ;                          ; Benefits Explained Category          ; BenefitsNavNode          ;                ; BenefitsExplainedNavNode
+                               ; MarketingNavNode                     ;                          ; Marketing Category                   ; BenefitsNavNode          ;                ; MarketingNavNode
+                               ; TechnicalNavNode                     ;                          ; Techincal Category                   ; BenefitsNavNode          ;                ; TechnicalNavNode
+                               ; CollaborationNavNode                 ;                          ; Collaboration Category               ; BenefitsNavNode          ;                ; CollaborationNavNode
+                               ; ServiceNavNode                       ;                          ; service Category                     ; BenefitsNavNode          ;                ; ServiceNavNode
+
+                               ; PartnerStatusMarkNavNode             ;                          ; PartnerStatusMark Category           ; MarketingNavNode         ;                ; PartnerStatusMarkNavNode
+                               ; Co-MarketingNavNode                  ;                          ; Co-Marketing Category                ; MarketingNavNode         ;                ; Co-MarketingNavNode
+                               ; MyDigitalMarketingNavNode            ;                          ; MyDigitalMarketing Category          ; MarketingNavNode         ;                ; MyDigitalMarketingNavNode
+
+                               ; SoftwareAccessCatalogNavNode         ;                          ; SoftwareAccessCatalogCategory        ; TechnicalNavNode         ;                ; SoftwareAccessCatalogNavNode
+                               ; CloudcreditsNavNode                  ;                          ; Cloudcredits Category                ; TechnicalNavNode         ;                ; CloudcreditsNavNode
+
+                               ; TechincalExpertEngNavNode            ;                          ; TechincalExpertEngNavNode Category   ; CollaborationNavNode     ;                ; TechincalExpertEngNavNode
+                               ; ProofoConceptNavNode                 ;                          ; ProofoConceptNav Category            ; CollaborationNavNode     ;                ; ProofoConceptNavNode
+                               ; InnovationStudioAccessNavNode        ;                          ; InnovationStudioAccess Category      ; CollaborationNavNode     ;                ; InnovationStudioAccessNavNode
+                               ; CoSellsupportNavNode                 ;                          ; Co seller Category                   ; CollaborationNavNode     ;                ; CoSellsupportNavNode
+                               ; CustoemrSuppertPremerNavNode         ;                          ; CustoemrSuppertPremerNav Category    ; CollaborationNavNode     ;                ; CustoemrSuppertPremerNavNode
+                               ; PartnerAdvocacyProgramNavNode        ;                          ; PartnerAdvocacyProgramNav Category   ; CollaborationNavNode     ;                ; PartnerAdvocacyProgramNavNode
+                               ; ExpertsLabNavNode                    ;                          ; ExpertsLabNav Category               ; CollaborationNavNode     ;                ; ExpertsLabNavNode
+
+                               ; PractitionerNavNode                  ;                          ; Practitioner Category                ; ServiceNavNode           ;                ; PractitionerNavNode
+                               ; ServiceSolutionsAcceleratorNode      ;                          ; ServiceSolutionsAccelerator Category ; ServiceNavNode           ;                ; ServiceSolutionsAcceleratorNode
+                               ; ServiceTechnicalAssetcreationNavNode ;                          ; Service tech Category                ; ServiceNavNode           ;                ; ServiceTechnicalAssetcreationNavNode
+
+                               ; CompanyNavNode                       ;                          ; Company Category                     ; PartnerMainNavNode       ;                ; CompanyNavNode
+                               ; CompanyProfileNavNode                ;                          ; Company profilre Category            ; CompanyNavNode           ;                ; CompanyProfileNavNode
+                               ; partnersupportnavnode                ;                          ; partner support Category             ; PartnerMainNavNode       ;                ; partnersupportnavnode
+
+#                               ; ProfileNavNode                       ;                          ; Profile Category                     ; UtlityNavNode             ;                ; ProfileNavNode
+#                               ; NotificationsNavNode                 ;                          ; notification Category                ; UtlityNavNode             ;                ; NotificationsNavNode
+#                               ; UtlityNavNode                        ;                          ; uytlity Category                     ; PartnerMainNavNode        ;                ; UtlityNavNode
+
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]                ; $contentCV[unique = true]; name                      ; parent(uid, $contentCV); links(&linkRef); &nodeRef
+                               ; MyAccountNavNode                  ;                          ; My Account                ;                        ;                ; MyAccountNavNode
+# children for my account
+                               ; ProfileNavNode                    ;                          ; Profile                   ; MyAccountNavNode       ;                ; ProfileNavNode
+                               ; ProfilePersonalCredentialsNavNode ;                          ; Personal Credentials      ; MyAccountNavNode       ;                ; ProfilePersonalCredentialsNavNode
+                               ; CommunicationPreferencesNavNode   ;                          ; Communication Preferences ; MyAccountNavNode       ;                ; CommunicationPreferencesNavNode
+                               ; SettingsNavNode                   ;                          ; Settings                  ; MyAccountNavNode       ;                ; SettingsNavNode
+
+INSERT_UPDATE CMSNavigationEntry; uid[unique = true]                  ; $contentCV[unique = true]; name                                 ; navigationNode(&nodeRef)             ; item(CMSLinkComponent.uid, CMSLinkComponent.$contentCV);
+                                ; DealRegistrationEntry               ;                          ; Deals Navigation Node Entry          ; DealregistrationNavNode              ; DealRegistrationLink                                   ;
+                                ; CPQHubEntry                         ;                          ; CPQ Node Entry                       ; CPQNavNode                           ; CPQHubLink
+                                ; PartnerGuidedSellingEntry           ;                          ; PartnerGuided Entry                  ; PartnerGuidedNavNode                 ; PartnerGuidedSellingLink                               ;
+                                ; SoftwareQuotingEntry                ;                          ; SoftwareQuoting Entry                ; SoftwareQuotingNavNode               ; SoftwareQuotingLink                                    ;
+
+                                ; IncentivesExplainedEntry            ;                          ; IncentivesExplained Entry            ; IncentiveExplainedNavNode            ; IncentivesExplainedLink                                ;
+                                ; PromotionsEntry                     ;                          ; Promotions Entry                     ; PromotionsNavNode                    ; PromotionsLink                                         ;
+                                ; LearningHubEntry                    ;                          ; LearningHub Entry                    ; LearningHubNavNode                   ; LearningHubLink                                        ;
+                                ; PersonalCredentialsEntry            ;                          ; PersonalCredentials Entry            ; PersonalCredentialsSubNavNode        ; PersonalCredentialsLink                                ;
+                                ; NewsandupdatesEntry                 ;                          ; Newsandupdates Entry                 ; NewsandupdatesNavNode                ; NewsandupdatesLink                                     ;
+                                ; SeismicIBMEntry                     ;                          ; SeismicIBM Entry                     ; SeismicIBMNavNode                    ; SeismicIBMLink                                         ;
+
+                                ; BenefitsExplainedEntry              ;                          ; BenefitsExplained Entry              ; BenefitsExplainedNavNode             ; BenefitsExplainedLink                                  ;
+                                ; PartnerStatusMarkEntry              ;                          ; PartnerStatusMark Entry              ; PartnerStatusMarkNavNode             ; PartnerStatusMarkLink                                  ;
+                                ; Co-MarketingEntry                   ;                          ; Co-Marketing Entry                   ; Co-MarketingNavNode                  ; Co-MarketingLink                                       ;
+                                ; MyDigitalMarketingEntry             ;                          ; MyDigitalMarketing Entry             ; MyDigitalMarketingNavNode            ; MyDigitalMarketingLink                                 ;
+
+                                ; SoftwareAccessCatalogEntry          ;                          ; SoftwareAccessCatalog Entry          ; SoftwareAccessCatalogNavNode         ; SoftwareAccessCatalogLink                              ;
+                                ; CloudcreditsLinkEntry               ;                          ; CloudcreditsLink Entry               ; CloudcreditsNavNode                  ; CloudcreditsLink                                       ;
+
+                                ; TechnicalExpertEngagementEntry      ;                          ; TechnicalExpertEngagement Entry      ; TechincalExpertEngNavNode            ; TechnicalExpertEngagementLink                          ;
+                                ; ProofofconceptcreationEntry         ;                          ; Proofofconceptcreation Entry         ; ProofoConceptNavNode                 ; ProofofconceptcreationLink                             ;
+                                ; InnovationStudioAccessEntry         ;                          ; InnovationStudioAccess Entry         ; InnovationStudioAccessNavNode        ; InnovationStudioAccessLink                             ;
+                                ; CoSellsupportLinkEntry              ;                          ; CoSellsupportLink Entry              ; CoSellsupportNavNode                 ; CoSellsupportLink                                      ;
+                                ; CustomerSuccessPremierProgramEntry  ;                          ; CustomerSuccessPremierProgram Entry  ; CustoemrSuppertPremerNavNode         ; CustomerSuccessPremierProgramLink                      ;
+
+                                ; PartnerAdvocacyProgramLinkEntry     ;                          ; PartnerAdvocacyProgram Entry         ; PartnerAdvocacyProgramNavNode        ; PartnerAdvocacyProgramLink
+                                ; ExpertLabsservicepartscreationEntry ;                          ; ExpertLabsservicepartscreation Entry ; ExpertsLabNavNode                    ; ExpertLabsservicepartscreationLink
+
+                                ; PractitionerAdvancedTrainingEntry   ;                          ; PractitionerAdvancedTraining Entry   ; PractitionerNavNode                  ; PractitionerAdvancedTrainingLink
+                                ; ServiceSolutionsAcceleratorEntry    ;                          ; ServiceSolutionsAccelerator Entry    ; ServiceSolutionsAcceleratorNode      ; ServiceSolutionsAcceleratorLink
+                                ; ServiceTechnicalAssetcreationEntry  ;                          ; ServiceTechnicalAssetcreation Entry  ; ServiceTechnicalAssetcreationNavNode ; ServiceTechnicalAssetcreationLink
+
+                                ; CompanyProfileEntry                 ;                          ; Profile Entry                        ; CompanyProfileNavNode                ; CompanyprofileLink
+                                ; PartnerSupportEntry                 ;                          ; PartnerSupport Entry                 ; partnersupportnavnode                ; PartnerSupportLink
+
+# create cms navigation entry for nvaigation child nodes
+INSERT_UPDATE CMSNavigationEntry; uid[unique = true]                   ; $contentCV[unique = true]; name                                 ; navigationNode(&nodeRef)          ; item(&linkRef)                 ;
+                                ; ProfileNavNodeEntry                  ;                          ; ProfileNavNodeEntry                  ; ProfileNavNode                    ; ProfileLink                    ;
+                                ; PersonalCredentialsNavNodeEntry      ;                          ; PersonalCredentialsNavNodeEntry      ; ProfilePersonalCredentialsNavNode ; ProfilePersonalCredentialsLink ;
+                                ; CommunicationPreferencesNavNodeEntry ;                          ; CommunicationPreferencesNavNodeEntry ; CommunicationPreferencesNavNode   ; CommunicationPreferencesLink   ;
+                                ; SettingsNavNodeEntry                 ;                          ; SettingsNavNodeEntry                 ; SettingsNavNode                   ; SettingsLink                   ;
+
+# create cms link components for my account pages
+INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]             ; name                           ; url                                              ; &linkRef                       ; target(code)[default = 'sameWindow']; external
+                              ;                          ; ProfileLink                    ; ProfileLink                    ; https://partnerportal.ibm.com/s/personal-profile ; ProfileLink                    ;
+                              ;                          ; ProfilePersonalCredentialsLink ; ProfilePersonalCredentialsLink ; /my-account/update-email                         ; ProfilePersonalCredentialsLink ;
+                              ;                          ; CommunicationPreferencesLink   ; CommunicationPreferencesLink   ; /my-account/update-password                      ; CommunicationPreferencesLink   ;
+                              ;                          ; SettingsLink                   ; SettingsLink                   ; /my-account/address-book                         ; SettingsLink                   ;
+
+
+
+# entries of the above navigation nodes ##
+INSERT_UPDATE CMSNavigationEntry; uid[unique = true]            ; $contentCV[unique = true]; name                                     ; navigationNode(&nodeRef) ; item(CMSLinkComponent.uid, CMSLinkComponent.$contentCV);
+                                ; PartnerPlusNavNodeEntry       ;                          ; Partner Plus Navigation Node Entry       ; PartnerPlusNavNode       ; PartnerPlusLink                                        ;
+                                ; ContactUsNavNodeEntry         ;                          ; Contact Us Navigation Node Entry         ; ContactUsNavNode         ; ContactUsLink                                          ;
+                                ; TermsNavNodeEntry             ;                          ; Terms Navigation Node Entry              ; TermsNavNode             ; TermsLink                                              ;
+                                ; PrivacyNavNodeEntry           ;                          ; Privacy Navigation Node Entry            ; PrivacyNavNode           ; PrivacyLink                                            ;
+                                ; CookiePreferencesNavNodeEntry ;                          ; Cookie Preferences Navigation Node Entry ; CookiePreferencesNavNode ; CookiePreferencesLink                                  ;
+
+
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]       ; $contentCV[unique = true]; name                     ; &nodeRef
+                               ; PartnerPlusNavNode       ;                          ; Partner Plus Pages       ; PartnerPlusNavNode
+                               ; ContactUsNavNode         ;                          ; Contact Us Pages         ; ContactUsNavNode
+                               ; TermsNavNode             ;                          ; Terms Pages              ; TermsNavNode
+                               ; PrivacyNavNode           ;                          ; Privacy Pages            ; PrivacyNavNode
+                               ; CookiePreferencesNavNode ;                          ; Cookie Preferences Pages ; CookiePreferencesNavNode
+
+
+
+
+INSERT_UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]    ; name                    ; url                                              ; &linkRef              ; &componentRef         ; target(code)[default = 'sameWindow']; $category; $product; external
+                              ;                          ; PartnerPlusLink       ; Partner Plus Link       ; "https://www.ibm.com/partnerplus"                ; PartnerPlusLink       ; PartnerPlusLink       ; newWindow                           ;          ;         ;
+                              ;                          ; ContactUsLink         ; Contact Us Link         ; "https://www.ibm.com/partnerplus/member/support" ; ContactUsLink         ; ContactUsLink         ; newWindow                           ;          ;         ;
+                              ;                          ; TermsLink             ; Terms Link              ; "https://www.ibm.com/legal?lnk=flg-tous-usen"    ; TermsLink             ; TermsLink             ; newWindow                           ;          ;         ;
+                              ;                          ; PrivacyLink           ; Privacy Link            ; "https://www.ibm.com/privacy?lnk=flg-priv-usen"  ; PrivacyLink           ; PrivacyLink           ; newWindow                           ;          ;         ;
+                              ;                          ; CookiePreferencesLink ; Cookie Preferences Link ; "https://partnerportal.ibm.com/s/#"              ; CookiePreferencesLink ; CookiePreferencesLink ; newWindow                           ;          ;         ;
+
+
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]; $contentCV[unique = true]; name         ; parent(uid, $contentCV); &nodeRef      ; children(uid, $contentCV)
+                               ; FooterNavNode     ;                          ; Footer Pages ;                        ; FooterNavNode ; PartnerPlusNavNode,ContactUsNavNode,TermsNavNode,PrivacyNavNode,CookiePreferencesNavNode
+
+INSERT_UPDATE CategoryNavigationComponent; $contentCV[unique = true]; uid[unique = true]      ; name                          ; styleClass; &componentRef           ; navigationNode(&nodeRef); wrapAfter
+                                         ;                          ; PartnerMainNavComponent ; Category Navigation Component ;           ; PartnerMainNavComponent ; PartnerMainNavNode      ; 10
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]     ; cmsComponents(uid, $contentCV)
+                         ;                          ; LeftHandNavigationSlot ; PartnerMainNavComponent
+
+INSERT_UPDATE ContentSlotForPage; $contentCV[unique = true]; uid[unique = true]             ; position[unique = true]; page(uid, $contentCV)[unique = true][default = 'homepage']; contentSlot(uid, $contentCV)[unique = true]
+                                ;                          ; LeftHandNavigationSlot-hompage ; LeftHandNavigation     ;                                                           ; LeftHandNavigationSlot
+
+INSERT_UPDATE NavigationComponent; $contentCV[unique = true]; uid[unique = true] ; name       ; styleClass      ; &componentRef      ; navigationNode(&nodeRef)
+                                 ;                          ; MyAccountComponent ; My Account ; accNavComponent ; MyAccountComponent ; MyAccountNavNode
+
+INSERT_UPDATE FooterNavigationComponent; $contentCV[unique = true]; uid[unique = true]        ; wrapAfter; &componentRef             ; showLanguageCurrency; navigationNode(&nodeRef)
+                                       ;                          ; FooterNavigationComponent ; 4        ; FooterNavigationComponent ; true                ; FooterNavNode ;
+
+## headerlinks slot ##
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]; cmsComponents(uid, $contentCV)
+                         ;                          ; HeaderLinksSlot   ; MyAccountComponent
+###### Footer Component Refactor Start ######
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]; cmsComponents(uid, $contentCV)
+                         ;                          ; FooterSlot        ; FooterNavigationComponent,LanguageComponent
+######### quote paragraph component#########
+INSERT_UPDATE ContentPage; $contentCV[unique = true]; uid[unique = true]; name     ; masterTemplate(uid, $contentCV); label; defaultPage[default = 'true']; approvalStatus(code)[default = 'approved']; homepage[default = 'true']
+                         ;                          ; quoteDetailsPage          ; Quote Details page ; QuoteEditPageTemplate           ; quoteDetailsPage
+
+INSERT_UPDATE ContentSlotForPage; $contentCV[unique = true]; uid[unique = true]; position[unique = true]; page(uid, $contentCV)[unique = true][default = 'quoteDetailsPage']; contentSlot(uid, $contentCV)[unique = true]
+                                ;                          ; Section1-quoteDetails ; Section1               ;                                                           ; Section1Slot-quoteDetails
+
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]    ; name                       ; active; cmsComponents(&componentRef)
+                         ;                          ; Section1Slot-quoteDetails ; Section1 Slot for quote page ; true  ; HeadlineQuoteDetailsParagraph
+## components in slot 1 ##
+INSERT_UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; name                                  ; &componentRef             ; ; ; ;
+                                   ;                          ; HeadlineQuoteDetailsParagraph ; Headline Section1 Paragraph Paragraph ; HeadlineQuoteDetailsParagraph ; ; ; ;
+###########################

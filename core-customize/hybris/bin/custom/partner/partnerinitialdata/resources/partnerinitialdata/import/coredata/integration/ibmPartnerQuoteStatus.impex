@@ -1,0 +1,41 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; CPQIbmPartnerQuoteStatus; INBOUND
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code); root[default = false]; itemTypeMatch(code)
+                                   ; CPQIbmPartnerQuoteStatus	; QuoteState        	; QuoteState        	; 	; ALL_SUBTYPES           	;
+                                   ; CPQIbmPartnerQuoteStatus	; eccQuoteStatusType	; eccQuoteStatusType	; 	; ALL_SUBTYPES           	;
+                                   ; CPQIbmPartnerQuoteStatus	; cpqQuoteStatusType	; cpqQuoteStatusType	; 	; ALL_SUBTYPES           	;
+                                   ; CPQIbmPartnerQuoteStatus	; IbmPartnerQuote   	; IbmPartnerQuote   	; true	; ALL_SUB_AND_SUPER_TYPES	;
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; CPQIbmPartnerQuoteStatus:QuoteState        	; code              	; QuoteState:code                   	;                                            	; true	;
+                                            ; CPQIbmPartnerQuoteStatus:eccQuoteStatusType	; code              	; eccQuoteStatusType:code           	;                                            	; true	;
+                                            ; CPQIbmPartnerQuoteStatus:cpqQuoteStatusType	; code              	; cpqQuoteStatusType:code           	;                                            	; true	;
+                                            ; CPQIbmPartnerQuoteStatus:IbmPartnerQuote   	; state             	; IbmPartnerQuote:state             	; CPQIbmPartnerQuoteStatus:QuoteState        	; 	;
+                                            ; CPQIbmPartnerQuoteStatus:IbmPartnerQuote   	; version           	; IbmPartnerQuote:version           	;                                            	; true	;
+                                            ; CPQIbmPartnerQuoteStatus:IbmPartnerQuote   	; code              	; IbmPartnerQuote:code              	;                                            	; true	;
+                                            ; CPQIbmPartnerQuoteStatus:IbmPartnerQuote   	; cpqQuoteStatus    	; IbmPartnerQuote:cpqQuoteStatus    	; CPQIbmPartnerQuoteStatus:cpqQuoteStatusType	; 	;
+                                            ; CPQIbmPartnerQuoteStatus:IbmPartnerQuote   	; date              	; IbmPartnerQuote:date              	;                                            	; 	;
+                                            ; CPQIbmPartnerQuoteStatus:IbmPartnerQuote   	; errorMessage      	; IbmPartnerQuote:errorMessage      	;                                            	; 	;
+                                            ; CPQIbmPartnerQuoteStatus:IbmPartnerQuote   	; cpqExternalQuoteId	; IbmPartnerQuote:cpqExternalQuoteId	;                                            	; 	;
+                                            ; CPQIbmPartnerQuoteStatus:IbmPartnerQuote      ; eccQuoteStatus        ; IbmPartnerQuote:eccQuoteStatus        ; CPQIbmPartnerQuoteStatus:eccQuoteStatusType       ;   ; true
+                                            ; CPQIbmPartnerQuoteStatus:IbmPartnerQuote   	; eccQuoteNumber    	; IbmPartnerQuote:eccQuoteNumber    	;                                            	; 	;
+
+INSERT_UPDATE InboundChannelConfiguration; integrationObject(code)[unique = true]; authenticationType(code);
+                                         ; CPQIbmPartnerQuoteStatus        ; BASIC                   ;
+
+INSERT_UPDATE DestinationTarget;id[unique=true];destinationChannel(code)[default=DEFAULT];template
+                               ;SAPCPQQuoteStatusDestination;;false
+
+
+INSERT_UPDATE Employee;UID[unique=true];groups(uid)[mode=append];loginDisabled;name
+                      ;SapCpiUser;admingroup,integrationadmingroup,integrationservicegroup;false; CPi USer
+
+INSERT_UPDATE Endpoint;id[unique=true];version[unique=true];description;specUrl;specData;name
+;cc-cpqibmpartnerquotestatus-1-metadata;v1;"CPQIbmPartnerQuoteStatus Integration API";{ccv2.services.backoffice.url.0}/odata2webservices/CPQIbmPartnerQuoteStatus;;"CPQIbmPartnerQuoteStatus Integration API"
+
+INSERT_UPDATE BasicCredential;id[unique=true];username;password
+                             ;inboundScpiCredentials;"SapCpiUser";"password"
+
+INSERT_UPDATE ExposedDestination;id[unique=true];url                        ;endpoint(id,version);additionalProperties;destinationTarget(id);active;credential(id)
+                                ;cc-cpqibmpartnerquotestatus-1;"{ccv2.services.backoffice.url.0}/odata2webservices/CPQIbmPartnerQuoteStatus";cc-cpqibmpartnerquotestatus-1-metadata:v1;;SAPCPQQuoteStatusDestination;true;inboundScpiCredentials

@@ -1,0 +1,19 @@
+$facetSearchConfigName = partnerQuoteIndex
+$facetSearchConfigDescription = Partner Quote Solr Index
+$searchIndexNamePrefix = partnerQuote
+$solrIndexedType = partnerQuoteType
+$indexLanguages = en
+$indexCurrencies = USD
+$catalogVersions = catalogVersions(catalog(id), version);
+$productCatalog = partnerProductCatalog
+
+# Insert or update the Solr facet search configuration for managing query facets and filters
+INSERT_UPDATE SolrFacetSearchConfig; name[unique = true]    ; description                   ; indexNamePrefix        ; languages(isocode); currencies(isocode); solrServerConfig(name); solrSearchConfig(description); solrIndexConfig(name); solrIndexedTypes(identifier); enabledLanguageFallbackMechanism; $catalogVersions
+                                   ; $facetSearchConfigName ; $facetSearchConfigDescription ; $searchIndexNamePrefix ; $indexLanguages   ; $indexCurrencies   ; Default               ; Default                      ; Default              ; $solrIndexedType            ; true                            ; $productCatalog:Online,$productCatalog:Staged
+
+# Insert or update indexed properties for the Solr indexed type, defining which fields to index
+INSERT_UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; type(code); sortableType(code); currency[default = false]; localized[default = false]; multiValue[default = false]; useForSpellchecking[default = false]; useForAutocomplete[default = false]; fieldValueProvider    ; valueProviderParameter; ftsPhraseQuery[default = false]; ftsQuery[default = false]; ftsWildcardQuery[default = false]; ftsWildcardQueryType(code)[default = POSTFIX]; facet; visible[default = true]; displayName[lang = $indexLanguages]
+                                 ; $solrIndexedType                          ; currencyCode           ; string    ;                   ;                          ;                           ;                            ;                                     ;                                    ; springELValueProvider ; Currency.isocode         ;                                ;                          ;                                  ;                                              ;      ;                        ;
+
+
+

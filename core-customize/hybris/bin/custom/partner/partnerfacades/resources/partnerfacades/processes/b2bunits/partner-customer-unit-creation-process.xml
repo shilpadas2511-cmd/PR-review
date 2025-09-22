@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<process xmlns="http://www.hybris.de/xsd/processdefinition"
+  start="fetchPartnerResellerAccountDetailsAction" name="partner-customer-unit-creation-process"
+  processClass="com.ibm.commerce.partner.core.model.PartnerStoreFrontCustomerProcessModel">
+    <action id="fetchPartnerResellerAccountDetailsAction"
+      bean="fetchPartnerResellerAccountDetailsAction">
+        <transition name="OK" to="waitProcess"/>
+        <transition name="NOK" to="error"/>
+        <transition name="NORESELLERSFOUND" to="NORESELLERSFOUND"/>
+    </action>
+    <wait id="waitProcess" then="checkAllSubProcessCompletionAction" prependProcessCode="false">
+        <event>${process.code}_RESELLER_SUBPROCESS_COMPLETED_EVENT</event>
+    </wait>
+    <action id="checkAllSubProcessCompletionAction"
+      bean="checkAllSubProcessCompletionAction">
+        <transition name="OK" to="persistAllSiteIdToCustomerDetailsAction"/>
+        <transition name="NOK" to="waitProcess"/>
+    </action>
+    <action id="persistAllSiteIdToCustomerDetailsAction"
+      bean="persistAllSiteIdToCustomerDetailsAction">
+        <transition name="OK" to="success"/>
+        <transition name="NOK" to="error"/>
+    </action>
+    <end id="success" state="SUCCEEDED">Created B2BUnits Successfully.</end>
+    <end id="error" state="ERROR">Create B2BUnits failed.</end>
+    <end id="NORESELLERSFOUND" state="SUCCEEDED">NO RESELLERS FOUND.</end>
+</process>

@@ -1,0 +1,11 @@
+#Ant properties
+#Tue Oct 03 01:21:10 CEST 2023
+version.api=2211
+vendor=hybris
+group.id=de.hybris.platform
+name=commonfacades
+description=commonfacades
+builddate=20231003 0115
+releasedate=20230912 1914
+version=2211.13
+module.name=platform-module

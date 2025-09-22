@@ -1,0 +1,17 @@
+UPDATE Country[batchmode = true]; isocode[unique = true]; active[default = false]
+                                ; GG
+                                ; CC
+                                ; CG
+                                ; CU
+                                ; GS
+                                ; CX
+                                ; HM
+                                ; IR
+                                ; KP
+                                ; NR
+                                ; NU
+                                ; SH
+                                ; SY
+                                ; TL
+                                ; TF
+                                ; AQ

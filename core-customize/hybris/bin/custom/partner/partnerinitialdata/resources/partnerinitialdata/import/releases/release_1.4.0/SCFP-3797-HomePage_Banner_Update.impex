@@ -1,0 +1,7 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$mediaContainer = media(qualifier, $contentCV);
+
+
+INSERT_UPDATE SimpleResponsiveBannerComponent; $contentCV[unique = true]; uid[unique = true]             ; $mediaContainer             ; name                               ; urlLink; &componentRef
+                                             ;                          ; HompageSection3BannerComponent ; homepage-section3-banner-en ; Komatsu implements AI-powered automation in the public cloud ;        ; HompageSection3BannerComponent

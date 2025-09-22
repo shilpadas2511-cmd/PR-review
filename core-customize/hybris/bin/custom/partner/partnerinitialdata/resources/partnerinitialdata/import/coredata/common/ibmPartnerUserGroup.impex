@@ -1,0 +1,4 @@
+INSERT_UPDATE SellerAudienceMask; code[unique = true];
+                                ; "RES"
+INSERT_UPDATE IbmPartnerSellerAudienceUserGroup; UID[unique = true]; sellerAudienceType(code)[default = 'RES']
+                                               ; RES               ;

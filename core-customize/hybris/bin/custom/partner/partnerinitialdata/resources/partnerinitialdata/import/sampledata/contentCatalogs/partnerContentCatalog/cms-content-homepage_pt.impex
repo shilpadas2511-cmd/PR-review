@@ -1,0 +1,6 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+
+$lang = pt
+
+# This file we will use in future for localization of homepage

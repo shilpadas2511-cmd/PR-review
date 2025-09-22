@@ -1,0 +1,17 @@
+
+$Content-Type = Content-Type->application/json
+INSERT DestinationTarget; id[unique = true]  ; registrationStatus; destinationChannel(code)
+                        ; provisionFormService ;                   ; PROVISIONFORMSERVICE
+
+INSERT Endpoint; id[unique = true] ; version[unique = true]; name              ; specUrl
+               ; provisionForm ; 1                     ; provisionForm ; provisionForm
+
+
+INSERT PartnerQuoteProvisionFormConsumedOAuthCredential; id[unique = true]           ; clientId; clientSecret; userId; oAuthUrl
+                                                       ; PartnerProvisionFormCredential ; ekIFgj4leTz3bd+z4v4IYw==     ; Aib7Rlw/S6T3hiA/cwfVediReang3x0dwoBMYmymuFA=        ; internalpartnercommerce@ibm.com   ;  https://authentication-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/tokens/generate-jwt
+
+
+INSERT IbmConsumedDestination; id[unique = true]        ; customUri                                                                               ; endpoint(id, version); credential(id)              ; destinationTarget(id); active[default = true];additionalProperties(key, value)[map-delimiter = |];url;
+                             ; provisionFormCreateCartService ;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/cart ; provisionForm:1  ; PartnerProvisionFormCredential ; provisionFormService;;$Content-Type;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/cart;
+                             ; provisionFormFetchUserService;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/{formId} ; provisionForm:1  ; PartnerProvisionFormCredential ; provisionFormService;;$Content-Type;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms;
+                             ; provisionFormPatchService;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/cart/{cartId} ; provisionForm:1  ; PartnerProvisionFormCredential ; provisionFormService;;$Content-Type;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/cart;

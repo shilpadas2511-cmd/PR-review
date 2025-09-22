@@ -1,0 +1,10 @@
+$solrIndexedType = partnerProductType
+UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; facet[default = true]
+                          ; $solrIndexedType                          ; deploymentType     ; false
+                          ; $solrIndexedType                          ; deploymentTypeName ; true
+
+INSERT_UPDATE SolrSearchQueryProperty; indexedProperty(name, solrIndexedType(identifier))[unique = true]; facet[default = true]; facetType(code); priority; facetDisplayNameProvider                 ; facetSortProvider; facetTopValuesProvider; includeInResponse[default = true]; searchQueryTemplate(name, indexedType(identifier))[unique = true][default = DEFAULT:$solrIndexedType]
+                              ; deploymentTypeName:$solrIndexedType                              ; true                 ; MultiSelectOr         ; 6000    ; productDeploymentTypeDisplayNameResolver ;                  ;                       ;                                  ;
+
+UPDATE SolrSearchQueryProperty; indexedProperty(name, solrIndexedType(identifier))[unique = true]; facet[default = true]
+                              ; deploymentType:$solrIndexedType                                  ; false

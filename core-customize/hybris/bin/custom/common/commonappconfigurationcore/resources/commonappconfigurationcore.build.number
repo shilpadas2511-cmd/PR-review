@@ -1,0 +1,11 @@
+#Ant properties
+#Mon Aug 05 10:04:55 CEST 2024
+version.api=2211
+vendor=hybris
+group.id=de.hybris.platform
+name=commonappconfigurationcore
+description=commonappconfigurationcore
+builddate=20240805 1004
+releasedate=20240611 1044
+version=2211.27
+module.name=platform-module

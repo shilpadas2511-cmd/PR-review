@@ -1,0 +1,5 @@
+UPDATE IbmDeploymentType; code[unique = true]; sapCode
+                        ; SaaS               ; SAAS
+                        ; BeSpoke            ; SAAS
+INSERT_UPDATE IbmDeploymentType; code[unique = true]; sapCode
+                               ; Bespoke-MultiPid   ; SAAS

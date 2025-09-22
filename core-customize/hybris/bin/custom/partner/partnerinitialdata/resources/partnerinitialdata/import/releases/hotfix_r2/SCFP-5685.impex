@@ -1,0 +1,6 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+
+REMOVE CMSNavigationNode;uid[unique = true];$contentCV[unique = true]
+                        ;PartnerSupportNavNode;
+

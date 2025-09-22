@@ -1,0 +1,1571 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="beans.xsd">
+
+    <!-- FilterQueryOperator -->
+    <bean class="de.hybris.platform.commerceservices.search.facetdata.FacetValueData&lt;STATE>">
+        <description>POJO representing a facet value.</description>
+        <property name="childValues"
+          type="java.util.List&lt;de.hybris.platform.commerceservices.search.facetdata.FacetValueData&lt;STATE>>"/>
+    </bean>
+
+
+    <bean class="de.hybris.platform.commerceservices.service.data.CommerceCheckoutParameter">
+        <property name="opportunity"
+          type="com.ibm.commerce.partner.core.model.IbmPartnerOpportunityModel"/>
+        <property name="soldThroughUnit"
+          type="de.hybris.platform.b2b.model.B2BUnitModel"/>
+        <property name="billToUnit"
+          type="de.hybris.platform.b2b.model.B2BUnitModel"/>
+        <property name="shipToUnit"
+          type="de.hybris.platform.b2b.model.B2BUnitModel"/>
+        <property name="agreementDetail"
+          type="com.ibm.commerce.partner.core.model.IbmPartnerAgreementDetailModel"/>
+        <property name="quoteExpirationDate" type="java.lang.String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.order.IbmEntryGroup"
+      extends="de.hybris.platform.core.order.EntryGroup">
+    </bean>
+    <bean class="com.ibm.commerce.partner.core.order.IbmCategoryEntryGroup"
+      extends="com.ibm.commerce.partner.core.order.IbmEntryGroup">
+    </bean>
+    <bean class="com.ibm.commerce.partner.core.order.IbmPidEntryGroup"
+      extends="com.ibm.commerce.partner.core.order.IbmEntryGroup">
+        <property name="configurationId" type="java.lang.String"/>
+        <property name="deploymentTypeCode" type="java.lang.String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.order.IbmConfigIdEntryGroup"
+      extends="com.ibm.commerce.partner.core.order.IbmEntryGroup">
+    </bean>
+
+    <bean class="de.hybris.platform.commerceservices.service.data.CommerceCartParameter">
+        <property name="configurationInfos"
+          type="java.util.List&lt;de.hybris.platform.commercefacades.order.data.ConfigurationInfoData>"/>
+        <property name="partProduct" type="boolean"/>
+        <property name="pidId" type="String"/>
+        <property name="errorDetails" type="com.ibm.commerce.partner.error.ErrorDetailsData"/>
+        <property name="entryStatus" type="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="commerceRampUpData" type="com.ibm.commerce.partner.data.order.entry.CommerceRampUpData"/>
+        <property name="oldConfigId" type="String"/>
+        <property name="configuratorPid" type="de.hybris.platform.core.model.product.ProductModel">
+            <description>Pid id used to trigger CPQ Product Configuration. This will be different from pid id in case of MultiPid </description>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.data.IbmBaseRequestData" abstract="true">
+        <description>Marker Interface</description>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.data.IbmBaseResponseData" abstract="true">
+        <description>Marker Interface</description>
+        <import type="com.fasterxml.jackson.annotation.JsonIgnoreProperties"/>
+        <annotations>@JsonIgnoreProperties(ignoreUnknown = true)</annotations>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.order.price.data.request.EntitledPriceLookUpRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="header"
+          type="com.ibm.commerce.partner.core.order.price.data.request.PriceLookUpHeaderRequestData">
+            <annotations>@JsonProperty("header")</annotations>
+        </property>
+        <property name="items"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.order.price.data.request.EntitledPriceLookUpItemRequestData>">
+            <annotations>@JsonProperty("items")</annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.order.price.data.request.FullPriceLookUpRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="header"
+          type="com.ibm.commerce.partner.core.order.price.data.request.PriceLookUpHeaderRequestData">
+            <annotations>@JsonProperty("header")</annotations>
+        </property>
+        <property name="items"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.order.price.data.request.FullPriceLookUpItemRequestData>">
+            <annotations>@JsonProperty("items")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.order.price.data.request.PriceLookUpHeaderRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="lob" type="java.lang.String">
+            <annotations>@JsonProperty("LOB")</annotations>
+        </property>
+        <property name="country" type="java.lang.String">
+            <annotations>@JsonProperty("Country")</annotations>
+        </property>
+        <property name="currency" type="java.lang.String">
+            <annotations>@JsonProperty("Currency")</annotations>
+        </property>
+        <property name="salesOrg" type="java.lang.String">
+            <annotations>@JsonProperty("SalesOrg")</annotations>
+        </property>
+        <property name="soldToSite" type="java.lang.String">
+            <annotations>@JsonProperty("SoldToSite")</annotations>
+        </property>
+        <property name="payerSite" type="java.lang.String">
+            <annotations>@JsonProperty("PayerSite")</annotations>
+        </property>
+        <property name="resellerSite" type="java.lang.String">
+            <annotations>@JsonProperty("ResellerSite")</annotations>
+        </property>
+        <property name="distChannel" type="java.lang.String">
+            <annotations>@JsonProperty("DistChannel")</annotations>
+        </property>
+        <property name="docCategory" type="java.lang.String">
+            <annotations>@JsonProperty("DocCategory")</annotations>
+        </property>
+        <property name="entitledPriceOnly" type="java.lang.boolean">
+            <annotations>@JsonProperty("EntitledPriceOnly")</annotations>
+        </property>
+        <property name="ibmCustomerNumber" type="java.lang.String">
+            <annotations>@JsonProperty("IBMCustomerNumber")</annotations>
+        </property>
+        <property name="quoteId" type="java.lang.String">
+            <annotations>@JsonProperty("QuoteNumber")</annotations>
+        </property>
+        <property name="agreementNumber" type="java.lang.String">
+            <annotations>@JsonProperty("AgreementNumber")</annotations>
+        </property>
+        <property name="overrideTotalDiscount" type="java.lang.String">
+            <annotations>@JsonProperty("OverrideTotalDiscount")</annotations>
+        </property>
+        <property name="overrideTotalPrice" type="java.lang.String">
+            <annotations>@JsonProperty("OverrideTotalPrice")</annotations>
+        </property>
+        <property name="initialTotalExtendedPrice" type="java.lang.String">
+            <annotations>@JsonProperty("InitialTotalExtendedPrice")</annotations>
+        </property>
+
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.core.order.price.data.request.CommonPriceLookUpItemsRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="productType" type="java.lang.String">
+            <annotations>@JsonProperty("ProductType")</annotations>
+        </property>
+        <property name="itemNumber" type="java.lang.Integer">
+            <annotations>@JsonProperty("ItemNumber")</annotations>
+        </property>
+        <property name="partNumber" type="java.lang.String">
+            <annotations>@JsonProperty("PartNumber")</annotations>
+        </property>
+        <property name="quantity" type="java.lang.String">
+            <annotations>@JsonProperty("Quantity")</annotations>
+        </property>
+        <property name="materialType" type="java.lang.String">
+            <annotations>@JsonProperty("MaterialType")</annotations>
+        </property>
+        <property name="revenueStreamCode" type="java.lang.String">
+            <annotations>@JsonProperty("RevenueStreamCode")</annotations>
+        </property>
+        <property name="startDate" type="java.lang.String">
+            <annotations>@JsonProperty("StartDate")</annotations>
+        </property>
+        <property name="endDate" type="java.lang.String">
+            <annotations>@JsonProperty("EndDate")</annotations>
+        </property>
+        <property name="pid" type="java.lang.String">
+            <annotations>@JsonProperty("PID")</annotations>
+        </property>
+        <property name="configurationId" type="java.lang.String">
+            <annotations>@JsonProperty("ConfigurationId")</annotations>
+        </property>
+        <property name="hasDealReg" type="java.lang.String">
+            <annotations>@JsonProperty("HasDealReg")</annotations>
+        </property>
+        <property name="isStandalone" type="java.lang.String">
+            <annotations>@JsonProperty("IsStandalone")</annotations>
+        </property>
+        <property name="relatedItemNumber" type="java.lang.String">
+            <annotations>@JsonProperty("RelatedItemNumber")</annotations>
+        </property>
+        <property name="term" type="Integer">
+            <annotations>@JsonProperty("Term")</annotations>
+        </property>
+        <property name="billingFrequency" type="String">
+            <annotations>@JsonProperty("BillingFrequency")</annotations>
+        </property>
+        <property name="saFlag" type="java.lang.Boolean">
+            <annotations>@JsonProperty("SAFlag")</annotations>
+        </property>
+        <property name="disablePID" type="java.lang.Boolean">
+            <annotations>@JsonProperty("DisablePID")</annotations>
+        </property>
+        <property name="disableBM" type="java.lang.Boolean">
+            <annotations>@JsonProperty("DisableBM")</annotations>
+        </property>
+        <property name="rampUpFlag" type="java.lang.String">
+            <annotations>@JsonProperty("RampUpFlag")</annotations>
+        </property>
+        <property name="specialBidOverage" type="Double">
+            <annotations>@JsonProperty("SpecialBidOverage")</annotations>
+        </property>
+        <property name="futurePriceType" type="String">
+            <annotations>@JsonProperty("FuturePriceType")</annotations>
+        </property>
+        <property name="renewalModel" type="String">
+            <annotations>@JsonProperty("RenewalModel")</annotations>
+        </property>
+        <property name="totalTerm" type="String">
+            <annotations>@JsonProperty("TotalTerm")</annotations>
+        </property>
+        <property name="referenceItem" type="String">
+            <annotations>@JsonProperty("ReferenceItem")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.order.price.data.request.EntitledPriceLookUpItemRequestData"
+      extends="com.ibm.commerce.partner.core.order.price.data.request.CommonPriceLookUpItemsRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.order.price.data.request.FullPriceLookUpItemRequestData"
+      extends="com.ibm.commerce.partner.core.order.price.data.request.CommonPriceLookUpItemsRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="overrideDiscount" type="java.lang.String">
+            <annotations>@JsonProperty("OverrideDiscount")</annotations>
+        </property>
+        <property name="overridePrice" type="java.lang.String">
+            <annotations>@JsonProperty("OverridePrice")</annotations>
+        </property>
+        <property name="overrideYearToYearGrowth" type="java.lang.String">
+            <annotations>@JsonProperty("OverrideYearToYearGrowth")</annotations>
+        </property>
+        <property name="overrideObsoletePrice" type="java.lang.String">
+            <annotations>@JsonProperty("OverrideObsoletePrice")</annotations>
+        </property>
+    </bean>
+
+
+    <bean class="com.ibm.commerce.partner.core.order.price.data.request.DealRegRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="isCreditRebillQuote" type="java.lang.Boolean">
+            <annotations>@JsonProperty("isCreditRebillQuote")</annotations>
+        </property>
+        <property name="customerICN" type="java.lang.String">
+            <annotations>@JsonProperty("customerICN")</annotations>
+        </property>
+        <property name="quoteCountry" type="java.lang.String">
+            <annotations>@JsonProperty("quoteCountry")</annotations>
+        </property>
+        <property name="fulfillmentSrc" type="java.lang.String">
+            <annotations>@JsonProperty("fulfillmentSrc")</annotations>
+        </property>
+        <property name="parts"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.order.price.data.request.DealRegPartRequestData>">
+            <annotations>@JsonProperty("parts")</annotations>
+        </property>
+        <property name="cpqQuoteNum" type="java.lang.String">
+            <annotations>@JsonProperty("cpqQuoteNum")</annotations>
+        </property>
+        <property name="resellerCEID" type="java.lang.String">
+            <annotations>@JsonProperty("resellerCEID")</annotations>
+        </property>
+        <property name="sapDistributionChannel" type="java.lang.String">
+            <annotations>@JsonProperty("sapDistributionChannel")</annotations>
+        </property>
+        <property name="customerDCID" type="java.lang.String">
+            <annotations>@JsonProperty("customerDCID")</annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.order.price.data.request.DealRegPartRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="partNumber" type="java.lang.String">
+            <annotations>@JsonProperty("partNum")</annotations>
+        </property>
+        <property name="isSlRenewalPart" type="java.lang.Boolean">
+            <annotations>@JsonProperty("isSlRenewalPart")</annotations>
+        </property>
+        <property name="isSaasRenewalPart" type="java.lang.Boolean">
+            <annotations>@JsonProperty("isSaasRenewalPart")</annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.order.price.data.response.PriceLookUpResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="header"
+          type="com.ibm.commerce.partner.core.order.price.data.response.PriceLookUpHeaderResponseData">
+            <annotations>@JsonProperty("header")</annotations>
+        </property>
+        <property name="configurations"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.order.price.data.response.PriceLookUpConfigurationsResponseData>">
+            <annotations>@JsonProperty("configurations")</annotations>
+        </property>
+        <property name="type" type="com.ibm.commerce.partner.core.enums.CpqPricingTypeEnum">
+        </property>
+
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.order.price.data.response.PriceLookUpHeaderResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="country" type="java.lang.String">
+            <annotations>@JsonProperty("Country")</annotations>
+        </property>
+        <property name="currency" type="java.lang.String">
+            <annotations>@JsonProperty("Currency")</annotations>
+        </property>
+        <property name="totalExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalExtendedPrice")</annotations>
+        </property>
+        <property name="totalBidExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalBidExtendedPrice")</annotations>
+        </property>
+        <property name="totalBpExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalBpExtendedPrice")</annotations>
+        </property>
+        <property name="totalChannelMargin" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalChannelMargin")</annotations>
+        </property>
+        <property name="totalYTY" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalYTY")</annotations>
+        </property>
+        <property name="totalDiscount" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalDiscount")</annotations>
+        </property>
+        <property name="totalMEPPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalMEPPrice")</annotations>
+        </property>
+        <property name="totalOptimalPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalOptimalPrice")</annotations>
+        </property>
+        <property name="transactionPriceLevel" type="java.lang.String">
+            <annotations>@JsonProperty("TransactionPriceLevel")</annotations>
+        </property>
+        <property name="totalUSDExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalUSDExtendedPrice")</annotations>
+        </property>
+        <property name="totalUSDBidExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalUSDBidExtendedPrice")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.order.price.data.response.PriceLookUpConfigurationsResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="pid" type="java.lang.String">
+            <annotations>@JsonProperty("PID")</annotations>
+        </property>
+        <property name="configurationId" type="java.lang.String">
+            <annotations>@JsonProperty("ConfigurationId")</annotations>
+        </property>
+        <property name="totalExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalExtendedPrice")</annotations>
+        </property>
+        <property name="totalBidExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalBidExtendedPrice")</annotations>
+        </property>
+        <property name="totalBpExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalBpExtendedPrice")</annotations>
+        </property>
+        <property name="items"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.order.price.data.response.PriceLookUpItemsResponseData>">
+            <annotations>@JsonProperty("Items")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.order.price.data.response.PriceLookUpItemsResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="itemNumber" type="java.lang.Integer">
+            <annotations>@JsonProperty("ItemNumber")</annotations>
+        </property>
+        <property name="partNumber" type="java.lang.String">
+            <annotations>@JsonProperty("PartNumber")</annotations>
+        </property>
+        <property name="initialPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("InitialPrice")</annotations>
+        </property>
+        <property name="extendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("ExtendedPrice")</annotations>
+        </property>
+        <property name="extendedUnitPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("ExtendedUnitPrice")</annotations>
+        </property>
+        <property name="taxAmount" type="java.lang.Double">
+            <annotations>@JsonProperty("TaxAmount")</annotations>
+        </property>
+        <property name="totalItemPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("TotalItemPrice")</annotations>
+        </property>
+        <property name="bidInitialPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("BidInitialPrice")</annotations>
+        </property>
+        <property name="bidExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("BidExtendedPrice")</annotations>
+        </property>
+        <property name="bPInitialPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("BPInitialPrice")</annotations>
+        </property>
+        <property name="bPExtendedPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("BPExtendedPrice")</annotations>
+        </property>
+        <property name="stdPartnerDiscount" type="java.lang.Double">
+            <annotations>@JsonProperty("StdPartnerDiscount")</annotations>
+        </property>
+        <property name="actualPartnerDiscount" type="java.lang.Double">
+            <annotations>@JsonProperty("ActualPartnerDiscount")</annotations>
+        </property>
+        <property name="tcvAmount" type="java.lang.Double">
+            <annotations>@JsonProperty("TCVAmount")</annotations>
+        </property>
+        <property name="priorYearSS" type="java.lang.Double">
+            <annotations>@JsonProperty("PriorYearSS")</annotations>
+        </property>
+        <property name="ytyPercentage" type="java.lang.Double">
+            <annotations>@JsonProperty("YTYPercentage")</annotations>
+        </property>
+        <property name="defaultYTYPercentage" type="java.lang.Double">
+            <annotations>@JsonProperty("DefaultYTYPercentage")</annotations>
+        </property>
+        <property name="optimalPrice" type="java.lang.Double">
+            <annotations>@JsonProperty("OptimalPrice")</annotations>
+        </property>
+        <property name="optimalDiscount" type="java.lang.Double">
+            <annotations>@JsonProperty("OptimalDiscount")</annotations>
+        </property>
+        <property name="discountPercentage" type="java.lang.Double">
+            <annotations>@JsonProperty("DiscountPercentage")</annotations>
+        </property>
+        <property name="discountReason" type="java.lang.String">
+            <annotations>@JsonProperty("DiscountReason")</annotations>
+        </property>
+        <property name="pricingStrategy" type="java.lang.String">
+            <annotations>@JsonProperty("PricingStrategy")</annotations>
+        </property>
+        <property name="eccRequest" type="java.lang.String">
+            <annotations>@JsonProperty("ECC_REQUEST")</annotations>
+        </property>
+        <property name="eccOverrideFields" type="java.lang.String">
+            <annotations>@JsonProperty("ECC_OVERRIDDEN_FIELDS")</annotations>
+        </property>
+        <property name="errorCode" type="java.lang.String">
+            <annotations>@JsonProperty("ErrorCode")</annotations>
+        </property>
+        <property name="errorMessage" type="String">
+            <annotations>@JsonProperty("ErrorMessage")</annotations>
+        </property>
+        <property name="pid" type="Double">
+            <annotations>@JsonProperty("PID")</annotations>
+        </property>
+        <property name="pidMonths" type="Integer">
+            <annotations>@JsonProperty("PIDMonths")</annotations>
+        </property>
+        <property name="defaultPid" type="Double">
+            <annotations>@JsonProperty("DefaultPID")</annotations>
+        </property>
+        <property name="defaultPidMonths" type="Integer">
+            <annotations>@JsonProperty("DefaultPIDMonths")</annotations>
+        </property>
+        <property name="defaultRenewalPid" type="Double">
+            <annotations>@JsonProperty("DefaultRenewalPID")</annotations>
+        </property>
+        <property name="defaultRenewalPidMonths" type="Integer">
+            <annotations>@JsonProperty("DefaultRenewalPIDMonths")</annotations>
+        </property>
+        <property name="valueSellerPrice" type="Double">
+            <annotations>@JsonProperty("ValueSellerPrice")</annotations>
+        </property>
+        <property name="valueSellerDiscount" type="Double">
+            <annotations>@JsonProperty("ValueSellerDiscount")</annotations>
+        </property>
+        <property name="billingRateTable" type="java.lang.String">
+            <annotations>@JsonProperty("BillingRateTable")</annotations>
+        </property>
+        <property name="usdMEPPrice" type="Double">
+            <annotations>@JsonProperty("USDMEPPrice")</annotations>
+        </property>
+        <property name="usdExtendedPrice" type="Double">
+            <annotations>@JsonProperty("USDExtendedPrice")</annotations>
+        </property>
+        <property name="usdBidExtendedPrice" type="Double">
+            <annotations>@JsonProperty("USDBidExtendedPrice")</annotations>
+        </property>
+        <property name="mepPrice" type="Double">
+            <annotations>@JsonProperty("MEPPrice")</annotations>
+        </property>
+        <property name="renewalPID" type="Double">
+            <annotations>@JsonProperty("RenewalPID")</annotations>
+        </property>
+        <property name="specialBidOverage" type="Double">
+            <annotations>@JsonProperty("SpecialBidOverage")</annotations>
+        </property>
+        <property name="renewalPIDMonths" type="java.lang.Integer">
+            <annotations>@JsonProperty("RenewalPIDMonths")</annotations>
+        </property>
+        <property name="overage" type="Double">
+            <annotations>@JsonProperty("Overage")</annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.order.price.data.response.DealRegResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="dealRegFlag" type="java.lang.String">
+            <annotations>@JsonProperty("dealRegFlag")</annotations>
+        </property>
+        <property name="dealRegId" type="java.lang.String">
+            <annotations>@JsonProperty("dealRegId")</annotations>
+        </property>
+        <property name="dealRegGrp" type="java.lang.String">
+            <annotations>@JsonProperty("dealRegGrp")</annotations>
+        </property>
+        <property name="endDate" type="java.lang.String">
+            <annotations>@JsonProperty("endDate")</annotations>
+        </property>
+        <property name="partNum" type="java.lang.String">
+            <annotations>@JsonProperty("partNum")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.company.data.response.PartnerSiteIdResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <property name="accountId" type="java.lang.String">
+            <annotations>@JsonProperty("accountId")</annotations>
+        </property>
+        <property name="sapSiteNumber" type="java.lang.String">
+            <annotations>@JsonProperty("sapSiteNumber")</annotations>
+        </property>
+        <property name="ibmCustomerNumber" type="java.lang.String">
+            <annotations>@JsonProperty("ibmCustomerNumber")</annotations>
+        </property>
+        <property name="ceid" type="java.lang.String">
+            <annotations>@JsonProperty("ceid")</annotations>
+        </property>
+        <property name="customerInfo"
+          type="com.ibm.commerce.partner.core.company.data.response.PartnerSiteCustomerInfoResponseData">
+            <annotations>@JsonProperty("customerInfo")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.company.distributor.data.response.PartnerDistributorSiteIdResponseData"
+      extends="com.ibm.commerce.partner.core.company.data.response.PartnerSiteIdResponseData">
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.core.company.reseller.data.response.PartnerResellerSiteIdResponseData"
+      extends="com.ibm.commerce.partner.core.company.data.response.PartnerSiteIdResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <property name="distIbmCustomerNumber" type="java.lang.String">
+            <annotations>@JsonProperty("distIBMCustomerNumber")</annotations>
+        </property>
+        <property name="distNumber" type="java.lang.String">
+            <annotations>@JsonProperty("distNumber")</annotations>
+        </property>
+        <property name="tierInfo"
+          type="com.ibm.commerce.partner.core.company.reseller.data.response.PartnerResellerSiteCustomerTierInfoResponseData">
+            <annotations>@JsonProperty("tiers")</annotations>
+        </property>
+        <property name="partnerInternalDistributorResponse"
+          type="com.ibm.commerce.partner.core.company.distributor.data.response.PartnerDistributorSiteIdResponseData">
+            <description>NOT FOR EXTERNAL USE</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.company.reseller.data.response.PartnerResellerSiteCustomerTierInfoResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <property name="tier1" type="boolean">
+            <annotations>@JsonProperty("tier1")</annotations>
+        </property>
+        <property name="tier2" type="boolean">
+            <annotations>@JsonProperty("tier2")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.company.data.response.PartnerSiteCustomerInfoResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <property name="currency" type="java.lang.String">
+            <annotations>@JsonProperty("currency")</annotations>
+        </property>
+        <property name="accountName" type="java.lang.String">
+            <annotations>@JsonProperty("accountName")</annotations>
+        </property>
+        <property name="address"
+          type="com.ibm.commerce.partner.core.company.data.response.PartnerSiteCustomerAddressInfoResponseData">
+            <annotations>@JsonProperty("address")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.company.data.response.PartnerSiteCustomerAddressInfoResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <property name="addressLine1" type="java.lang.String">
+            <annotations>@JsonProperty("addressLine1")</annotations>
+        </property>
+        <property name="addressLine2" type="java.lang.String">
+            <annotations>@JsonProperty("addressLine2")</annotations>
+        </property>
+        <property name="city" type="java.lang.String">
+            <annotations>@JsonProperty("city")</annotations>
+        </property>
+        <property name="countryCode" type="java.lang.String">
+            <annotations>@JsonProperty("countryCode")</annotations>
+        </property>
+        <property name="postalCode" type="java.lang.String">
+            <annotations>@JsonProperty("postalCode")</annotations>
+        </property>
+        <property name="regionCode" type="java.lang.String">
+            <annotations>@JsonProperty("regionCode")</annotations>
+        </property>
+        <property name="regionDesc" type="java.lang.String">
+            <annotations>@JsonProperty("regionDesc")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqQuotesRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundQuotes")
+        </annotations>
+        <property name="quotes"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqQuoteRequestData>">
+            <annotations scope="getter">@XmlElement(name = "SAPCPQOutboundQuote")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqQuoteRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundQuote")
+
+        </annotations>
+        <property name="quoteNumber" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "quoteNumber")</annotations>
+        </property>
+        <property name="specialBid"
+          type="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqSpecialBidReasonRequestData">
+            <annotations scope="getter">
+                @XmlElement(name = "specialBidReason")
+            </annotations>
+        </property>
+        <property name="customFields"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqQuoteCustomFieldRequestData>">
+            <annotations scope="getter">@XmlElementWrapper(name = "sapCPQOutboundQuoteCustomFields")
+                @XmlElement(name = "SAPCPQOutboundQuoteCustomField")
+            </annotations>
+        </property>
+        <property name="involveParties"
+          type="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqInvolvePartiesRequestData">
+            <annotations scope="getter">
+                @XmlElement(name = "sapCPQOutboundInvolveParties")
+            </annotations>
+        </property>
+        <property name="products"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqProductRequestData>">
+            <annotations scope="getter">
+                @XmlElementWrapper(name = "sapCPQOutboundProducts")
+                @XmlElement(name = "SAPCPQOutboundProduct")
+            </annotations>
+        </property>
+        <property name="prices"
+          type="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqPricesRequestData">
+            <annotations scope="getter">
+                @XmlElement(name = "sapCPQOutboundPrices")
+            </annotations>
+        </property>
+        <property name="bretIndicator" type="boolean">
+            <annotations scope="getter">@XmlElement(name = "bretIndicator")</annotations>
+        </property>
+        <property name="goeQuestions"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqGOEQuestionsRequestData>">
+            <annotations scope="getter">
+                @XmlElementWrapper(name = "goeQuestions")
+                @XmlElement(name = "goeQuestion")
+            </annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqQuoteCustomFieldRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundQuoteCustomField")
+        </annotations>
+        <property name="content" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "Content")</annotations>
+        </property>
+        <property name="name" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "Name")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqSpecialBidReasonRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundQuoteSpecialBidField")
+        </annotations>
+        <property name="code" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "code")</annotations>
+        </property>
+        <property name="name" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "name")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqInvolvePartiesRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SapCPQOutboundInvolveParties")
+
+        </annotations>
+        <property name="customerId" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "customerId")</annotations>
+        </property>
+        <property name="programType" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "programType")</annotations>
+        </property>
+        <property name="agreementOption" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "agreementOption")</annotations>
+        </property>
+        <property name="resellerId" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "resellerID")</annotations>
+        </property>
+        <property name="distributorId" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "distributorId")</annotations>
+        </property>
+        <property name="agreementNumber" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "agreementNumber")</annotations>
+        </property>
+        <property name="goeCustomer" type="boolean">
+            <annotations scope="getter">@XmlElement(name = "goeCustomer")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqProductRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundProduct")
+
+        </annotations>
+        <property name="endDate" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "endDate")</annotations>
+        </property>
+        <property name="configuratorId" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "parentProductSystemId")</annotations>
+        </property>
+        <property name="partNumber" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "partNumber")</annotations>
+        </property>
+        <property name="quantity" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "quantity")</annotations>
+        </property>
+        <property name="rolledUpItemNumber" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "rolledUpItemNumber")</annotations>
+        </property>
+        <property name="startDate" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "startDate")</annotations>
+        </property>
+        <property name="transactionType" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "transactionType")</annotations>
+        </property>
+        <property name="configurationId" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "configurationId")</annotations>
+        </property>
+        <property name="startDateChanged" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "startDateChange")</annotations>
+        </property>
+        <property name="endDateChanged" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "endDateChange")</annotations>
+        </property>
+        <property name="backDatedStartDate" type="java.lang.String">
+        <annotations scope="getter">@XmlElement(name = "backDateChange")</annotations>
+    </property>
+
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqPricesRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundPrices")
+
+        </annotations>
+        <property name="price"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqPriceDetailRequestData>">
+            <annotations scope="getter">@XmlElement(name = "SAPCPQOutboundPrice")</annotations>
+        </property>
+        <property name="totalDetail"
+          type="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqTotalPriceDetailRequestData">
+            <annotations scope="getter">@XmlElement(name = "SAPCPQOutboundtotalDetails")
+            </annotations>
+        </property>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqTotalPriceDetailRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundtotalDetails")
+        </annotations>
+        <property name="netPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "NetPrice")</annotations>
+        </property>
+        <property name="bidTotalCommitPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "bidTotalCommitPrice")</annotations>
+        </property>
+        <property name="bpTotalCommitPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "bpTotalCommitPrice")</annotations>
+        </property>
+        <property name="channelMargin" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "channelMargin")</annotations>
+        </property>
+        <property name="optimalPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "optimalPrice")</annotations>
+        </property>
+        <property name="ytyPercentage" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "ytyPercentage")</annotations>
+        </property>
+        <property name="discount" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "discount")</annotations>
+        </property>
+        <property name="optimalPriceDiscount" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "optimalPriceDiscount")</annotations>
+        </property>
+        <property name="totalMepPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "totalMepPrice")</annotations>
+        </property>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqPriceDetailRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundPrice")
+
+        </annotations>
+        <property name="unitPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "unitPrice")</annotations>
+        </property>
+        <property name="extendedPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "extendedPrice")</annotations>
+        </property>
+        <property name="optimalPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "optimalPrice")</annotations>
+        </property>
+        <property name="discount" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "discount")</annotations>
+        </property>
+        <property name="bidUnitPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "bidUnitPrice")</annotations>
+        </property>
+        <property name="committedTermPriceChangeUplift" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "committedTermPriceChangeUplift")
+            </annotations>
+        </property>
+        <property name="committedTermPriceChangeFrequency" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "committedTermPriceChangeFrequency")
+            </annotations>
+        </property>
+        <property name="renewalTermPriceChangeUplift" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "renewalTermPriceChangeUplift")
+            </annotations>
+        </property>
+        <property name="renewalTermPriceChangeFrequency" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "renewalTermPriceChangeFrequency")
+            </annotations>
+        </property>
+        <property name="ytyPercentage" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "ytyPercentage")</annotations>
+        </property>
+        <property name="ytyPercentageDefault" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "ytyPercentageDefault")</annotations>
+        </property>
+        <property name="bidTotalCommitPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "bidTotalCommitPrice")</annotations>
+        </property>
+        <property name="bpUnitPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "bpUnitPrice")</annotations>
+        </property>
+        <property name="bpTotalCommitPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "bpTotalCommitPrice")</annotations>
+        </property>
+        <property name="channelMargin" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "channelMargin")</annotations>
+        </property>
+        <property name="optimalPriceDiscount" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "optimalPriceDiscount")</annotations>
+        </property>
+        <property name="extendedUnitPrice" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "extendedUnitPrice")</annotations>
+        </property>
+        <property name="partNumber" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "partNumber")</annotations>
+        </property>
+        <property name="configurationId" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "configurationId")</annotations>
+        </property>
+        <property name="drEligible" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "drEligible")</annotations>
+        </property>
+        <property name="drMsg" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "drMsg")</annotations>
+        </property>
+        <property name="drGrpId" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "drGrpId")</annotations>
+        </property>
+        <property name="dealRegGrp" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "dealRegGrp")</annotations>
+        </property>
+        <property name="endDate" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "endDate")</annotations>
+        </property>
+        <property name="eccRequest" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "eccRequest")</annotations>
+        </property>
+        <property name="eccOverrided" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "eccOverrided")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.response.PartnerCpqQuotesResponseData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundQuotes")
+        </annotations>
+        <property name="quotes"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.outboundservices.quote.data.response.PartnerCpqQuoteResponseData>">
+            <annotations scope="setter">@XmlElement(name = "SAPCPQOutboundQuote")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.response.PartnerCpqQuoteResponseData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "SAPCPQOutboundQuote")
+        </annotations>
+        <property name="quoteNumber" type="java.lang.String">
+            <annotations scope="getter">@XmlElement(name = "QuoteNumber")</annotations>
+        </property>
+        <property name="message"
+          type="java.lang.String">
+            <annotations scope="setter">
+                @XmlElement(name = "message")
+            </annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.facet.category.data.CategoryFacetData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="code" type="java.lang.String">
+            <annotations>@JsonProperty("code")</annotations>
+        </property>
+        <property name="name" type="java.lang.String">
+            <annotations>@JsonProperty("name")</annotations>
+        </property>
+        <property name="subCategories"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.facet.category.data.CategoryFacetData>">
+            <annotations>@JsonProperty("subCategories")</annotations>
+        </property>
+    </bean>
+
+
+    <bean
+      class="de.hybris.platform.commerceservices.search.facetdata.ProductSearchPageData&lt;STATE, RESULT>"
+      extends="de.hybris.platform.commerceservices.search.facetdata.FacetSearchPageData&lt;STATE, RESULT>">
+        <property name="rootCategoryData"
+          type="com.ibm.commerce.partner.core.facet.category.data.CategoryFacetData"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.login.data.response.IbmIdUserDetailsResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="name" type="String">
+            <annotations>@JsonProperty("name")</annotations>
+        </property>
+        <property name="emailId" type="String">
+            <annotations>@JsonProperty("email")</annotations>
+        </property>
+        <property name="preferredUsername" type="String">
+            <annotations>@JsonProperty("preferred_username")</annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.order.approvalComments.data.response.PartnerApprovalsResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="approval"
+          type="com.ibm.commerce.partner.core.order.approvalComments.data.response.PartnerQuoteApprovalsResponseData">
+            <annotations>@JsonProperty("approvals") </annotations>
+        </property>
+    </bean>
+    <bean class="com.ibm.commerce.partner.core.order.approvalComments.data.response.PartnerQuoteApprovalsResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="approvalInfos"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.order.approvalComments.data.response.PartnerQuoteApprovalsInfoResponseData>">
+            <annotations>@JsonProperty("approvalInfo") </annotations>
+        </property>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.core.order.approvalComments.data.response.PartnerQuoteApprovalsInfoResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="dateResolved" type="java.util.Date">
+            <annotations>@JsonProperty("dateResolved")</annotations>
+        </property>
+        <property name="bpApprovalComment" type="java.lang.String">
+            <annotations>@JsonProperty("bpApprovalComment")</annotations>
+        </property>
+    </bean>
+
+   <bean class="com.ibm.commerce.partner.core.opportunity.data.response.OpportunityAuthTokenResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+       <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+       <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+       <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="bearerToken" type="String">
+            <annotations>@JsonProperty("bearerToken")</annotations>
+        </property>
+        <property name="expirationTs" type="Long">
+            <annotations>@JsonProperty("expirationTs")</annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.opportunity.data.response.OpportunityAuthResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="token" type="com.ibm.commerce.partner.core.opportunity.data.response.OpportunityAuthTokenResponseData">
+            <annotations>@JsonProperty("bearerTokenDetails")</annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.opportunity.data.request.OpportunityRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="separator" type="String">
+        </property>
+            <property name="inputParameterList" type="java.util.List&lt;com.ibm.commerce.partner.core.opportunity.data.request.OpportunityInputParameterRequestData>">
+            <annotations>@JsonProperty("inputParameterList")</annotations>
+        </property>
+    </bean>
+
+
+    <bean class="com.ibm.commerce.partner.core.opportunity.data.request.OpportunityInputParameterRequestData"
+        extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="name" type="java.lang.String">
+            <annotations>@JsonProperty("name")</annotations>
+        </property>
+        <property name="value" type="java.lang.String">
+            <annotations>@JsonProperty("value")</annotations>
+        </property>
+        <property name="valueList" type="java.util.List&lt;java.lang.String>">
+            <annotations>@JsonProperty("valueList")</annotations>
+        </property>
+    </bean>
+
+        <bean class="com.ibm.commerce.partner.core.opportunity.data.request.OpportunityDetailsResponseData"
+          extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+            <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+            <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+            <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+            <property name="opportunityNumber" type="java.lang.String">
+                <annotations>@JsonProperty("opp_num")</annotations>
+            </property>
+            <property name="opportunityName" type="java.lang.String">
+                <annotations>@JsonProperty("opp_name")</annotations>
+            </property>
+
+        </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCpqGOEQuestionsRequestData">
+        <import type="javax.xml.bind.annotation.XmlElement"/>
+        <import type="javax.xml.bind.annotation.XmlRootElement"/>
+        <import type="javax.xml.bind.annotation.XmlAccessorType"/>
+        <import type="javax.xml.bind.annotation.XmlAccessType"/>
+        <import type="javax.xml.bind.annotation.XmlElementWrapper"/>
+        <annotations>
+            @XmlRootElement(name = "goeQuestion")
+        </annotations>
+        <property name="code" type="java.lang.String">
+            <annotations scope="setter">@XmlElement(name = "code")</annotations>
+        </property>
+        <property name="value" type="java.lang.String">
+            <annotations scope="setter">@XmlElement(name = "value")</annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.opportunity.data.response.OpportunityDetailsSearchResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="opportunityNumber" type="java.lang.String">
+            <annotations>@JsonProperty("opp_num")</annotations>
+        </property>
+        <property name="opportunityName" type="java.lang.String">
+            <annotations>@JsonProperty("opp_name")</annotations>
+        </property>
+        <property name="customerName" type="java.lang.String">
+            <annotations>@JsonProperty("cust_name")</annotations>
+        </property>
+        <property name="opportunityStatus" type="java.lang.String">
+            <annotations>@JsonProperty("opp_status")</annotations>
+        </property>
+        <property name="expirationDate" type="java.lang.String">
+            <annotations>@JsonProperty("expire_date")</annotations>
+        </property>
+        <property name="resellerCEID" type="java.lang.String">
+            <annotations>@JsonProperty("resell_ceid")</annotations>
+        </property>
+        <property name="distributorCEID" type="java.lang.String">
+            <annotations>@JsonProperty("dist_ceid")</annotations>
+        </property>
+        <property name="customerNumber" type="java.lang.String">
+            <annotations>@JsonProperty("cust_icn")</annotations>
+        </property>
+    </bean>
+    <bean class="com.ibm.commerce.partner.core.search.facetdata.PartnerQuoteSearchPageData&lt;STATE, RESULT>"
+          extends="de.hybris.platform.commerceservices.search.facetdata.FacetSearchPageData&lt;STATE, RESULT>">
+        <description>POJO containing the result page for Partner Quote search.</description>
+        <property name="freeTextSearch" type="String"/>
+        <property name="keywordRedirectUrl" type="String"/>
+        <property name="spellingSuggestion"
+                  type="de.hybris.platform.commerceservices.search.facetdata.SpellingSuggestionData&lt;STATE>"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.login.data.response.IbmIdPublicKeyResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="keyType" type="String">
+            <annotations>@JsonProperty("kty")</annotations>
+        </property>
+        <property name="keyId" type="String">
+            <annotations>@JsonProperty("kid")</annotations>
+        </property>
+        <property name="use" type="String">
+            <annotations>@JsonProperty("use")</annotations>
+        </property>
+        <property name="algorithm" type="String">
+            <annotations>@JsonProperty("alg")</annotations>
+        </property>
+        <property name="modulus" type="String">
+            <annotations>@JsonProperty("n")</annotations>
+        </property>
+        <property name="exponent" type="String">
+            <annotations>@JsonProperty("e")</annotations>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.core.login.data.response.IbmIdPublicKeyResponseListData">
+    <property name="keys"
+      type="java.util.List&lt;com.ibm.commerce.partner.core.login.data.response.IbmIdPublicKeyResponseData>"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.search.request.PartnerImportQuoteFileRequestData">
+        <property name="fileName" type="String"/>
+        <property name="format" type="String"/>
+        <property name="fileSize" type="String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormProductSetRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <property name="code" type="String"/>
+        <property name="name" type="String"/>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormBasicDetailsRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <property name="quoteReferenceNumber" type="String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.response.ProvisionFormAuthTokenResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="jwtToken" type="String">
+            <annotations>@JsonProperty("jwt")</annotations>
+        </property>
+        <property name="expirationTs" type="Long">
+            <annotations>@JsonProperty("expireAtSeconds")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormsResponseData">
+        <property name="formList"
+          type="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormProductResponseData"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormProductResponseData">
+        <property name="productSetCode" type="String"/>
+        <property name="provisioningFormId" type="String"/>
+        <property name="provisioningFormUrl" type="String"/>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.response.ProvisionFormDetailsResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="id" type="String">
+            <annotations>@JsonProperty("id")</annotations>
+        </property>
+        <property name="allowedEditorEmails" type="java.util.List&lt;java.lang.String>">
+            <annotations>@JsonProperty("allowedEditorEmails")</annotations>
+        </property>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormUpdateRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <property name="items"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormItemDetailsRequestData>"/>
+        <property name="allowedEditorEmails"
+          type="java.util.List&lt;java.lang.String>"/>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormItemDetailsRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <property name="partNumber" type="String"/>
+        <property name="pid" type="String"/>
+        <property name="quantity" type="Integer"/>
+        <property name="description" type="String"/>
+        <property name="pidDescription" type="String"/>
+        <property name="productSetCode" type="String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormItemsRequestData"
+      extends="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormBasicDetailsRequestData">
+        <property name="items"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormItemDetailsRequestData>"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormRequestData"
+      extends="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormItemsRequestData">
+        <property name="allowedEditorEmails"
+          type="java.util.List&lt;java.lang.String>"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormAllowedUsersRequestData"
+      extends="com.ibm.commerce.partner.core.quote.provision.form.data.request.ProvisionFormBasicDetailsRequestData">
+        <property name="allowedEditorEmails"
+          type="java.util.List&lt;java.lang.String>"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.response.ProvisionFormResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="id" type="String">
+            <annotations>@JsonProperty("id")</annotations>
+        </property>
+        <property name="items"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.quote.provision.form.data.response.ProvisionFormItemDetailsResponseData>">
+            <annotations>@JsonProperty("items")</annotations>
+        </property>
+        <property name="forms"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.quote.provision.form.data.response.ProvisionFormProductResponseData>">
+            <annotations>@JsonProperty("forms")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.response.ProvisionFormProductResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="productSetCode" type="String">
+            <annotations>@JsonProperty("productSetCode")</annotations>
+        </property>
+        <property name="provisioningFormId" type="String">
+            <annotations>@JsonProperty("provisioningFormId")</annotations>
+        </property>
+        <property name="provisioningFormUrl" type="String">
+            <annotations>@JsonProperty("provisioningFormUrl")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.quote.provision.form.data.response.ProvisionFormItemDetailsResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="partNumber" type="String">
+            <annotations>@JsonProperty("partNumber")</annotations>
+        </property>
+        <property name="pid" type="String">
+            <annotations>@JsonProperty("pid")</annotations>
+        </property>
+        <property name="quantity" type="String">
+            <annotations>@JsonProperty("quantity")</annotations>
+        </property>
+        <property name="description" type="String">
+            <annotations>@JsonProperty("description")</annotations>
+        </property>
+        <property name="pidDescription" type="String">
+            <annotations>@JsonProperty("pidDescription")</annotations>
+        </property>
+        <property name="productSetCode" type="String">
+            <annotations>@JsonProperty("productSetCode")</annotations>
+        </property>
+        <property name="itemReference" type="String">
+            <annotations>@JsonProperty("itemReference")</annotations>
+        </property>
+        <property name="provisioningFormId" type="String">
+            <annotations>@JsonProperty("provisioningFormId")</annotations>
+        </property>
+        <property name="provisioningFormUrl" type="String">
+            <annotations>@JsonProperty("provisioningFormUrl")</annotations>
+        </property>
+    </bean>
+
+    <!--START Quote validation and submit response fields-->
+    <bean
+      class="com.ibm.commerce.partner.core.validations.response.data.FailedValidationsData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="error" type="java.lang.String">
+            <annotations>@JsonProperty("error")</annotations>
+        </property>
+        <property name="errorMessage" type="java.lang.String">
+            <annotations>@JsonProperty("errorMessage")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.validations.response.data.MissingMandatoryAnswersData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="questionKey" type="java.lang.String">
+            <annotations>@JsonProperty("questionKey")</annotations>
+        </property>
+        <property name="question" type="java.lang.String">
+            <annotations>@JsonProperty("question")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.validations.response.data.ResponsibleApproversData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="id" type="java.lang.String">
+            <annotations>@JsonProperty("Id")</annotations>
+        </property>
+        <property name="name" type="java.lang.String">
+            <annotations>@JsonProperty("Name")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.validations.response.data.TriggeredRulesData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="id" type="java.lang.String">
+            <annotations>@JsonProperty("Id")</annotations>
+        </property>
+        <property name="ruleName" type="java.lang.String">
+            <annotations>@JsonProperty("RuleName")</annotations>
+        </property>
+        <property name="description" type="java.lang.String">
+            <annotations>@JsonProperty("Description")</annotations>
+        </property>
+        <property name="canChooseApprover" type="java.lang.String">
+            <annotations>@JsonProperty("CanChooseApprover")</annotations>
+        </property>
+        <property name="responsibleApprovers"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.validations.response.data.ResponsibleApproversData>">
+            <annotations>@JsonProperty("ResponsibleApprovers")</annotations>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.response.PartnerCPQValidateQuoteResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="failedValidations"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.validations.response.data.FailedValidationsData>">
+            <annotations>@JsonProperty("failedValidations")</annotations>
+        </property>
+        <property name="missingMandatoryAnswers"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.validations.response.data.MissingMandatoryAnswersData>">
+            <annotations>@JsonProperty("missingMandatoryAnswers")</annotations>
+        </property>
+        <property name="triggeredRules"
+          type="java.util.List&lt;com.ibm.commerce.partner.core.validations.response.data.TriggeredRulesData>">
+            <annotations>@JsonProperty("triggeredRules")</annotations>
+        </property>
+        <property name="valid" type="java.lang.boolean">
+            <annotations>@JsonProperty("valid")</annotations>
+        </property>
+    </bean>
+
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.response.PartnerCPQSubmitQuoteResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="submitAttempted" type="java.lang.boolean">
+            <annotations>@JsonProperty("submitAttempted")</annotations>
+        </property>
+        <property name="quoteValidationResult"
+          type="com.ibm.commerce.partner.core.outboundservices.quote.data.response.PartnerCPQValidateQuoteResponseData">
+            <annotations>@JsonProperty("quoteValidationResult")</annotations>
+        </property>
+    </bean>
+
+    <!--END Quote validation and submit response fields-->
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.request.PartnerCPQCreateQuoteRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <property name="fulfilmentSource" type="String"/>
+        <property name="sourceSystem" type="String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.core.outboundservices.quote.data.response.PartnerCPQCreateQuoteResponseData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseResponseData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <property name="quoteId" type="String">
+            <annotations>@JsonProperty("quoteId")</annotations>
+        </property>
+    </bean>
+
+</beans>

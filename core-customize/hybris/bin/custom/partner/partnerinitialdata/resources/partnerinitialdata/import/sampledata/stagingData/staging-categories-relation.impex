@@ -1,0 +1,294 @@
+$productCatalog = partnerProductCatalog
+$productCatalogName = partner Product Catalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$approvalStatus = approvalStatus(code)[default = 'approved']
+$supercategories = supercategories(code, $catalogVersion)
+
+$lang = en
+
+UPDATE IbmCategory; code[unique = true]; $supercategories[default = 'rootcategory']; $catalogVersion
+                  ; 15CAI
+                  ; 15STT
+                  ; 15SCT
+                  ; 15MFT
+                  ; 15IGO
+                  ; 15ANP
+                  ; 15MSC
+                  ; 15ITT
+                  ; 15WCG
+                  ; 15CLS
+                  ; 15PHW
+                  ; 15ISS
+                  ; 15WTH
+                  ; 15WCP
+                  ; 15TMS
+                  ; 153QH
+                  ; 15JHO
+                  ; 15MHW
+                  ; 15CI9
+                  ; 15TSS
+                  ; 15DGL
+                  ; 15EDG
+                  ; 15S8X
+                  ; 15EDC
+                  ; 15INP
+                  ; 156UX
+                  ; 15CPT
+                  ; 15TSL
+                  ; 15YJ0
+                  ; 15SF3
+                  ; 15Y7V
+
+
+UPDATE IbmCategory; code[unique = true]; categories(IbmCategory.code, $catalogVersion); $catalogVersion
+                  ; 153QH              ; 17DVS,17PCS,17ISM,17KD8,
+                  ; 156UX              ; 17BCH
+                  ; 15ANP              ; 17OAP,17DSR,177EB,17W1X,17BG2
+                  ; 15CAI              ; 17ADM,
+                  ; 15CI9              ; 17ZUQ,
+                  ; 15CLS              ; 17CLB,
+                  ; 15CPT              ; 17ITU,
+                  ; 15DGL              ; 17C5Y,17US7,17JDF,17DAL
+                  ; 15EDC              ; 17EDC,
+                  ; 15EDG              ; 17EYM,
+                  ; 15IGO              ; 17HMG,17UO2,17HIN,17HTR,17CTT,17HZC
+                  ; 15INP              ; 17IPM,
+                  ; 15ISS              ; 17NCS,17MCS
+                  ; 15ITT              ; 17OZB,17ICP,17ITT,17WSP,17ITM,17MVT,17EVP,17WSM,17WMT
+                  ; 15JHO              ; 17YKT,
+                  ; 15MFT              ; 17ADD,17ZTT,17APP,17GHI
+                  ; 15MHW              ; 17IFS,17APH
+                  ; 15MSC              ; 17MSC,
+                  ; 15PHW              ; 17UXI,17ENL
+                  ; 15S8X              ; 17S52,17E3E
+                  ; 15SCT              ; 17SST,17IRP,17QEP,17SOR
+                  ; 15SF3              ; 176JN,17OGO,17KBG,17LS8,17JPE,17IOJ,17OZJ
+                  ; 15STT              ; 17O9S,17WKL,1753Z,17TMS,17EXT,17HW9,17M2K
+                  ; 15TMS              ; 17CTM,
+                  ; 15TSL              ; 17TSL,
+                  ; 15TSS              ; 17MVS,17POS
+                  ; 15WCG              ; 17WMK,
+                  ; 15WCP              ; 17WTM,17TBB
+                  ; 15WTH              ; 17GVR,17OAG,17PVD,17LSC,17PYR,17WHP
+                  ; 15Y7V              ; 17VRA,
+                  ; 15YJ0              ; 17MLC,
+
+
+UPDATE IbmCategory; code[unique = true]; categories(IbmCategory.code, $catalogVersion); $catalogVersion
+                  ; 1753Z              ; 20COE,
+                  ; 176JN              ; 20COH,
+                  ; 177EB              ; 20AU4,20A0O,20AJ5,20A0Y
+                  ; 17ADD              ; 20C02,20C01,20CKV
+                  ; 17ADM              ; 20JEK,
+                  ; 17APH              ; 20CHY,
+                  ; 17APP              ; 20C03,20C04
+                  ; 17BCH              ; 20B18,20B2C
+                  ; 17BG2              ; 20A9N,20AQR
+                  ; 17C5Y              ; 20EH8,20EHK
+                  ; 17CLB              ; 20B02,20B01,20B03
+                  ; 17CTM              ; 20B0T,20B0U,20B1Q,20B0V,20B0W
+                  ; 17CTT              ; 20A0U,
+                  ; 17DAL              ; 20EGG,
+                  ; 17DSR              ; 20A0M,20AYJ,20A11
+                  ; 17DVS              ; 20D03,20D0F,20A17,20AMT,20ATM,20A00,20AGK,20AJ7
+                  ; 17E3E              ; 20B6F,
+                  ; 17EDC              ; 20B0P,
+                  ; 17ENL              ; 20C0G,
+                  ; 17EVP              ; 20D0A,
+                  ; 17EXT              ; 20C0M,
+                  ; 17EYM              ; 20ATC,
+                  ; 17GHI              ; 20C8P,20CZJ
+                  ; 17GVR              ; 20B0E,
+                  ; 17HIN              ; 20A0W,
+                  ; 17HMG              ; 20A0X,20A0W
+                  ; 17HTR              ; 20A0Y,
+                  ; 17HW9              ; 20CEQ,
+                  ; 17HZC              ; 20AOF,
+                  ; 17ICP              ; 20B1C,
+                  ; 17IFS              ; 20C08,20C07
+                  ; 17IOJ              ; 20C1T,
+                  ; 17IPM              ; 20B1N,
+                  ; 17IRP              ; 20B14,20B13,20B12
+                  ; 17ISM              ; 20AW9,20D0C,20QTQ,20QBV
+                  ; 17ITM              ; 20B1Y,
+                  ; 17ITT              ; 20B1A,20BMD,20BJH,20BG0
+                  ; 17ITU              ; 20JX1,
+                  ; 17JDF              ; 20ETP,20E3N
+                  ; 17JPE              ; 20CO8,
+                  ; 17KBG              ; 20CQR,
+                  ; 17KD8              ; 20A17,
+                  ; 17LS8              ; 20CHA,
+                  ; 17LSC              ; 20B1R,
+                  ; 17M2K              ; 20CZA,
+                  ; 17MCS              ; 20GKU,
+                  ; 17MLC              ; 20C1B,20C89
+                  ; 17MSC              ; 20F02,20F03
+                  ; 17MVS              ; 20G19,
+                  ; 17MVT              ; 20D0B,
+                  ; 17NCS              ; 20G8N,20GWT
+                  ; 17O9S              ; 20CSN,
+                  ; 17OAG              ; 20B0M,
+                  ; 17OAP              ; 20A0V,
+                  ; 17OGO              ; 20C1X,
+                  ; 17OZB              ; 20B2P,
+                  ; 17OZJ              ; 20CFF,
+                  ; 17PCS              ; 20A46,
+                  ; 17POS              ; 20GCY,
+                  ; 17PVD              ; 20B1T,
+                  ; 17PYR              ; 20B1S,
+                  ; 17QEP              ; 20B15,
+                  ; 17S52              ; 20BXY,
+                  ; 17SOR              ; 20NYE,20B0Z
+                  ; 17SST              ; 20B1Z,
+                  ; 17TBB              ; 20BL5,20D0L
+                  ; 17TMS              ; 20C0U,
+                  ; 17TSL              ; 20J12,
+                  ; 17UO2              ; 20APO,20AOF,20A3A
+                  ; 17US7              ; 20EMH,
+                  ; 17UXI              ; 20CLD,20C0H
+                  ; 17VRA              ; 20CCK,
+                  ; 17W1X              ; 20A11,20A0K,20AQR
+                  ; 17WHP              ; 20L5L,
+                  ; 17WKL              ; 20COP,
+                  ; 17WMK              ; 20B2N,20B2J,20B2L,20B2M,20BEQ,20B2B
+                  ; 17WMT              ; 20D0R,
+                  ; 17WSM              ; 20D0M,
+                  ; 17WSP              ; 20B2O,20BZ5
+                  ; 17WTM              ; 20D0P,
+                  ; 17YKT              ; 20AXK,
+                  ; 17ZTT              ; 20C0T,
+                  ; 17ZUQ              ; 20CL0,
+
+
+UPDATE IbmCategory; code[unique = true]; categories(IbmCategory.code, $catalogVersion); $catalogVersion
+                  ; 20A00              ; 30AOC,
+                  ; 20A0K              ; 30AFW,30AYO,30AFV,30CFL
+                  ; 20A0M              ; 30AG3,30AG4,30ADD,30ATB,30AZZ,30A9V,30AM2
+                  ; 20A0O              ; 30AGB,30AGF,30ADZ,30A73
+                  ; 20A0U              ; 30AGW,30B4X
+                  ; 20A0V              ; 30AGY,30BPU,30C1J
+                  ; 20A0W              ; 30A1D,30ABX,30A8D,30A52,30AX2,30A3M,30A2T,30AHI,30A4I,30A7Q,30AVK,30ATD,30AN2
+                  ; 20A0X              ; 30A15,30AAM,30AAC,30AZI,30AWQ,30AX3,30AA0,30A94,30A4C,30A34,30A4R,30AWW,30AWK,30A5G,30AE8,30AB9,30AXL,30A9B,30A3P,30AA9
+                  ; 20A0Y              ; 30A04,30A09,30AD0,30A9U,30AWI,30AL5,30ACE,30AVA,30AW5,30AHF,30A2Q,30AKM,30A8K,30A8X,30A5C,30A11,30ABS,30AM9,30AKY,30AS5,30AYV,30AMA
+                  ; 20A11              ; 30AG9,30AE5,30AHU,30ABQ,30B9E,30AFW,30AYO,30AFV,30CFL,30A8O
+                  ; 20A17              ; 30DFC,30DGY
+                  ; 20A3A              ; 30A3C,30AL8,30AYB
+                  ; 20A46              ; 30ACH,30A7M,30A7N,30ASJ,30AX0,30AP5
+                  ; 20A9N              ; 30ABC
+                  ; 20AGK              ; 30A4O,
+                  ; 20AJ5              ; 30A17,30A0U,30A47,30A2L,30ABC,30A3I,30AOK,30AS5
+                  ; 20AJ7              ; 30APO,
+                  ; 20AMT              ; 30AUS,
+                  ; 20AOF              ; 30A3O,30AP9,30AKH,30AJI,30A99,30ASC,30A20
+                  ; 20APO              ; 30A6X,30AH8,30AH9,30AYS,30AHL,30AXK,30A53,30AOP,30A7C,30AY5,30AO8,30A0F,30AVM,30ALJ,30A3C,30AL8,30AYB
+                  ; 20AQR              ; 30AX6,30AW0,30A5Q
+                  ; 20ATC              ; 30ABL,30AIT
+                  ; 20ATM              ; 30DDG,
+                  ; 20AU4              ; 30AUE,30ADA
+                  ; 20AW9              ; 30A1F,30AV9,30AMT,30DEZ,30APV
+                  ; 20AXK              ; 30ALY,
+                  ; 20AYJ              ; 30AHN,30AG1
+                  ; 20B01              ; 30BE0,30BE1
+                  ; 20B02              ; 30BE4,30BE3
+                  ; 20B03              ; 30BMC,
+                  ; 20B0E              ; 30BMF,30BMH
+                  ; 20B0M              ; 30BNV,30BGV,30B2W
+                  ; 20B0P              ; 30BH9,
+                  ; 20B0T              ; 30BHK,30BHL,30BPY
+                  ; 20B0U              ; 30BHR,30BHN,30BHP,30BHQ,30BHO
+                  ; 20B0V              ; 30BHT,
+                  ; 20B0W              ; 30BHW,
+                  ; 20B0Z              ; 30BI7,
+                  ; 20B12              ; 30BIB,
+                  ; 20B13              ; 30BID,
+                  ; 20B14              ; 30BIF,30BIH,30N78,30BII,30BYH
+                  ; 20B15              ; 30BIL,30BIM,30BIK,30N9J,30AUW,30BOA,30A82
+                  ; 20B18              ; 30BN7,30BIU
+                  ; 20B1A              ; 30BH6,30A0G,30BJ0,30BYP,30BYN,30B4H,30B3B
+                  ; 20B1C              ; 30B7H,30BWS,30B5X,30BNS
+                  ; 20B1N              ; 30BPW,
+                  ; 20B1Q              ; 30BHU,
+                  ; 20B1R              ; 30BNP,30BZ9,30BNK,30BNN,30BRA,30LYX,30BFW
+                  ; 20B1S              ; 30BMN,30LQE,30BBP,30BG3,30B5L,30BRB
+                  ; 20B1T              ; 30BRS,30BRO,30BMP,30BMR,30BRK,30BRF,30L4U
+                  ; 20B1Y              ; 30BJ4,30BR0,30BQZ,30BOX,30BW9,30DGT,30DEW,30DEV,30DEX,30BOC,30DG8,30DWV,30DXV
+                  ; 20B1Z              ; 30N5A,30BP5
+                  ; 20B2B              ; 30BPM,
+                  ; 20B2C              ; 30BPO,
+                  ; 20B2J              ; 30BQG,30BQE,30BQF,30BQD
+                  ; 20B2L              ; 30BQN,30BQM
+                  ; 20B2M              ; 30BQQ,30BQR
+                  ; 20B2N              ; 30BQU,30BQT
+                  ; 20B2O              ; 30B7L,30BQX,30B8F
+                  ; 20B2P              ; 30BR3,30BPD,30B9V,30BQY,30BR2,30B6L,30BC4,30DES
+                  ; 20B6F              ; 30BVP,
+                  ; 20BEQ              ; 30BQH,30BQV
+                  ; 20BG0              ; 30BZD,
+                  ; 20BJH              ; 30DFS,30DFT,30B5Y
+                  ; 20BL5              ; 30DFO,
+                  ; 20BMD              ; 30B69,30BZS,30B73,30B3J
+                  ; 20BXY              ; 30B7Z,30B9M
+                  ; 20BZ5              ; 30BQJ,
+                  ; 20C01              ; 30C9D,30CYZ,30CE1,30CE3,30CE2,30CU3,30AOK
+                  ; 20C02              ; 30CE9,30CEB,30CE6,30CCE
+                  ; 20C03              ; 30CEE,30CEF,30CNF
+                  ; 20C04              ; 30CEJ,
+                  ; 20C07              ; 30CEY,
+                  ; 20C08              ; 30CF1,30C1M
+                  ; 20C0G              ; 30CV5,
+                  ; 20C0H              ; 30CE7,30CZV,30CZQ,30C5R,30C1Z,30CPP,30C6U
+                  ; 20C0M              ; 30C6O,
+                  ; 20C0T              ; 30CGY,
+                  ; 20C0U              ; 30CH0,
+                  ; 20C1B              ; 30CRV,30C21
+                  ; 20C1T              ; 30C0F,
+                  ; 20C1X              ; 30CGD,
+                  ; 20C1X              ; 30CGD,30CG7,30C0Y
+                  ; 20C89              ; 30CBE,
+                  ; 20C8P              ; 30CK9,
+                  ; 20CCK              ; 30CVQ,30CE7
+                  ; 20CEQ              ; 30CGE,30CGN
+                  ; 20CFF              ; 30C8V,
+                  ; 20CHA              ; 30C6O,
+                  ; 20CHY              ; 30CGP,30CXT,30C70,30CCC,30CNN
+                  ; 20CKV              ; 30CC0,
+                  ; 20CL0              ; 30CTR,
+                  ; 20CLD              ; 30CVQ,30CZU,30CAP
+                  ; 20CO8              ; 30CGE,
+                  ; 20COE              ; 30CG8,30CG9,30C4F,30C40,30CZL,30CTC
+                  ; 20COH              ; 30CGC,30CGA,30CWS
+                  ; 20COP              ; 30CGD,30CG7,30C8R,30CVA
+                  ; 20CQR              ; 30CG8,30CG9,30C40,30CZL
+                  ; 20CSN              ; 30CGC,30CGA,30CWS,30C0R,30C9X
+                  ; 20CZA              ; 30C0F,30CNP
+                  ; 20CZJ              ; 30C7A,
+                  ; 20D03              ; 30DE7,
+                  ; 20D03              ; 30DE7,30A19,30DE8,30DFH,30DG6
+                  ; 20D0A              ; 30DES,
+                  ; 20D0B              ; 30DEW,30DEV,30DEX
+                  ; 20D0C              ; 30AII,30ALB
+                  ; 20D0F              ; 30A0R,30DF9,30A4O,30APO,30AST,30AC1,30ADM,30DE8,30AUS,30AQS
+                  ; 20D0L              ; 30DFZ,30DFY
+                  ; 20D0M              ; 30BOC,30DG8,30DWV,30DXV
+                  ; 20D0P              ; 30DGO,
+                  ; 20D0R              ; 30DGT,
+                  ; 20E3N              ; 30E3Y,
+                  ; 20EGG              ; 30EO4,
+                  ; 20EH8              ; 30EIW
+                  ; 20EHK              ; 30E4S,
+                  ; 20EMH              ; 30EPA,
+                  ; 20ETP              ; 30EKJ,30E8F
+                  ; 20F02              ; 30FE8,30FE9,30A9E
+                  ; 20F03              ; 30FEF,
+                  ; 20G19              ; 30GKT,
+                  ; 20G8N              ; 30G0H,30GVJ
+                  ; 20GCY              ; 30G38,
+                  ; 20GKU              ; 30GJ5,
+                  ; 20GWT              ; 30GHR,
+                  ; 20J12              ; 30JIJ,
+                  ; 20JEK              ; 30S3J,
+                  ; 20JX1              ; 30BN3,
+                  ; 20L5L              ; 30BFQ,
+                  ; 20NYE              ; 30BOB,30BHY,30BI1,30BHZ,30NEB,30BVR,30NGL,30NJL,30AZJ,30AT3,30A3F
+                  ; 20QBV              ; 30QGT,
+                  ; 20QTQ              ; 30Q95,

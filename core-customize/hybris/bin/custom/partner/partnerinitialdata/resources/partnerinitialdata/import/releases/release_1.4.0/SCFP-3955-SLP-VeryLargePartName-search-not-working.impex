@@ -1,0 +1,4 @@
+$serverConfigName=Default
+
+UPDATE SolrServerConfig ; name[unique=true] ; solrQueryMethod(code) ;  
+                        ; $serverConfigName ; POST                  

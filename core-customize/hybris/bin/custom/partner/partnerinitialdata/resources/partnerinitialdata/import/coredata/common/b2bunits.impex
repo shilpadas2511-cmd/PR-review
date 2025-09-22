@@ -1,0 +1,3 @@
+# Default PartnerB2BUnit
+INSERT_UPDATE IbmPartnerB2BUnit; uid[unique = true]; name            ; description
+                            ; partnerB2BUnit    ; Partner B2BUnit ; Default Partner B2BUnit

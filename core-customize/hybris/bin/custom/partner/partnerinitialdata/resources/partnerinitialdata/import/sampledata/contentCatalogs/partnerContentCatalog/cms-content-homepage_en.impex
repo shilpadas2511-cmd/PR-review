@@ -1,0 +1,125 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+
+$lang = en
+
+UPDATE CMSNavigationNode; $contentCV[unique = true]; uid[unique = true]                   ; title[lang = $lang]
+                        ;                          ; DealsNavNode                         ; "Deals"
+                        ;                          ; DealManagementNode                   ; "Deal management"
+                        ;                          ; DealregistrationNavNode              ; "Deal registration"
+
+                        ;                          ; QuoteNavNode                         ; "Quotes"
+                        ;                          ; CPQNavNode                           ; "CPQ hub(Hardware)"
+                        ;                          ; PartnerGuidedNavNode                 ; "Partner guided selling (software)"
+                        ;                          ; SoftwareQuotingNavNode               ; "Software quoting (US)"
+
+                        ;                          ; IncentivesNavNode                    ; "Incentives"
+                        ;                          ; IncentiveExplainedNavNode            ; "Incentives explained"
+                        ;                          ; PromotionsNavNode                    ; "Promotions"
+
+                        ;                          ; LearningEducationNavNode             ; "Learning and education"
+                        ;                          ; LearningHubNavNode                   ; "Learning Hub"
+                        ;                          ; PersonalCredentialsNavNode           ; "Personal Credentials"
+                        ;                          ; NewsandupdatesNavNode                ; "News and Upate"
+                        ;                          ; SeismicIBMNavNode                    ; "Seismic at IBM"
+
+                        ;                          ; MarketingNavNode                     ; "Marketing"
+                        ;                          ; TechnicalNavNode                     ; "Technical"
+                        ;                          ; CollaborationNavNode                 ; "Collaboration"
+                        ;                          ; ServiceNavNode                       ; "Service"
+                        ;                          ; BenefitsExplainedNavNode             ; "Benefits explained"
+
+                        ;                          ; BenefitsNavNode                      ; "Benefits"
+                        ;                          ; PartnerStatusMarkNavNode             ; "Partner status mark"
+                        ;                          ; Co-MarketingNavNode                  ; "Co-Marketing"
+                        ;                          ; MyDigitalMarketingNavNode            ; "My Digital Marketing"
+
+                        ;                          ; SoftwareAccessCatalogNavNode         ; "Software Access Catalog"
+                        ;                          ; CloudcreditsNavNode                  ; "Cloud credits"
+
+                        ;                          ; TechincalExpertEngNavNode            ; "Technical expert engagement"
+                        ;                          ; ProofoConceptNavNode                 ; "Proof of concept co-creation"
+                        ;                          ; InnovationStudioAccessNavNode        ; "Innovation Studio access"
+                        ;                          ; CoSellsupportNavNode                 ; "Co-Sell support"
+                        ;                          ; CustoemrSuppertPremerNavNode         ; "Customer Success Premier program"
+                        ;                          ; PartnerAdvocacyProgramNavNode        ; "Partner advocacy program"
+                        ;                          ; ExpertsLabNavNode                    ; "Expert Labs service parts creation"
+
+                        ;                          ; PractitionerNavNode                  ; "Practitioner advanced training"
+                        ;                          ; ServiceSolutionsAcceleratorNode      ; "Service solutions accelerator"
+                        ;                          ; ServiceTechnicalAssetcreationNavNode ; "Service technical asset co-creation"
+                        ;                          ; CompanyNavNode                       ; "Company Management "
+                        ;                          ; partnersupportnavnode                ; "Partner support"
+
+                        ;                          ; PartnerPlusNavNode                   ; "Partner Plus"
+                        ;                          ; ContactUsNavNode                     ; "Contact Us"
+                        ;                          ; TermsNavNode                         ; "Terms of Use"
+                        ;                          ; PrivacyNavNode                       ; "Privacy"
+                        ;                          ; CookiePreferencesNavNode             ; "Cookie preferences"
+
+                        ;                          ; ProfileNavNode                       ; "Profile"
+
+                        ;                          ; CommunicationPreferencesNavNode      ; "Communication Preferences"
+                        ;                          ; SettingsNavNode                      ; "Settings"
+
+
+
+UPDATE CMSLinkComponent; $contentCV[unique = true]; uid[unique = true]             ; linkName[lang = $lang]
+                       ;                          ; PartnerPlusLink                ; "Partner Plus"
+                       ;                          ; ContactUsLink                  ; "Contact us"
+                       ;                          ; TermsLink                      ; "Terms of Use"
+                       ;                          ; PrivacyLink                    ; "Privacy"
+                       ;                          ; CookiePreferencesLink          ; "Cookie preferences"
+                       ;                          ; ProfileLink                    ; "Profile"
+                       ;                          ; CommunicationPreferencesLink   ; "Communication Preferences" ; CommunicationPreferences
+                       ;                          ; SettingsLink                   ; "Settings"                  ; Settings
+                       ;                          ; ProfilePersonalCredentialsLink ; "Personal Credentials"      ; Personal Credentials
+
+
+UPDATE PartnerCMSLinkComponent; $contentCV[unique = true]; uid[unique = true]                 ; linkName[lang = $lang]                ; iconName               ; external[default = false]
+
+                              ;                          ; DealRegistrationLink               ; "Deal registration"                   ; DealRegistration
+                              ;                          ; CPQHubLink                         ; "CPQ hub (hardware)"                  ; CPQHub(Haedware)
+                              ;                          ; PartnerGuidedSellingLink           ; "Partner guided selling (software)"   ; PartnerGuidedSelling
+                              ;                          ; SoftwareQuotingLink                ; "Software quoting (US)"               ; SoftwareQuoting
+                              ;                          ; IncentivesExplainedLink            ; "Incentives Explained"                ; IncentivesExplained
+                              ;                          ; PromotionsLink                     ; "Promotions"                          ; Promotions
+                              ;                          ; LearningHubLink                    ; "Learning Hub"                        ; LearningHub            ; true
+
+                              ;                          ; PersonalCredentialsLink            ; "Personal Credentials"                ; PersonalCredentials
+                              ;                          ; NewsandupdatesLink                 ; "News and updates"                    ; Newsandupdates         ; true
+                              ;                          ; SeismicIBMLink                     ; "Seismic at IBM"                      ; SeismicIBM             ; true
+                              ;                          ; BenefitsExplainedLink              ; "Benefits Explained"                  ; BenefitsExplainedLink
+                              ;                          ; PartnerStatusMarkLink              ; "Partner Status Mark"                 ; PartnerStatusMark
+                              ;                          ; Co-MarketingLink                   ; "Co-Marketing"                        ; Co-Marketing
+                              ;                          ; MyDigitalMarketingLink             ; "MyDigital Marketing"                 ; MyDigitalMarketing
+                              ;                          ; SoftwareAccessCatalogLink          ; "Software Access Catalog"             ; SoftwareAccessCatalog
+                              ;                          ; CloudcreditsLink                   ; "Cloud credits"                       ; Cloudcredits
+                              ;                          ; TechnicalExpertEngagementLink      ; "Technical Expert Engagement"         ; TechnicalExpertEngagement
+                              ;                          ; ProofofconceptcreationLink         ; "Proof of concept co-creation"        ; Proofofconceptcreation
+                              ;                          ; InnovationStudioAccessLink         ; "Innovation Studio Access"            ; InnovationStudioAccess
+
+
+                              ;                          ; CoSellsupportLink                  ; "Co-Sell support"                     ; CoSellsupport
+                              ;                          ; CustomerSuccessPremierProgramLink  ; "Customer Success Premier Program"    ; CustomerSuccessPremierProgram
+                              ;                          ; PartnerAdvocacyProgramLink         ; "Partner Advocacy Program"            ; PartnerAdvocacyProgram ; true
+                              ;                          ; ExpertLabsservicepartscreationLink ; "Expert Labs Service parts creation"  ; ExpertLabsservicepartscreation
+                              ;                          ; PractitionerAdvancedTrainingLink   ; "Practitioner Advanced Training"      ; PractitionerAdvancedTraining
+                              ;                          ; ServiceSolutionsAcceleratorLink    ; "Service Solutions Accelerator"       ; ServiceSolutionsAccelerator
+                              ;                          ; ServiceTechnicalAssetcreationLink  ; "Service technical asset co-creation" ; PractitionerAdvancedTraining
+
+                              ;                          ; CompanyprofileLink                 ; "Company profile"                     ; Companyprofile         ; true
+                              ;                          ; PartnerSupportLink                 ; "Partner Support"                     ; PartnerSupport
+                              ;                          ; NotificationsLink                  ; "Notifications"                       ; Notifications
+                              ;                          ; HomeLink                           ; "Home"                                ; Home
+
+UPDATE PartnerCategoryFeatureComponent; $contentCV[unique = true]; uid[unique = true]              ; title[lang = $lang] ; description[lang = $lang]
+                                      ;                          ; FindOpportunityFeatureComponent ; Find my opportunity ; "Search for your opportunity number"
+                                      ;                          ; AllProductsFeatureComponent     ; All products        ; "Explore our full range of products"
+                                      ;                          ; YourQuotesFeatureComponent      ; Quotes              ; "View and manage your previous quotes"
+                                      ;                          ; SavedCartsFeatureComponent      ; Saved carts         ; "Add an opportunityID and streamline your workflow with a filtered list of products"
+                                      ;                          ; ViewCartFeatureComponent        ; View cart           ; "Add a customer to your cart and see products related to them"
+                                      ;                          ; ImportQuoteFeatureComponent     ; Import quote        ; "Lorem ipsum odor amet,consectetuer adipiscing elit"
+# CMS Paragraph Component
+UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]            ; content[lang = $lang]
+                            ;                          ; HeadlineQuoteDetailsParagraph ; "<p style='margin-bottom: 20px;'><strong>Bid iteration (previously approved)</strong> - An iteration is a resubmission of a prior approved quote with the same configuration. Quantity or configuration changes will require a new quote.</p> <p style='margin-bottom: 20px;'>Description: eligible when a prior version of the quote was approved and has either expired or customer information has changed. Configuration changes resulting in alternate offerings or reduced pricing are not eligible for consideration.</p> <p style='margin-bottom: 20px;'><strong>Significant competitive environment (over $500K) </strong>- represents quote request which require pricing review to address highly competitive client opportunities </p> <p style='margin-bottom: 20px;'>Description: For details over $500K, IBM will consider competitive market factors when reviewing price request proposals. Justification should clearly articulate nature of competitive environment at the client.</p> <p style='margin-bottom: 20px;'><strong>Multiple quotes for single opportunity</strong> - Opportunities requiring multiple quotes to support large deal.</p> <p style='margin-bottom: 20px;'>Description: When a large deal requires multiple quotes due to inclusion of separate sites or complex configuration requirements. Business Partners must present the individual quotes as a single offer to the client in order for pricing to be valid.</p> <p style='margin-bottom: 20px;'><strong>Existing contract</strong> - Contractually obligated pricing when the client has signed a multi year.</p> <p style='margin-bottom: 20px;'>Description: This exception is required to adhere to prior contractual obligations with the client (example: ELA).</p>"

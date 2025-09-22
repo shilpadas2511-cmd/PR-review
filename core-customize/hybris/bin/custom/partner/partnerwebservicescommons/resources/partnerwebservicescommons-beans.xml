@@ -1,0 +1,691 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="beans.xsd">
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.user.dto.PartnerEmployeeSignUpDTO"
+      extends="de.hybris.platform.commercewebservicescommons.dto.user.UserSignUpWsDTO">
+        <property name="roles"
+          type="java.util.List&lt;java.lang.String>"/>
+        <property name="active" type="boolean"/>
+    </bean>
+    <bean class="com.ibm.commerce.partnerwebservicescommons.company.dto.PartnerRegistrationWsDTO"
+      extends="de.hybris.platform.b2bwebservicescommons.dto.company.OrgUserRegistrationDataWsDTO">
+        <property name="defaultCountry"
+          type="de.hybris.platform.commercewebservicescommons.dto.user.CountryWsDTO"/>
+        <property name="defaultLanguage"
+          type="de.hybris.platform.commercewebservicescommons.dto.storesession.LanguageWsDTO"/>
+        <property name="siteId"
+          type="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="roles"
+          type="java.util.List&lt;java.lang.String>">
+        </property>
+    </bean>
+
+    <bean
+      class="de.hybris.platform.commercewebservicescommons.dto.order.CartWsDTO">
+        <description>Representation of a Cart</description>
+        <property name="opportunity"
+          type="com.ibm.commerce.partnerwebservicescommons.deal.dto.IbmPartnerOpportunityWsDTO">
+            <description>Opportunity Id</description>
+        </property>
+        <property name="soldThroughUnit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="shipToUnit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerEndCustomerB2BUnitWsDTO"/>
+        <property name="billToUnit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="agreementDetail"
+          type="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerAgreementDetailWsDTO"/>
+        <property name="modifiedtime" type="java.util.Date"/>
+        <property name="ytyPercentage"
+          type="java.lang.Double"/>
+        <property name="totalBidExtendedPrice"
+          type="java.lang.Double"/>
+        <property name="totalMEPPrice"
+          type="java.lang.Double"/>
+        <property name="totalFullPrice"
+          type="java.lang.Double"/>
+        <property name="discount"
+          type="java.lang.Double"/>
+        <property name="errorMessage" type="java.lang.String"/>
+        <property name="quoteExpirationDate" type="java.util.Date"/>
+        <property name="fullPriceReceived" type="boolean"/>
+        <property name="editable" type="boolean"/>
+        <property name="priceStale" type="boolean"/>
+        <property name="specialBidReason"
+          type="com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonWsDTO"/>
+        <property name="specialBidReasons"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonWsDTO>"/>
+        <property name="specialBidBusinessJustification" type="java.lang.String"/>
+        <property name="partnerCpqHeaderPricingDetail"
+          type="com.ibm.commerce.partnerwebservicescommons.dto.order.pricing.PartnerCpqHeaderPricingDetailWsDTO"/>
+        <property name="partnerCpqHeaderPricingDetails"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.order.pricing.PartnerCpqHeaderPricingDetailWsDTO>"/>
+        <property name="specialBid" type="boolean"/>
+        <property name="partnerQuestionsSelections"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.partnerquestions.PartnerQuestionsSelectionWsDTO>"/>
+        <property name="vadView" type="boolean"/>
+        <property name="ytyYears" type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.order.pricing.YtyYearWsDTO>"/>
+        <property name="provisionForms" type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.provision.form.dto.ProvisioningFormWsDTO>"/>
+        <property name="collaboratorEmails" type="java.util.List&lt;String>"/>
+        <property name="provisionFormError" type="java.lang.String"/>
+        <property name="currency" type="de.hybris.platform.commercewebservicescommons.dto.storesession.CurrencyWsDTO" />
+        <property name="cpqQuoteID" type="String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.dto.order.IbmAddToCartParamsWsDTO">
+        <description>Object for creating or updating IbmCart with opportunityId and other Partners
+        </description>
+        <property name="opportunity"
+          type="com.ibm.commerce.partnerwebservicescommons.deal.dto.IbmPartnerOpportunityWsDTO">
+            <description>Opportunity</description>
+        </property>
+        <property name="soldThroughUnit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="shipToUnit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerEndCustomerB2BUnitWsDTO"/>
+        <property name="billToUnit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="agreementDetail"
+          type="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerAgreementDetailWsDTO"/>
+        <property name="quoteExpirationDate" type="java.lang.String"/>
+        <property name="salesApplication" type="java.lang.String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.order.CartModificationWsDTO">
+        <property name="opportunityId" type="String">
+            <description>opportunityId.</description>
+        </property>
+    </bean>
+
+    <bean
+      class="de.hybris.platform.commercewebservicescommons.dto.quote.QuoteWsDTO">
+        <description>Representation of the quote object.</description>
+        <property name="opportunity"
+          type="com.ibm.commerce.partnerwebservicescommons.deal.dto.IbmPartnerOpportunityWsDTO">
+            <description>Opportunity Id</description>
+        </property>
+        <property name="soldThroughUnit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="shipToUnit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerEndCustomerB2BUnitWsDTO"/>
+        <property name="billToUnit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="agreementDetail"
+          type="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerAgreementDetailWsDTO"/>
+        <property name="quoteCreater"
+          type="de.hybris.platform.commercewebservicescommons.dto.user.UserWsDTO"/>
+        <property name="quoteSubmitter"
+          type="de.hybris.platform.commercewebservicescommons.dto.user.UserWsDTO"/>
+        <property name="quoteExpirationDate"
+          type="java.util.Date"/>
+        <property name="ytyPercentage"
+          type="java.lang.Double"/>
+        <property name="totalBidExtendedPrice"
+          type="java.lang.Double"/>
+        <property name="totalMEPPrice"
+          type="java.lang.Double"/>
+        <property name="discount"
+          type="java.lang.Double"/>
+        <property name="quoteStatus"
+          type="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO"/>
+        <property name="cpqQuoteStatus"
+          type="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO"/>
+        <property name="submittedDate" type="java.lang.String"/>
+        <property name="fullPriceReceived" type="boolean"/>
+        <property name="specialBidReason"
+          type="com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonWsDTO"/>
+        <property name="specialBidReasons"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonWsDTO>"/>
+        <property name="specialBidBusinessJustification" type="java.lang.String"/>
+        <property name="totalFullPrice"
+          type="java.lang.Double"/>
+        <property name="eccQuoteNumber" type="java.lang.String"/>
+        <property name="specialBid" type="boolean"/>
+        <property name="partnerQuestionsSelections"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.partnerquestions.PartnerQuestionsSelectionWsDTO>"/>
+        <property name="vadView" type="boolean"/>
+        <property name="unit"
+          type="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="store" type="java.lang.String"/>
+        <property name="quoteAccessToSites" type="java.util.List&lt;String>"/>
+        <property name="statusName" type="java.lang.String"/>
+        <property name="salesApplication"
+          type="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO"/>
+        <property name="orders"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.order.PartnerOrderWsDTO>"/>
+        <property name="cpqQuoteNumber" type="java.lang.String"/>
+        <property name="provisionForms" type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.provision.form.dto.ProvisioningFormWsDTO>"/>
+        <property name="collaboratorEmails" type="java.util.List&lt;String>"/>
+        <property name="provisionFormError" type="java.lang.String"/>
+        <property name="partnerCpqHeaderPricingDetails"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.order.pricing.PartnerCpqHeaderPricingDetailWsDTO>"/>
+        <property name="currency"
+          type="de.hybris.platform.commercefacades.storesession.data.CurrencyData"/>
+        <property name="cpqQuoteID" type="String"/>
+    </bean>
+    
+    <bean class="com.ibm.commerce.partnerwebservicescommons.dto.order.PartnerOrderWsDTO">
+        <property name="orderId" type="java.lang.String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.catalog.CategoryHierarchyWsDTO">
+        <property name="description" type="String"/>
+    </bean>
+
+    <bean
+      class="de.hybris.platform.commercewebservicescommons.dto.search.facetdata.FacetValueWsDTO">
+        <property name="childValues"
+          type="java.util.List&lt;de.hybris.platform.commercewebservicescommons.dto.search.facetdata.FacetValueWsDTO>">
+            <description>List of all facet values</description>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO">
+        <property name="code" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.b2bwebservicescommons.dto.company.B2BUnitWsDTO">
+        <property name="country"
+          type="de.hybris.platform.commercewebservicescommons.dto.user.CountryWsDTO">
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmB2BUnitWsDTO"
+      extends="de.hybris.platform.b2bwebservicescommons.dto.company.B2BUnitWsDTO">
+        <property name="type"
+          type="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO">
+            <description>Indicates the type of the partner B2BUnit</description>
+        </property>
+        <property name="ibmCustomerNumber" type="java.lang.String"/>
+        <property name="reportingOrganization"
+          type="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmB2BUnitWsDTO"/>
+        <property name="currency"
+          type="de.hybris.platform.commercewebservicescommons.dto.storesession.CurrencyWsDTO"/>
+        <property name="salesOrganisations"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerSalesOrganisationWsDTO>"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"
+      extends="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmB2BUnitWsDTO">
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerSalesOrganisationWsDTO">
+        <property name="code" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerEndCustomerB2BUnitWsDTO"
+      extends="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmB2BUnitWsDTO">
+        <property name="goe" type="boolean">
+            <description>Indicates the end customer status is government operated entity
+            </description>
+        </property>
+        <property name="divestitureRetentions"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerDivestitureRetentionWsDTO>"/>
+        <property name="ibmCustomerDCID" type="java.lang.String">
+            <description>Domestic Client Number
+            </description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.deal.dto.IbmPartnerOpportunityWsDTO">
+        <property name="code" type="String">
+            <description></description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerAgreementDetailWsDTO">
+        <property name="programType" type="String">
+            <description>program type of PartnerAgreementDetailWsDTO</description>
+        </property>
+        <property name="agreementNumber" type="String">
+            <description>agreement number of PartnerAgreementDetailWsDTO</description>
+        </property>
+        <property name="agreementOption" type="String">
+            <description>agreement option of PartnerAgreementDetailWsDTO</description>
+        </property>
+        <property name="agreementLevel" type="String">
+            <description>agreement level of PartnerAgreementDetailWsDTO</description>
+        </property>
+        <property name="anniversaryMonth" type="java.lang.String"/>
+        <property name="defaultProgramType" type="boolean">
+            <description>is default program type of PartnerAgreementDetailWsDTO</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerDivestitureRetentionWsDTO">
+        <property name="retainedEndDate" type="String">
+            <description>program type of PartnerAgreementDetailWsDTO</description>
+        </property>
+        <property name="sapDivsttrCode" type="String">
+            <description>agreement number of PartnerAgreementDetailWsDTO</description>
+        </property>
+        <property name="entmtTypeDesc" type="String">
+            <description>agreement option of PartnerAgreementDetailWsDTO</description>
+        </property>
+        <property name="entmtType" type="String">
+            <description>agreement level of PartnerAgreementDetailWsDTO</description>
+        </property>
+    </bean>
+
+    <!--DTO to store value coming from API call-->
+    <bean class="com.ibm.commerce.partnerwebservicescommons.order.IbmEntryGroupWsDTO"
+      extends="de.hybris.platform.commercewebservicescommons.dto.order.EntryGroupWsDTO">
+        <property name="pidId" type="java.lang.String"/>
+        <property name="configurationInfos"
+          type="java.util.List&lt;de.hybris.platform.commercewebservicescommons.dto.order.ConfigurationInfoWsDTO>"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.order.EntryGroupWsDTO">
+        <property name="configurationId" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+        <property name="description" type="java.lang.String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partnerwebservicescommons.product.data.IbmDeploymentTypeWsDTO">
+        <property name="code" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+        <property name="tagCode" type="java.lang.String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.product.ProductWsDTO">
+        <description>Representation of a Product</description>
+        <property name="configuratorCode" type="String">
+            <description>configurator Code of the product</description>
+        </property>
+        <property name="sapMaterialCode" type="java.lang.String"/>
+        <property name="deploymentType"
+          type="com.ibm.commerce.partnerwebservicescommons.product.data.IbmDeploymentTypeWsDTO"/>
+        <property name="partNumber" type="String">
+            <description>part Number of the product</description>
+        </property>
+        <property name="type"
+          type="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO">
+            <description>Indicates the type of the partner part product</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.order.entry.pricing.CpqPricingDetailsWsDTO">
+        <property name="rolledUpBidExtendedPrice"
+          type="java.lang.String"/>
+        <property name="pricingStrategy" type="java.lang.String"/>
+        <property name="listPrice"
+          type="java.lang.String"/>
+        <property name="netPrice"
+          type="java.lang.String"/>
+        <property name="extendedListPrice"
+          type="java.lang.String"/>
+        <property name="discountAmount"
+          type="java.lang.String"/>
+        <property name="discountPercent" type="java.lang.String"/>
+        <property name="rolledUpListPrice"
+          type="java.lang.String"/>
+        <property name="rolledUpExtendedListPrice"
+          type="java.lang.String"/>
+        <property name="rolledUpNetPrice"
+          type="java.lang.String"/>
+        <property name="pricingType" type="java.lang.String"/>
+        <property name="overrideBidUnitPrice" type="java.lang.String"/>
+        <property name="overrideDiscount" type="java.lang.String"/>
+        <property name="channelMargin" type="java.lang.Double"/>
+        <property name="ytyPercentage" type="java.lang.Double"/>
+        <property name="overrideYearToYearGrowth" type="java.lang.Double"/>
+        <property name="overrideObsoletePrice" type="java.lang.Double"/>
+        <property name="eccPriceAvailable" type="boolean"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.error.ErrorDetailsWsDTO">
+        <property name="code"
+          type="java.lang.String"/>
+        <property name="description" type="java.lang.String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.order.OrderEntryWsDTO">
+        <property name="partProduct" type="boolean"/>
+        <property name="editable" type="boolean"/>
+        <property name="pidId" type="String"/>
+        <property name="configuratorPidId" type="String">
+            <description>Pid id used to trigger CPQ Product Configuration. This will be different from pid id in case of MultiPid </description>
+        </property>
+        <property name="configId" type="String"/>
+        <property name="createNewEntry" type="boolean"/>
+        <property name="entries"
+          type="java.util.List&lt;de.hybris.platform.commercewebservicescommons.dto.order.OrderEntryWsDTO>"/>
+        <property name="cpqPricingDetails"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.order.entry.pricing.CpqPricingDetailsWsDTO>"/>
+        <property name="code" type="String"/>
+        <property name="calculated" type="boolean"/>
+        <property name="errorDetails"
+          type="com.ibm.commerce.partnerwebservicescommons.error.ErrorDetailsWsDTO"/>
+        <property name="entryStatus"
+          type="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO"/>
+        <property name="ytyEditable" type="boolean"/>
+        <property name="commerceRampUpData" type="com.ibm.commerce.partnerwebservicescommons.dto.order.entry.CommerceRampUpDataWsDTO"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.user.UserWsDTO">
+        <property name="sites"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO>"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.product.VariantOptionWsDTO">
+        <description>Representation of a Variant Option</description>
+        <hints>
+            <hint name="wsRelated"/>
+            <hint name="alias">VariantOption</hint>
+        </hints>
+        <property name="category"
+          type="de.hybris.platform.commercewebservicescommons.dto.product.CategoryWsDTO">
+        </property>
+        <property name="configuratorCode" type="java.lang.String"/>
+        <property name="tagCode" type="java.lang.String"/>
+        <property name="deploymentType"
+          type="com.ibm.commerce.partnerwebservicescommons.product.data.IbmDeploymentTypeWsDTO"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.user.CountryWsDTO">
+        <property name="sapCode" type="String">
+        </property>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservicescommons.dto.order.CartListWsDTO">
+        <description>Representation of a Cart list</description>
+        <property name="pagination"
+          type="de.hybris.platform.commercewebservicescommons.dto.search.pagedata.PaginationWsDTO"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonListWsDTO">
+        <description>SpecialBid Reasons List</description>
+        <property name="specialBidReasons"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonWsDTO>"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonWsDTO">
+        <description>SpecialBid Reasons</description>
+        <property name="code" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+        <property name="selected" type="boolean"/>
+        <property name="definition" type="java.lang.String"/>
+        <property name="description" type="java.lang.String"/>        
+        <property name="enabled" type="boolean"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.order.entry.pricing.PartnerOverrideHeaderPriceWsDTO">
+        <property name="overrideTotalPrice" type="java.lang.Double"/>
+        <property name="overrideTotalDiscount" type="java.lang.Double"/>
+        <property name="ytyYear" type="com.ibm.commerce.partnerwebservicescommons.dto.order.pricing.YtyYearWsDTO"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.order.entry.pricing.PartnerOverrideEntryPriceWsDTO">
+        <property name="entryNumber" type="java.lang.Integer"/>
+        <property name="overridePrice" type="java.lang.Double"/>
+        <property name="overrideDiscount" type="java.lang.Double"/>
+        <property name="overrideYearToYearGrowth" type="java.lang.Double"/>
+        <property name="overrideObsoletePrice" type="java.lang.Double"/>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.approvalComments.PartnerCommentsListWsDTO">
+        <description>Approval commnets List</description>
+        <property name="comments"
+          type="java.util.List&lt;de.hybris.platform.commercewebservicescommons.dto.comments.CommentWsDTO>"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.order.pricing.PartnerCpqHeaderPricingDetailWsDTO">
+        <property name="overrideTotalPrice" type="java.lang.Double"/>
+        <property name="overrideTotalDiscount" type="java.lang.Double"/>
+        <property name="totalExtendedPrice" type="java.lang.Double"/>
+        <property name="totalDiscount" type="java.lang.Double"/>
+        <property name="ytyPercentage" type="java.lang.Double"/>
+        <property name="totalBidExtendedPrice" type="java.lang.Double"/>
+        <property name="totalMEPPrice" type="java.lang.Double"/>
+        <property name="totalOptimalPrice" type="java.lang.Double"/>
+        <property name="totalChannelMargin" type="java.lang.Double"/>
+        <property name="totalBpExtendedPrice" type="java.lang.Double"/>
+        <property name="transactionPriceLevel" type="java.lang.String"/>
+        <property name="pricingType" type="java.lang.String"/>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.order.pricing.YtyYearWsDTO">
+        <property name="yearNumber" type="java.lang.String"/>
+        <property name="ytyOverride" type="java.lang.Double"/>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunityDetailsWsDTO">
+        <property name="opportunityNumber" type="java.lang.String"/>
+        <property name="opportunityName" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunityListWsDTO">
+        <description>Representation of a opportunity result list.</description>
+        <hints>
+            <hint name="wsRelated"/>
+            <hint name="alias">OpportunityList</hint>
+        </hints>
+        <property name="opportunities"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunityDetailsWsDTO>">
+            <description>List of opportunities.</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.OpportunitySearchRequestWsDTO">
+        <description>Object for search opportunity with customerICN and reseller CEID
+        </description>
+        <property name="customerICN" type="java.lang.String">
+            <description>customer ICN</description>
+        </property>
+        <property name="resellerID" type="java.lang.String">
+            <description>reseller CEID</description>
+        </property>
+        <property name="distributorID" type="java.lang.String">
+            <description>distributor CEID</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.partnerquestions.PartnerQuestionsWsDTO">
+        <description>Partner Questions</description>
+        <property name="code" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+        <property name="answer" type="boolean"/>
+        <property name="visible" type="boolean"/>
+        <property name="mandatory" type="boolean"/>
+        <property name="description" type="java.lang.String"/>
+        <property name="questions"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.partnerquestions.PartnerQuestionsWsDTO>"/>
+        <property name="type"
+          type="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO"/>
+        <property name="strAnswer" type="String">
+            <description>string answer</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.partnerquestions.PartnerQuestionsListWsDTO">
+        <description>Partner Questions List</description>
+        <property name="partnerQuestions"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.partnerquestions.PartnerQuestionsWsDTO>"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.partnerquestions.PartnerQuestionsSelectionWsDTO">
+        <description>Partner selections Questions</description>
+        <property name="code" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+        <property name="answer" type="boolean"/>
+        <property name="description" type="java.lang.String"/>
+        <property name="type"
+          type="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO"/>
+        <property name="questionType"
+          type="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO"/>
+        <property name="strAnswer" type="String">
+            <description>string answer</description>
+        </property>
+        <property name="visible" type="boolean"/>
+        <property name="mandatory" type="boolean"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.OpportunityNumberSearchRequestWsDTO">
+        <description>Object for search opportunity with OpportunityNumber and reseller ID
+        </description>
+        <property name="opportunityNumber" type="java.lang.String">
+            <description>opportunity Number</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.OpportunityOwnerMailSearchRequestWsDTO">
+        <description>Object for search opportunity with Opportunity owner email and reseller ID
+        </description>
+        <property name="ownerMail" type="java.lang.String">
+            <description>opportunity Number</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.OpportunityCustomerNumberSearchRequestWsDTO">
+        <description>Object for search opportunity with Opportunity owner email and reseller ID
+        </description>
+        <property name="customerNumber" type="java.lang.String">
+            <description>opportunity Number</description>
+        </property>
+        <property name="countryCode" type="java.lang.String">
+            <description>opportunity Number</description>
+        </property>
+    </bean>
+
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunitySearchListWsDTO">
+        <description>Representation of a opportunity result list.</description>
+        <hints>
+            <hint name="wsRelated"/>
+            <hint name="alias">MyOpportunityList</hint>
+        </hints>
+        <property name="opportunities"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunitySearchDetailsWsDTO>">
+            <description>List of opportunities.</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunitySearchDetailsWsDTO">
+        <property name="opportunityNumber" type="java.lang.String"/>
+        <property name="opportunityName" type="java.lang.String"/>
+        <property name="customerName" type="java.lang.String"/>
+        <property name="opportunityStatus" type="java.lang.String"/>
+        <property name="expirationDate" type="java.lang.String"/>
+        <property name="resellerCEID" type="java.lang.String"/>
+        <property name="distributorCEID" type="java.lang.String"/>
+        <property name="customerNumber" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitListWsDTO">
+        <description>Object for checking info regarding a list of sites
+        </description>
+        <property name="sites"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO>">
+            <description>List of sites.</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.search.facetdata.PartnerQuoteSearchPageWsDTO">
+        <description>Representation of a Partner Quote Search Page
+        </description>
+        <hints>
+            <hint name="wsRelated"/>
+            <hint name="alias">PartnerQuoteSearchPage</hint>
+        </hints>
+        <property name="freeTextSearch" type="String">
+            <description>Free text search</description>
+        </property>
+        <property name="keywordRedirectUrl" type="String">
+            <description>Redirect url address keyword</description>
+        </property>
+        <property name="spellingSuggestion"
+          type="de.hybris.platform.commercewebservicescommons.dto.search.facetdata.SpellingSuggestionWsDTO">
+            <description>Spelling suggestion</description>
+        </property>
+        <property name="partnerQuotes"
+          type="java.util.List&lt;de.hybris.platform.commercewebservicescommons.dto.quote.QuoteWsDTO>">
+            <description>List of Quotes</description>
+        </property>
+        <property name="sorts"
+          type="java.util.List&lt;de.hybris.platform.commercewebservicescommons.dto.search.pagedata.SortWsDTO>">
+            <description>List of sorts</description>
+        </property>
+        <property name="pagination"
+          type="de.hybris.platform.commercewebservicescommons.dto.search.pagedata.PaginationWsDTO">
+            <description>Pagination number</description>
+        </property>
+        <property name="currentQuery"
+          type="de.hybris.platform.commercewebservicescommons.dto.search.SearchStateWsDTO">
+            <description>Current query</description>
+        </property>
+        <property name="breadcrumbs"
+          type="java.util.List&lt;de.hybris.platform.commercewebservicescommons.dto.search.facetdata.BreadcrumbWsDTO>">
+            <description>List of breadcrumbs info</description>
+        </property>
+        <property name="facets"
+          type="java.util.List&lt;de.hybris.platform.commercewebservicescommons.dto.search.facetdata.FacetWsDTO>">
+            <description>List of facets</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.search.request.PartnerQuoteSearchRequestWsDTO">
+        <property name="fromDate" type="String"/>
+        <property name="toDate" type="String"/>
+        <property name="quoteType" type="String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.dto.search.request.PartnerImportQuoteFileRequestWsDTO">
+        <property name="fileName" type="String"/>
+        <property name="format" type="String"/>
+        <property name="fileSize" type="String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.provision.form.dto.PartnerProductSetWsDTO">
+        <property name="code" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.provision.form.dto.ProvisioningFormWsDTO">
+        <property name="code" type="java.lang.String"/>
+        <property name="url" type="java.lang.String"/>
+        <property name="productSetCode"
+          type="com.ibm.commerce.partner.provision.form.dto.PartnerProductSetWsDTO"/>
+    </bean>
+    <bean class="de.hybris.platform.commerceservicescommons.dto.order.QuoteCollaboratorsWsDTO">
+        <property name="collaboratorEmails" type="java.util.List&lt;String>"/>
+    </bean>
+    <bean class="com.ibm.commerce.partnerwebservicescommons.dto.order.entry.RampUpSummaryWsDTO">
+        <property name="rampUpPeriodDuration" type="java.lang.String"/>
+        <property name="rampUpQuantity" type="java.lang.String"/>
+    </bean>
+    <bean class="com.ibm.commerce.partnerwebservicescommons.dto.order.entry.CommerceRampUpDataWsDTO">
+        <property name="rampUpPeriod" type="java.lang.String"/>
+        <property name="rampUpSummary" type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.dto.order.entry.RampUpSummaryWsDTO>"/>
+    </bean>
+</beans>

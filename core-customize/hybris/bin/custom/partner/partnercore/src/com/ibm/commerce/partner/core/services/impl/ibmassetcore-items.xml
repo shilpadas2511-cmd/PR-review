@@ -1,0 +1,521 @@
+<?xml version="1.0" encoding="ISO-8859-1"?><!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="items.xsd">
+	<collectiontypes>
+		<collectiontype code="ClassAttributeAssignmentList" elementtype="ClassAttributeAssignment" type="list" autocreate="true" generate="true"/>
+		<collectiontype code="RestrictedCategorySet" elementtype="java.lang.String" autocreate="true" generate="false" type="set"/>
+		<collectiontype code="IbmOrderEntryCollection" elementtype="IbmOrderEntry" type="list"/>
+	</collectiontypes>
+	<enumtypes>
+		<enumtype code="IbmReasonTypeEnum">
+			<value code="CANCEL"/>
+			<value code="RETURN"/>
+			<value code="RETURNDATEPASSED"/>
+			<value code="NOACTION"/>
+		</enumtype>
+
+		<enumtype code="OrderStatus" autocreate="false" generate="false"
+				  dynamic="true">
+			<value code="STOCK_CHECK_FAILED"/>
+			<value code="STOCK_CHECK_PASSED"/>
+			<value code="CONFIRMED"/>
+		</enumtype>
+
+		<enumtype code="OrderEntryStatus" autocreate="false" generate="false" dynamic="false">
+			<value code="CANCELLED"/>
+			<value code="PARTIALLYCANCELLED"/>
+			<value code="RETURNINPROGRESS"/>
+			<value code="RETURNED"/>
+			<value code="PARTIALLYRETURNED"/>
+			<value code="NONRETURNABLE"/>
+			<value code="DELIVERED"/>
+			<value code="SHIPPED"/>
+			<value code="PICKPACK"/>
+			<value code="READYTOSHIP"/>
+		</enumtype>
+
+		<enumtype code="OrderTypeEnum" autocreate="true" generate="true" dynamic="false">
+			<value code="PREPAID"/>
+		</enumtype>
+
+		<enumtype code="RefundReason" autocreate="false" generate="false"
+				  dynamic="true">
+			<value code="WAREHOUSE"/>
+		</enumtype>
+
+		<enumtype code="ReturnReason" dynamic="true">
+			<value code="OutOfStock"/>
+			<value code="LateDelivery"/>
+			<value code="Warehouse"/>
+			<value code="CustomerRequest"/>
+			<value code="Other"/>
+			<value code="NA"/>
+		</enumtype>
+	</enumtypes>
+	<relations>
+		<relation code="RestrictionsForCMSNavigations" generate="true" localized="false" autocreate="true">
+			<deployment table="Restrictions4Navs" typecode="30003"/>
+			<sourceElement qualifier="cmsNavNodes" type="CMSNavigationNode" cardinality="many"/>
+			<targetElement qualifier="restrictions" type="AbstractRestriction" cardinality="many" collectiontype="list"
+						   ordered="false"/>
+		</relation>
+		<relation code="RegionPincodeRelation" generate="true" localized="false" autocreate="true">
+			<sourceElement type="Region" qualifier="region" cardinality="one">
+				<modifiers read="true" write="true" search="true" optional="false" unique="true"/>
+			</sourceElement>
+			<targetElement type="Pincode" qualifier="pincodes" cardinality="many">
+				<modifiers read="true" write="true" search="true" partof="true"/>
+			</targetElement>
+		</relation>
+		<relation code="IbmReasonToReasonRelation" generate="true" localized="false" autocreate="true">
+			<sourceElement type="IbmReason" qualifier="parent" cardinality="one">
+				<modifiers read="true" write="true" search="true"/>
+			</sourceElement>
+			<targetElement type="IbmReason" qualifier="subreasons" cardinality="many" collectiontype="list">
+				<modifiers read="true" write="true" search="true"/>
+			</targetElement>
+		</relation>
+		<relation code="CategoryToReasonRelation" generate="true" localized="false" autocreate="true">
+			<deployment table="categ2ResonRltn" typecode="30007"/>
+			<sourceElement type="Category" qualifier="categories" cardinality="many">
+				<modifiers read="true" write="true" search="true"/>
+			</sourceElement>
+			<targetElement type="IbmReason" qualifier="reasons" cardinality="many" collectiontype="list">
+				<modifiers read="true" write="true" search="true"/>
+			</targetElement>
+		</relation>
+		
+		<relation code="IbmCouponCodesToPromotionRelation" generate="true" localized="false" autocreate="true">
+			<sourceElement type="IbmMultiCodeCoupon" qualifier="ibmCoupon" cardinality="one">
+				<modifiers read="true" write="true" search="true"/>
+			</sourceElement>
+			<targetElement type="IbmCouponCode" qualifier="couponCodes" cardinality="many" >
+				<modifiers read="true" write="true" search="true"/>
+			</targetElement>
+		</relation>
+		
+	</relations>
+	<itemtypes>
+		<typegroup name="IbmAsset">
+			<itemtype code="IbmBasicCredential" autocreate="true" generate="true" extends="BasicCredential">
+				<description>Basic credentials for IBM webservice</description>
+				<attributes></attributes>
+			</itemtype>
+
+			<itemtype code="IbmConsumedOAuthCredential" autocreate="true" generate="true" extends="ConsumedOAuthCredential">
+				<description>ConsumedOAuthCredential credentials for Ibm webservice</description>
+				<attributes>
+					<attribute qualifier="clientAuthToken" type="java.lang.String">
+						<description>OAuth Client Auth Token</description>
+						<modifiers encrypted="true"/>
+						<persistence type="property">
+							<columntype>
+								<value>VARCHAR(2048)</value>
+							</columntype>
+							<columntype database="hsqldb">
+								<value>VARCHAR(2048)</value>
+							</columntype>
+							<columntype database="mysql">
+								<value>VARCHAR(2048)</value>
+							</columntype>
+							<columntype database="oracle">
+								<value>VARCHAR2(2048)</value>
+							</columntype>
+							<columntype database="sqlserver">
+								<value>VARCHAR(2048)</value>
+							</columntype>
+							<columntype database="sap">
+								<value>NVARCHAR(2048)</value>
+							</columntype>
+							<columntype database="postgresql">
+								<value>varchar(2048)</value>
+							</columntype>
+						</persistence>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="IbmConsumedDestination" autocreate="true" generate="true" extends="ConsumedDestination">
+				<description>ConsumedDestination for IBM</description>
+				<attributes>
+					<attribute qualifier="customUri" type="java.lang.String">
+						<description>URI supporting http://example.com/{path1}/path2 scheme. URL will generated using
+							UriComponentsBuilder.fromUriString("http://example.com/{path1}/path2").build() .expand("valueForPath1") .encode()
+						</description>
+						<modifiers/>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="IbmCrmUserDetails" autocreate="true" generate="true">
+				<description>Ibm Crm User Details.Catering the scenario of Different CRM to be used in Furture</description>
+				<deployment table="ibmcrmusrdetail" typecode="30001"/>
+				<attributes>
+					<attribute qualifier="id" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers unique="true"/>
+					</attribute>
+				</attributes>
+				<indexes>
+					<index name="ibmcrmusrdtlIdx">
+						<key attribute="id"/>
+					</index>
+				</indexes>
+			</itemtype>
+
+			<itemtype code="IbmUserWalletDetails" autocreate="true" generate="true">
+				<description>Ibm User Wallet Details.</description>
+				<deployment table="ibmusrwltdetail" typecode="30002"/>
+				<attributes></attributes>
+			</itemtype>
+
+			<itemtype code="Customer" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="contactNumber" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="oldContactNumber" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="crmUserDetails" type="IbmCrmUserDetails">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="crmUserWalletDetails" type="IbmUserWalletDetails">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="emailSent" type="boolean">
+						<persistence type="property"/>
+						<modifiers/>
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="ClassificationAttribute" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="visible" type="boolean">
+						<persistence type="property"/>
+						<modifiers/>
+						<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+					</attribute>
+					<attribute qualifier="priority" type="java.lang.Integer">
+						<persistence type="property"/>
+						<modifiers/>
+						<defaultvalue>java.lang.Integer.valueOf(0)</defaultvalue>
+					</attribute>
+					<attribute qualifier="appendValuesFromAttribute" type="StringCollection">
+						<description>Appends the value of attribute</description>
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="valuesSeparator" type="java.lang.String">
+						<description>Separator used to append the values from appendValuesFromAttribute</description>
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="SolrIndexedProperty" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="classAttributeAssignments" type="ClassAttributeAssignmentList">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="Product" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="brandId" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="returnable" type="boolean">
+						<persistence type="property"/>
+						<modifiers/>
+						<defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+					</attribute>
+					<attribute qualifier="optionId" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="tagName" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+				<indexes>
+					<index name="prdEanIdx">
+						<key attribute="code"/>
+						<key attribute="ean"/>
+					</index>
+					<index name="prdEanIdx">
+                    	<key attribute="optionId"/>
+                    	<key attribute="catalogVersion"/>
+                    	<key attribute="approvalStatus"/>
+                    </index>
+				</indexes>
+			</itemtype>
+
+			<itemtype code="Category" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="resourcePathName" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="VariantCategory" autocreate="false" generate="false">
+
+				<attributes>
+					<attribute qualifier="sequenceId" type="java.lang.Integer">
+						<modifiers read="true" write="true" search="true" optional="false"/>
+						<defaultvalue>java.lang.Integer.valueOf(1)</defaultvalue>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="CMSNavigationNode" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="onlyOneRestrictionMustApply" type="boolean">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="Pincode" autocreate="true" generate="true">
+				<deployment table="pincode" typecode="30004"/>
+				<attributes>
+					<attribute qualifier="pincode" type="java.lang.String">
+						<defaultvalue></defaultvalue>
+						<modifiers optional="false" unique="true"/>
+						<persistence type="property"/>
+					</attribute>
+					<attribute qualifier="city" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="area" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+				<indexes>
+					<index name="pincodeIdx" unique="true">
+						<key attribute="pincode"/>
+					</index>
+				</indexes>
+
+			</itemtype>
+			<itemtype code="DeliveryServiceDetails" autocreate="true" generate="true">
+				<deployment table="DeliveryServiceDetails" typecode="30005"/>
+				<attributes>
+					<attribute qualifier="pincode" type="Pincode">
+						<defaultvalue></defaultvalue>
+						<persistence type="property"/>
+						<modifiers optional="false" unique="true"/>
+					</attribute>
+					<attribute qualifier="restrictedCategoryCodes" type="RestrictedCategorySet">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="Order" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="ibmOrder" type="IbmOrder">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="orderType" type="OrderTypeEnum">
+						<persistence type="property"/>
+						<modifiers/>
+						<defaultvalue>em().getEnumerationValue("OrderTypeEnum", "PREPAID")</defaultvalue>
+					</attribute>
+					<attribute qualifier="oldOrder" type="boolean">
+						<persistence type="property"/>
+						<modifiers/>
+						<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					</attribute>
+					<attribute qualifier="ibmUid" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="IbmOrder" extends="Order">
+				<attributes>
+					<attribute redeclare="true" qualifier="entries" type="IbmOrderEntryCollection"/>
+					<attribute qualifier="originalOrder" type="Order">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="IbmOrderEntry" extends="OrderEntry">
+				<attributes>
+					<attribute autocreate="true" redeclare="true" qualifier="order" type="IbmOrder">
+						<modifiers read="true" write="false" search="true" removable="true" optional="false" initial="true"
+								   unique="true"/>
+					</attribute>
+					<attribute qualifier="originalEntry" type="OrderEntry">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+			<itemtype code="IbmOrderProcess" autocreate="true" generate="true" extends="OrderProcess"/>
+
+			<itemtype code="IbmReason" autocreate="true" generate="true">
+				<deployment table="IbmReason" typecode="30006"/>
+				<attributes>
+					<attribute qualifier="code" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers unique="true"/>
+					</attribute>
+					<attribute qualifier="name" type="localized:java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="externalSystemCode" type="java.lang.String">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="priority" type="int">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+					<attribute qualifier="type" type="IbmReasonTypeEnum">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="Region" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="externalIsoCode" type="java.lang.String">
+						<modifiers/>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="Consignment" autocreate="false" generate="false">
+				<description>Extending Consignment type with additional attributes.</description>
+				<attributes>
+					<attribute type="java.lang.String" qualifier="invoiceNumber">
+						<description>to display invoice on frontend</description>
+						<modifiers read="true" write="true" unique="false" optional="true"/>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="OrderEntry" autocreate="false" generate="false">
+				<attributes>
+					<attribute qualifier="trackingID" type="java.lang.String">
+						<description>Used for Consignment creation based on tracking id. Due to autohoping, one cannot just rely on the fullfilment centre</description>
+						<modifiers/>
+						<persistence type="property"/>
+					</attribute>
+					<attribute type="java.lang.String" qualifier="invoiceNumber">
+						<description>to display invoice on frontend</description>
+						<modifiers read="true" write="true" unique="false" optional="true"/>
+						<persistence type="property"/>
+					</attribute>
+					<attribute type="java.lang.String" qualifier="fullfillmentLocationCode">
+						<description>Only to be leveraged if we are not saving warehouse details</description>
+						<modifiers read="true" write="true" unique="false" optional="true"/>
+						<persistence type="property"/>
+					</attribute>
+					<attribute type="java.lang.String" qualifier="transporter">
+						<description>Transporter Name</description>
+						<modifiers read="true" write="true" unique="false" optional="true"/>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="Consignment" autocreate="false" generate="false">
+				<attributes>
+					<attribute type="java.lang.String" qualifier="fullfillmentLocationCode">
+						<description>Only to be leveraged if we are not saving warehouse details</description>
+						<modifiers read="true" write="true" unique="false" optional="true"/>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="ReturnRequest" autocreate="false" generate="false">
+				<description>Extending ReturnRequest type with additional attributes.</description>
+				<attributes>
+					<attribute qualifier="returnReason" type="ReturnReason">
+						<description>Return Reason</description>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="PaginatedCronjob" autocreate="true" generate="true" extends="CronJob">
+				<description>Paginated Cronjob</description>
+				<attributes>
+					<attribute qualifier="pageSize" type="java.lang.Integer">
+						<description>Page Size</description>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="CatalogedPagedSizeCronjob" autocreate="true" generate="true" extends="PaginatedCronjob">
+				<description>To be used for particular catalog</description>
+				<attributes>
+					<attribute qualifier="catalogVersion" type="CatalogVersion">
+						<description>Catalog Version</description>
+						<persistence type="property"/>
+					</attribute>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="IbmProductPaginationCronjob" autocreate="true" generate="true" extends="CatalogedPagedSizeCronjob">
+				<description>Only saves the products of specific catalog. So that prepared interceptor should be executed</description>
+				<attributes>
+				</attributes>
+			</itemtype>
+
+			<itemtype code="OrderCronjob" autocreate="true" generate="true" extends="CronJob">
+				<attributes>
+					<attribute qualifier="baseStore" type="BaseStore">
+						<persistence type="property"/>
+						<modifiers optional="false"/>
+					</attribute>
+					<attribute qualifier="addMinutes" type="java.lang.Integer">
+						<persistence type="property"/>
+						<modifiers/>
+					</attribute>
+				</attributes>
+			</itemtype>
+			
+			<itemtype code="IbmCouponCode" autocreate="true" generate="true" >
+			<deployment table="ibmcouponcode" typecode="30008"/>
+				<attributes>
+					<attribute qualifier="couponCode" type="java.lang.string">
+						<persistence type="property"/>
+						<modifiers optional="false" unique="true" />
+					</attribute>
+				</attributes>
+			</itemtype>
+			
+			<itemtype code="IbmMultiCodeCoupon" autocreate="true" generate="true" extends="MultiCodeCoupon">
+			</itemtype>
+		</typegroup>
+	</itemtypes>
+</items>

@@ -1,0 +1,2 @@
+update numberseries set template='C$'
+where serieskey='partner_quote_code'

@@ -1,0 +1,2 @@
+UPDATE QuoteState; code[unique = true]; name[lang = en];
+                 ; CREATED          ; Draft

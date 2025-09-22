@@ -1,0 +1,40 @@
+# -----------------------------------------------------------------------
+# Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+# -----------------------------------------------------------------------
+#
+# Import the Solr configuration for the Powertools store
+#
+$productCatalog = partnerProductCatalog
+$catalogVersions = catalogVersions(catalog(id), version);
+$facetSearchConfigName = partnerIndex
+$facetSearchConfigDescription = Partner Solr Index
+$searchIndexNamePrefix = partner
+$solrIndexedType = partnerProductType
+$indexBaseSite = partner
+$indexLanguages = en
+$indexCurrencies = USD
+
+# part product properties
+INSERT_UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; type(code); sortableType(code); currency[default = false]; localized[default = false]; multiValue[default = true]; useForSpellchecking[default = false]; useForAutocomplete[default = false]; fieldValueProvider    ; valueProviderParameter           ; ftsPhraseQuery[default = false]; ftsPhraseQueryBoost; ftsQuery[default = false]; ftsQueryBoost; ftsFuzzyQuery[default = false]; ftsFuzzyQueryBoost; ftsWildcardQuery[default = false]; ftsWildcardQueryType(code)[default = POSTFIX]; ftsWildcardQueryBoost; ftsWildcardQueryMinTermLength;
+                                 ; $solrIndexedType                          ; baseProductCode    ; string    ;                   ;                          ;                           ; false                     ; false                               ; false                              ; springELValueProvider ; baseProduct.code                 ;                                ;                    ; true                     ; 90           ;                               ;                   ; true                             ; POSTFIX                                      ; 45                   ; 3
+                                 ; $solrIndexedType                          ; tagCode            ; string    ;                   ;                          ;                           ; false                     ; false                               ; false                              ; springELValueProvider ; getDeploymentType().getTagCode() ;                                ;                    ; true                     ; 90           ;                               ;                   ; true                             ; POSTFIX                                      ; 45                   ; 3
+
+INSERT_UPDATE SolrSearchQueryProperty; indexedProperty(name, solrIndexedType(identifier))[unique = true]; searchQueryTemplate(name, indexedType(identifier))[unique = true][default = DEFAULT:$solrIndexedType]; facet; ftsPhraseQuery[default = false]; ftsPhraseQueryBoost; ftsQuery[default = false]; ftsQueryBoost; ftsFuzzyQuery[default = false]; ftsFuzzyQueryFuzziness; ftsFuzzyQueryBoost; ftsWildcardQuery[default = false]; ftsWildcardQueryType(code)[default = POSTFIX]; ftsWildcardQueryBoost; ftsWildcardQueryMinTermLength; includeInResponse[default = true]; useForHighlighting[default = false]
+                                     ; baseProductCode:$solrIndexedType                                 ;                                                                                                      ;      ; TRUE                           ; 90                 ; TRUE                     ;              ;                               ;                       ;                   ; TRUE                             ; PREFIX_AND_POSTFIX                           ; 45                   ; 3                            ;                                  ;
+                                     ; tagCode:$solrIndexedType                                         ;                                                                                                      ;      ; TRUE                           ; 90                 ; TRUE                     ;              ;                               ;                       ;                   ; TRUE                             ; PREFIX_AND_POSTFIX                           ; 45                   ; 3                            ;                                  ;
+
+
+# Search query template
+INSERT_UPDATE SolrSearchQueryTemplate; group; name[unique = true]; groupProperty(name); groupLimit; groupFacets; indexedType(identifier)[unique = true]; ftsQueryBuilder             ; enableHighlighting[default = true]
+                                     ; true ; DEFAULT            ; baseProductCode    ; -1        ; true       ; $solrIndexedType                      ; defaultFreeTextQueryBuilder ;
+
+UPDATE IbmDeploymentType; code[unique = true]; name[lang = en]
+                        ; SaaS               ; Software as a service
+
+UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; displayName[lang = $indexLanguages]
+                          ; $solrIndexedType                          ; deploymentType     ; "Deployment types"
+
+INSERT_UPDATE IbmDeploymentType; code[unique = true]; tagCode
+                        ; SaaS               ; SaaS
+                        ; BeSpoke            ; SaaS
+                        ; Perpetual          ; Perpetual

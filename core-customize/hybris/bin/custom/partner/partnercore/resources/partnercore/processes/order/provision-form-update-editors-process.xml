@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+
+<process xmlns="http://www.hybris.de/xsd/processdefinition"
+  start="fetchFormDetailsAction" name="provision-form-update-editors-process"
+  processClass="com.ibm.commerce.partner.core.model.ProvisionFormProcessModel">
+
+    <action id="fetchFormDetailsAction" bean="fetchFormDetailsAction">
+        <transition name="OK" to="patchAllowedUsersAction"/>
+        <transition name="NOK" to="error"/>
+    </action>
+
+    <action id="patchAllowedUsersAction" bean="patchAllowedUsersAction">
+        <transition name="OK" to="success"/>
+        <transition name="NOK" to="error"/>
+    </action>
+
+    <end id="error" state="ERROR">Something went wrong.</end>
+    <end id="failed" state="FAILED">Update Editors email list failed.</end>
+    <end id="success" state="SUCCEEDED">Editor List Updated.</end>
+
+</process>

@@ -1,0 +1,69 @@
+INSERT_UPDATE IbmPartnerB2BUnit ; uid[unique = true] ; name            ; description            
+                                ; partnerB2BUnit     ; Partner B2BUnit ; Default Partner B2BUnit
+                                
+INSERT_UPDATE IbmPartnerSellerAudienceUserGroup ; UID[unique = true] ; sellerAudienceType(code)[default = 'RES']
+                                                ; RES                ;                                          
+INSERT_UPDATE IbmB2BUnit ; uid[unique = true] ; type(code)[default = ='CEID']
+                         ; 67ubu              
+                         ; 18z7gkz4           
+                         ; 18z7gkxd           
+                         ; 6ub9u              
+                         ; 18z7gjzt           
+                         ; 18z7820t           
+
+UPDATE Country ; isocode[unique = true] ; sapCode ;  
+               ; US                     ; USA     
+               
+INSERT_UPDATE Region ; isocode[unique = true] ; name[lang = en] ; country(sapCode)[default = 'USA'] ;  
+                     ; MD                     ; Maryland        
+                     ; FL                     ; Florida         
+                     ; KS                     ; Kansas          
+                     ; VA                     ; Virginia        
+
+INSERT_UPDATE IbmPartnerB2BUnit ; uid[unique = true] ; id         ; locname[lang = en]               ; reportingOrganization(uid) ; country(sapCode) ; groups(uid) ; type(code) ;  
+                                ; 0007000695         ; 5930746    ; "Ingram Micro Inc"               ;                            ; USA              ; 18z7gjzt    ; DISTRIBUTOR
+                                ; 0007003910         ; 0007003910 ; "AVT Technology Solutions LLC"   ;                            ; USA              ; 18z7820t    ; DISTRIBUTOR
+                                ; 0007000627         ; 9209208    ; "Arrow Enterprise Computing Inc" ;                            ; USA              ; 18z7gjzt    ; DISTRIBUTOR
+
+
+INSERT_UPDATE Address ; owner(B2BUnit.uid)[unique = true] ; streetname               ; streetnumber ; town         ; region(isocode) ; postalcode   ; country(sapCode)
+                      ; 0007000695                        ; "1600 E SAINT ANDREW PL" ; ""           ; "SANTA ANA"  ; CA              ; "92705-4926" ; USA             
+                      ; 0007003910                        ; "2021 LAKESIDE BLVD"     ; ""           ; "RICHARDSON" ; TX              ; "75082-4301" ; USA             
+                      ; 0007000627                        ; "PO BOX 6513"            ; ""           ; "ENGLEWOOD"  ; CO              ; "80155-6513" ; USA             
+
+                      
+INSERT_UPDATE IbmPartnerB2BUnit ; uid[unique = true] ; id      ; locname[lang = en]     ; reportingOrganization(uid) ; country(sapCode) ; groups(uid) ; type(code)     ;  
+                                ; 0007923208         ; 3357758 ; "FishNet Security"     ; 0007000695                 ; USA              ; 67ubu       ; RESELLER_TIER_2
+                                ; 0007002767         ; 3463909 ; "Force 3 Inc"          ; 0007003910                 ; USA              ; 18z7gkz4    ; RESELLER_TIER_2
+                                ; 0007168353         ; 5851073 ; "Prolifics Inc."       ; 0007000627                 ; USA              ; 18z7gkxd    ; RESELLER_TIER_2
+                                ; 0003187807         ; 8095655 ; "Serco Services, Inc." ; 0007003910                 ; USA              ; 6ub9u       ; RESELLER_TIER_2
+
+INSERT_UPDATE Address ; owner(B2BUnit.uid)[unique = true] ; streetname                ; streetnumber          ; town            ; region(isocode) ; postalcode   ; country(sapCode)
+                      ; 0003187807                        ; "12930 Worldgate Drive"   ; "c/o Meighan Altwies" ; "HERNDON"       ; VA              ; "20170-6011" ; USA             
+                      ; 0007923208                        ; "6130 Sprint Parkway"     ; "Suite 400"           ; "OVERLAND PARK" ; KS              ; "66211-1155" ; USA             
+                      ; 0007002767                        ; "2147 Priestbridge Drive" ; "Suite 7"             ; "CROFTON"       ; MD              ; "21114-2483" ; USA             
+                      ; 0007168353                        ; "111 N Magnolia Ave"      ; "Suite 1550"          ; "Orlando"       ; FL              ; "32801-2336" ; USA             
+#Customer1                                  
+INSERT_UPDATE PartnerB2BCustomer ; uid[unique=true] ; email           ; originalUid     ; name        ; groups(uid)    ; password[default=123456] ; defaultCountry(isocode) ;  
+                                 ; avnetus@ibm.com  ; avnetus@ibm.com ; avnetus@ibm.com ; Aventus IBM ; partnerB2BUnit ;                          ; US                      ;  
+
+                                 
+UPDATE B2BCustomer[batchmode = true] ; uid[unique = true] ; groups(uid)                                              ; defaultB2BUnit(uid)
+                                     ; avnetus@ibm.com    ; customergroup,b2bcustomergroup,RES,0007923208,0007002767 ; 0003187807         
+
+#Customer2                           
+INSERT_UPDATE PartnerB2BCustomer ; uid[unique=true] ; email           ; originalUid     ; name  ; groups(uid)                         ; password[default=123456] ; defaultCountry(isocode) ;  
+                                 ; test1@gmail.com  ; test1@gmail.com ; test1@gmail.com ; test1 ; partnerB2BUnit,b2bcustomergroup,RES ;                          ; US                      
+
+
+INSERT_UPDATE  IbmPartnerEndCustomerB2BUnit ; uid[unique = true]      ; id      ; locname[lang = en]    ; type(code)  ;  
+                                            ; testEndCustomerB2BUnit  ; 9598917 ; End Customer B2BUnit  ; ENDCUSTOMER ;  
+                                            ; testEndCustomerB2BUnit1 ; 9598918 ; End Customer B2BUnit1 ; ENDCUSTOMER ;  
+
+INSERT_UPDATE IbmPartnerAgreementDetail ; unit(uid)[unique=true]  ; programType ; agreementNumber ; agreementOption ; agreementLevel ; anniversaryMonth ;  
+                                        ; testEndCustomerB2BUnit  ; PA          ; 00001           ; STD             ; J              ; 20               ;  
+                                        ; testEndCustomerB2BUnit1 ; PA          ; 00002           ; STD             ; J              ; 2                ;  
+
+INSERT_UPDATE IbmPartnerOpportunity ; code[unique=true] ;  
+                                    ; testOpp1234       ;  
+                                    ; testOpp4567       ;                                     

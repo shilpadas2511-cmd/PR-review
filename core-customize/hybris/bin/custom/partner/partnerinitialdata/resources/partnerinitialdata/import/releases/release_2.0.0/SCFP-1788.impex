@@ -1,0 +1,2 @@
+UPDATE CronJob; code[unique = true]; active[default = false]
+              ; partnerB2BCustomerCronJob

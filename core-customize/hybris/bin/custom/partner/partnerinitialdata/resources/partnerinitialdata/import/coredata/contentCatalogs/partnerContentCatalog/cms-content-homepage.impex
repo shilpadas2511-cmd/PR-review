@@ -1,0 +1,101 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$productCatalog = partnerProductCatalog
+$productCV = catalogVersion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$medias = medias(code, $contentCV);
+$mediaContainer = media(qualifier, $contentCV);
+$product = product(code, $productCV)
+$category = category(code, $productCV)
+$siteResource=jar:com.ibm.commerce.partner.initialdata.setup.InitialDataSystemSetup&/partnerinitialdata/import
+$lang = en
+# Import modulegen config properties into impex macros
+UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
+$jarResourceCms = $config-jarResourceCmsValue
+
+
+###### Homepage Start ######
+## Based on landingLayout5Page.jsp ##
+INSERT_UPDATE ContentSlotForPage; $contentCV[unique = true]; uid[unique = true]; position[unique = true]; page(uid, $contentCV)[unique = true][default = 'homepage']; contentSlot(uid, $contentCV)[unique = true]
+                                ;                          ; Section1-Homepage ; Section1               ;                                                           ; Section1Slot-Homepage
+                                ;                          ; Section2-Homepage ; Section2               ;                                                           ; Section2Slot-Homepage
+                                ;                          ; Section3-Homepage ; Section3               ;                                                           ; Section3Slot-Homepage
+                                ;                          ; Section4-Homepage ; Section4               ;                                                           ; Section4Slot-Homepage
+                                ;                          ; Section5-Homepage ; Section5               ;                                                           ; Section5Slot-Homepage
+
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]    ; name                       ; active; cmsComponents(&componentRef)
+                         ;                          ; Section1Slot-Homepage ; Section1 Slot for Homepage ; true  ; HeadlineSection1Paragraph,SearchBox
+                         ;                          ; Section2Slot-Homepage ; Section2 Slot for Homepage ; true  ; HeadlineSection2Paragraph,FindOpportunityFeatureComponent,AllProductsFeatureComponent,YourQuotesFeatureComponent,SavedCartsFeatureComponent,ViewCartFeatureComponent,ImportQuoteFeatureComponent
+                         ;                          ; Section3Slot-Homepage ; Section3 Slot for Homepage ; true  ; HompageSection3BannerComponent
+                         ;                          ; Section4Slot-Homepage ; Section4 Slot for Homepage ; true  ; HeadlineSection4Paragraph,HomepageSection4ProductCarouselComponent
+                         ;                          ; Section5Slot-Homepage ; Section5 Slot for Homepage ; true  ; HeadlineSection5Paragraph,HomepageSection5FlexComponent
+
+## components in slot 1 ##
+INSERT_UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; name                                  ; &componentRef             ; ; ; ;
+                                   ;                          ; HeadlineSection1Paragraph ; Headline Section1 Paragraph Paragraph ; HeadlineSection1Paragraph ; ; ; ;
+INSERT_UPDATE SearchBoxComponent; $contentCV[unique = true]; uid[unique = true]; name       ; &componentRef
+                                ;                          ; SearchBox         ; Search Box ; SearchBox
+
+# CMS Paragraph Component
+UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; content[lang = $lang]
+                            ;                          ; HeadlineSection1Paragraph ; "Find a product"
+
+## components in slot 2 ##
+INSERT_UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; name                                  ; &componentRef             ; ; ; ;
+                                   ;                          ; HeadlineSection2Paragraph ; Headline Section2 Paragraph Paragraph ; HeadlineSection2Paragraph ; ; ; ;
+
+INSERT_UPDATE PartnerCategoryFeatureComponent; $contentCV[unique = true]; uid[unique = true]          ; name                        ; category(code, $productCV); &componentRef
+                                             ;                          ; FindOpportunityFeatureComponent ; FindOpportunityFeatureComponent ;                           ; FindOpportunityFeatureComponent
+                                             ;                          ; AllProductsFeatureComponent     ; AllProductsFeatureComponent     ;                           ; AllProductsFeatureComponent
+                                             ;                          ; YourQuotesFeatureComponent      ; YourQuotesFeatureComponent      ;                           ; YourQuotesFeatureComponent
+                                             ;                          ; SavedCartsFeatureComponent      ; SavedCartsFeatureComponent      ;                           ; SavedCartsFeatureComponent
+                                             ;                          ; ViewCartFeatureComponent        ; ViewCartFeatureComponent        ;                           ; ViewCartFeatureComponent
+                                             ;                          ; ImportQuoteFeatureComponent    ; ImportQuoteFeatureComponent      ;                           ; ImportQuoteFeatureComponent
+
+# CMS Paragraph Component
+UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; content[lang = $lang]
+                            ;                          ; HeadlineSection2Paragraph ; "Get Started"
+
+UPDATE PartnerCategoryFeatureComponent; $contentCV[unique = true]; uid[unique = true]          ; urlLink
+                                      ;                          ; AllProductsFeatureComponent ; "/catalog/category/rootcategory"
+                                      ;                          ; YourQuotesFeatureComponent  ; "/cart/quotes"
+                                      ;                          ; SavedCartsFeatureComponent  ; "/cart/savedCart"
+                                      ;                          ; ViewCartFeatureComponent    ; "/cart/cart"
+
+## components in slot 3 ##
+INSERT_UPDATE SimpleResponsiveBannerComponent; $contentCV[unique = true]; uid[unique = true]             ; $mediaContainer             ; name                               ; urlLink; &componentRef
+                                             ;                          ; HompageSection3BannerComponent ; homepage-section3-banner-en ; Komatsu implements AI-powered automation in the public cloud ;        ; HompageSection3BannerComponent
+
+INSERT_UPDATE MediaContainer; qualifier[unique = true]    ; $medias; $contentCV[unique = true]
+                            ; homepage-section3-banner-en ; Homepage_banner_EN_01_350W.jpg,Homepage_banner_EN_01_240W.jpg,Homepage_banner_EN_01_160W.jpg,Homepage_banner_EN_01_385W.jpg
+
+INSERT_UPDATE Media; mediaFormat(qualifier); code[unique = true]            ; @media[translator = de.hybris.platform.impex.jalo.media.MediaDataTranslator][forceWrite = true]; realfilename                   ; altText; mime[default = 'image/jpeg']; $contentCV[unique = true]; folder(qualifier)[default = images];
+                   ; mobile                ; Homepage_banner_EN_01_160W.jpg ;$siteResource/images/Homepage_banner_EN_01_160W.jpg                                                                                                 ; Homepage_banner_EN_01_160W.jpg ;        ;
+                   ; desktop               ; Homepage_banner_EN_01_240W.jpg ;$siteResource/images/Homepage_banner_EN_01_240W.jpg                                                                                                ; Homepage_banner_EN_01_240W.jpg ;        ;
+                   ; widescreen            ; Homepage_banner_EN_01_350W.jpg ; $siteResource/images/Homepage_banner_EN_01_350W.jpg                                                                                                ; Homepage_banner_EN_01_350W.jpg ;        ;
+                   ; tablet                ; Homepage_banner_EN_01_385W.jpg ; $siteResource/images/Homepage_banner_EN_01_385W.jpg                                                                                                ; Homepage_banner_EN_01_385W.jpg ;        ;
+
+## components in slot 4 ##
+INSERT_UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; name                                  ; &componentRef             ; ; ; ;
+                                   ;                          ; HeadlineSection4Paragraph ; Headline Section4 Paragraph Paragraph ; HeadlineSection4Paragraph ; ; ; ;
+
+INSERT_UPDATE ProductCarouselComponent; $contentCV[unique = true]; uid[unique = true]                       ; name                               ; products(code, $productCV)              ; scroll(code); popup ; &componentRef
+                                      ;                          ; HomepageSection4ProductCarouselComponent ; Featured Homepage Product Carousel ;5724S19Perpetual,5737M65Perpetual,5737M67Perpetual,5724V57Perpetual,5725B46Perpetual; allVisible  ; false ; HomepageSection4ProductCarouselComponent
+
+# CMS Paragraph Component
+UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; content[lang = $lang]
+                            ;                          ; HeadlineSection4Paragraph ; "Featured Products"
+
+## components in slot 5 ##
+INSERT_UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; name                                  ; &componentRef
+                                   ;                          ; HeadlineSection5Paragraph ; Headline Section5 Paragraph Paragraph ; HeadlineSection5Paragraph
+
+INSERT_UPDATE CMSFlexComponent; $contentCV[unique = true]; uid[unique = true]            ; name                        ; flexType                     ; &componentRef
+                              ;                          ; HomepageSection5FlexComponent ; Homepage Section5 Component ; HompageSection5FlexComponent ; HomepageSection5FlexComponent
+
+# CMS Paragraph Component
+UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; content[lang = $lang]
+                            ;                          ; HeadlineSection5Paragraph ; "Topics"
+
+###### Homepage End ######
+
+

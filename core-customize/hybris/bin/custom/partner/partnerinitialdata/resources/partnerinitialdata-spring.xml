@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <context:annotation-config/>
+
+    <!-- System Setup -->
+
+    <bean id="partnerInitialDataSystemSetup"
+          class="com.ibm.commerce.partner.initialdata.setup.InitialDataSystemSetup"
+          parent="abstractCoreSystemSetup">
+        <constructor-arg name="partnerCoreDataImportService" ref="partnerCoreDataImportService"/>
+        <constructor-arg name="partnerSampleDataImportService" ref="partnerSampleDataImportService"/>
+        <constructor-arg name="dataImportEnabled" value="${data.import.enabled}"/>
+    </bean>
+
+    <alias name="defaultPartnerSampleDataImportService" alias="partnerSampleDataImportService"/>
+    <bean id="defaultPartnerSampleDataImportService"
+          class="com.ibm.commerce.partner.initialdata.impl.PartnerSampleDataImportService"
+          parent="sampleDataImportService">
+    </bean>
+    <alias name="defaultPartnerCoreDataImportService" alias="partnerCoreDataImportService"/>
+    <bean id="defaultPartnerCoreDataImportService"
+          class="com.ibm.commerce.partner.initialdata.impl.PartnerCoreDataImportService"
+          parent="coreDataImportService">
+    </bean>
+
+    <bean id="abstractPartnerPatch" class="com.ibm.commerce.partner.initialdata.patch.release.AbstractPartnerPatch"
+          abstract="true"
+          parent="abstractPatch"/>
+
+    <!--########################### START SCFP-9780 AUTOMATE RELEASE PATCH IMPORT -->
+    <!--
+        Folder staructure Should be: /resources/partnerinitialdata/import/releases/release{RelaseID}/patch_{PatchID}/xyz.impex
+        The Patch Name should not prefix with patch. System will append "patch_" to the patch Name while looking up for impex files
+         IF releaseId IS 2.1.0,THEN releaseId SHOULD BE APPENDED AFTER "release".  THE FOLDER NAME WOULD BE "release2.1.0"
+         IF patchName IS 2.1.0.0 THEN IT SHOULD BE APPENDED AFTER "patch_", THE FOLDER NAME WOULD BE "patch_2.1.0.0"
+         r{patchName}_globalHeader.impex(MANDATORY FILE OOB) SHOULD BE MAINTAINED IN EVERY PATCH AT  /resources/partnerinitialdata/import/releases/release{RelaseID}/patch_{patchName}/
+    -->
+
+    <!--########################### START release2.2.0-patch_2.2.0.0  -->
+    <bean id="release2.2.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.structure.ReleaseInfo">
+        <constructor-arg name="releaseId" value="2.2.0"/>
+    </bean>
+
+    <util:map id="patch_2.2.0.0ImpexMap" map-class="java.util.TreeMap" key-type="java.lang.Integer"
+      value-type="java.lang.String">
+        <entry key="1" value="SCFP-9334.impex"/>
+        <entry key="2" value="SCFP-10732-ImportQuote.impex"/>
+        <entry key="3" value="ibmPartnerQuoteCreateInbound_eccQuoteNumber_SCFP-10044.impex"/>
+    </util:map>
+
+
+    <bean id="release2.2.0-patch_2.2.0.0" class="com.ibm.commerce.partner.initialdata.patch.release.PatchImporter"
+      parent="abstractPartnerPatch">
+        <constructor-arg name="patchId" value="patch_2.2.0.0"/>
+        <constructor-arg name="patchName" value="2.2.0.0"/>
+        <constructor-arg name="release" ref="release2.2.0"/>
+        <constructor-arg name="impexFileMap" ref="patch_2.2.0.0ImpexMap"/>
+        <property name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+    <!--########################### END release2.2.0-patch_2.2.0.0 -->
+    <!--########################### START release2.3.0-patch_2.3.0.0  -->
+    <bean id="release2.3.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.structure.ReleaseInfo">
+        <constructor-arg name="releaseId" value="2.3.0"/>
+    </bean>
+
+    <util:map id="patch_2.3.0.0ImpexMap" map-class="java.util.TreeMap" key-type="java.lang.Integer"
+      value-type="java.lang.String">
+        <entry key="1" value="SCFP-11443-ProvisionForm.impex"/>
+        <entry key="2" value="SCFP-10835-Decorator.impex"/>
+        <entry key="3" value="SCFP-11931-CurrencySolr.impex"/>
+        <entry key="4" value="SCFP-11974_DeactivateCountries.impex"/>
+        <entry key="5" value="SCFP-11974_ActivateCountries.impex"/>
+        <entry key="6" value="SCFP-11974_ActivateCurrencies.impex"/>
+        <entry key="7" value="SCFP-11974_Basestore_Currencies.impex"/>
+        <entry key="8" value="SCFP-11116-Creds.impex"/>
+        <entry key="9" value="SCFP-10634.impex"/>
+        <entry key="10" value="CpqIbmInboundCategory.impex"/>
+        <entry key="11" value="CpqInboundCategoryRelation.impex"/>
+        <entry key="12" value="CpqIbmProductInbound.impex"/>
+        <entry key="13" value="CpqInboundIbmVariantProduct.impex"/>
+        <entry key="14" value="CpqIbmPartProductInbound.impex"/>
+        <entry key="15" value="SCFP-12132-IntegrationObject.impex"/>
+    </util:map>
+
+    <bean id="release2.3.0-patch_2.3.0.0" class="com.ibm.commerce.partner.initialdata.patch.release.PatchImporter"
+      parent="abstractPartnerPatch">
+        <constructor-arg name="patchId" value="patch_2.3.0.0"/>
+        <constructor-arg name="patchName" value="2.3.0.0"/>
+        <constructor-arg name="release" ref="release2.3.0"/>
+        <constructor-arg name="impexFileMap" ref="patch_2.3.0.0ImpexMap"/>
+        <property name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+    <!--########################### END release2.3.0-patch_2.3.0.0 -->
+
+    <!--########################### START release2.4.0-patch_2.4.0  -->
+    <bean id="release2.4.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.structure.ReleaseInfo">
+        <constructor-arg name="releaseId" value="2.4.0"/>
+    </bean>
+
+    <util:map id="patch_2.4.0.0ImpexMap" map-class="java.util.TreeMap" key-type="java.lang.Integer"
+      value-type="java.lang.String">
+        <entry key="1" value="CpqPartnerPIDAgreement.impex"/>
+        <entry key="2" value="CpqIbmPartProductInbound.impex"/>
+        <entry key="3" value="SCFP-12228.impex"/>
+        <entry key="4" value="SCFP-12572_DeploymentTypeSapCode.impex"/>
+        <entry key="5" value="SCFP-5323.impex"/>
+    </util:map>
+
+    <bean id="release2.4.0-patch_2.4.0.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.PatchImporter"
+      parent="abstractPartnerPatch">
+        <constructor-arg name="patchId" value="patch_2.4.0.0"/>
+        <constructor-arg name="patchName" value="2.4.0.0"/>
+        <constructor-arg name="release" ref="release2.4.0"/>
+        <constructor-arg name="impexFileMap" ref="patch_2.4.0.0ImpexMap"/>
+        <property name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <!--########################### END release_2.4.0-patch_2.4.0.0 -->
+
+    <!--########################### START release2.5.0-patch_2.5.0  -->
+
+    <bean id="release2.5.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.structure.ReleaseInfo">
+        <constructor-arg name="releaseId" value="2.5.0"/>
+    </bean>
+
+    <util:map id="patch_2.5.0.0ImpexMap" map-class="java.util.TreeMap" key-type="java.lang.Integer"
+      value-type="java.lang.String">
+        <entry key="1" value="SCFP-13903.impex"/>
+        <entry key="2" value="SCFP-12986.impex"/>
+        <entry key="3" value="SCFP-12350.impex"/>
+        <entry key="4" value="SCFP-7910_cpqOutboundQuote.impex"/>
+        <entry key="5" value="SCFP-12197.impex"/>
+        <entry key="6" value="CpqIbmPartProductInbound.impex"/>
+        <entry key="7" value="SCFP-13581.impex"/>
+        <entry key="8" value="SCFP-13707_CPQOutBound.impex"/>
+        <entry key="9" value="SCFP-12225.impex"/>
+        <entry key="10" value="SCFP-11501_cpqOutboundQuote.impex"/>
+        <entry key="11" value="SCFP-13281_CPQOutBound.impex"/>
+        <entry key="12" value="ProvisionFormUpdate.impex"/>
+    </util:map>
+
+
+    <bean id="release2.5.0-patch_2.5.0.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.PatchImporter"
+      parent="abstractPartnerPatch">
+        <constructor-arg name="patchId" value="patch_2.5.0.0"/>
+        <constructor-arg name="patchName" value="2.5.0.0"/>
+        <constructor-arg name="release" ref="release2.5.0"/>
+        <constructor-arg name="impexFileMap" ref="patch_2.5.0.0ImpexMap"/>
+        <property name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+    <!--########################### END release_2.5.0-patch_2.5.0.0 -->
+
+    <!--########################### START release2.6.0-patch_2.6.0  -->
+    <bean id="release2.6.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.structure.ReleaseInfo">
+        <constructor-arg name="releaseId" value="2.6.0"/>
+    </bean>
+
+    <util:map id="patch_2.6.0.0ImpexMap" map-class="java.util.TreeMap" key-type="java.lang.Integer"
+      value-type="java.lang.String">
+        <entry key="1" value="SCFP-12881.impex"/>
+        <entry key="2" value="SCFP-8333.impex"/>
+    </util:map>
+
+    <bean id="release2.6.0-patch_2.6.0.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.PatchImporter"
+      parent="abstractPartnerPatch">
+        <constructor-arg name="patchId" value="patch_2.6.0.0"/>
+        <constructor-arg name="patchName" value="2.6.0.0"/>
+        <constructor-arg name="release" ref="release2.6.0"/>
+        <constructor-arg name="impexFileMap" ref="patch_2.6.0.0ImpexMap"/>
+        <property name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+    <!--########################### END release_2.6.0-patch_2.6.0.0 -->
+
+    <!--########################### START release2.7.0-patch_2.7.0  -->
+    <bean id="release2.7.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.structure.ReleaseInfo">
+        <constructor-arg name="releaseId" value="2.7.0"/>
+    </bean>
+
+    <util:map id="patch_2.7.0.0ImpexMap" map-class="java.util.TreeMap" key-type="java.lang.Integer"
+      value-type="java.lang.String">
+        <entry key="1" value="SCFP-11853.impex"/>
+        <entry key="2" value="SCFP-14471.impex"/>
+        <entry key="3" value="SCFP-14872.impex"/>
+    </util:map>
+
+    <bean id="release2.7.0-patch_2.7.0.0"
+      class="com.ibm.commerce.partner.initialdata.patch.release.PatchImporter"
+      parent="abstractPartnerPatch">
+        <constructor-arg name="patchId" value="patch_2.7.0.0"/>
+        <constructor-arg name="patchName" value="2.7.0.0"/>
+        <constructor-arg name="release" ref="release2.7.0"/>
+        <constructor-arg name="impexFileMap" ref="patch_2.7.0.0ImpexMap"/>
+        <property name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+    <!--########################### END release_2.7.0-patch_2.7.0.0 -->
+
+
+    <bean id="partnerPatchSystemSetup" class="com.ibm.commerce.partner.initialdata.setup.InitialDataPatchSystemSetup"
+      parent="patchesSystemSetup">
+        <property name="patches">
+            <list>
+                <!--<ref bean="release2.2.0-patch_2.2.0.0"/>
+                <ref bean="release2.3.0-patch_2.3.0.0"/>
+                <ref bean="release2.4.0-patch_2.4.0.0"/>
+                <ref bean="release2.5.0-patch_2.5.0.0"/>
+                <ref bean="release2.6.0-patch_2.6.0.0"/>-->
+                <ref bean="release2.7.0-patch_2.7.0.0"/>
+            </list>
+        </property>
+        <property name="configurationService" ref="ibmCommonConfigurationService"/>
+        <property name="setupSolrIndexerService" ref="setupSolrIndexerService"/>
+    </bean>
+
+    <!--########################### END SCFP-9780 AUTOMATE -->
+</beans>

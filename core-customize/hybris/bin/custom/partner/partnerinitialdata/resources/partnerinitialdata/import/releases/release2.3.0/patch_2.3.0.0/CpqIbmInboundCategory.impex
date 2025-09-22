@@ -1,0 +1,25 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]   ; integrationType(code)
+                               ; CpqIbmInboundCategory ; INBOUND
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code)     ; root[default = false]; itemTypeMatch(code)
+                                   ; CpqIbmInboundCategory                 ; CatalogVersion     ; CatalogVersion ;                      ; ALL_SUB_AND_SUPER_TYPES ;
+                                   ; CpqIbmInboundCategory                 ; Principal          ; Principal      ;                      ; ALL_SUBTYPES            ;
+                                   ; CpqIbmInboundCategory                 ; IbmCategory        ; IbmCategory    ; true                 ; ALL_SUB_AND_SUPER_TYPES ;
+                                   ; CpqIbmInboundCategory                 ; Catalog            ; Catalog        ;                      ; ALL_SUB_AND_SUPER_TYPES ;
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; CpqIbmInboundCategory:CatalogVersion                               ; version                     ; CatalogVersion:version                             ;                                                           ; true                   ;
+                                            ; CpqIbmInboundCategory:CatalogVersion                               ; catalog                     ; CatalogVersion:catalog                             ; CpqIbmInboundCategory:Catalog                             ; true                   ;
+                                            ; CpqIbmInboundCategory:Principal                                    ; uid                         ; Principal:uid                                      ;                                                           ; true                   ;
+                                            ; CpqIbmInboundCategory:IbmCategory                                  ; code                        ; IbmCategory:code                                   ;                                                           ; true                   ;
+                                            ; CpqIbmInboundCategory:IbmCategory                                  ; cpqId                       ; IbmCategory:cpqId                                  ;                                                           ;                        ;
+                                            ; CpqIbmInboundCategory:IbmCategory                                  ; description                 ; IbmCategory:description                            ;                                                           ;                        ;
+                                            ; CpqIbmInboundCategory:IbmCategory                                  ; catalogVersion              ; IbmCategory:catalogVersion                         ; CpqIbmInboundCategory:CatalogVersion                      ; true                   ;
+                                            ; CpqIbmInboundCategory:IbmCategory                                  ; name                        ; IbmCategory:name                                   ;                                                           ;                        ;
+                                            ; CpqIbmInboundCategory:IbmCategory                                  ; allowedPrincipals           ; IbmCategory:allowedPrincipals                      ; CpqIbmInboundCategory:Principal                           ;                        ;
+                                            ; CpqIbmInboundCategory:Catalog                                      ; id                          ; Catalog:id                                         ;                                                           ; true                   ;
+
+
+
+INSERT_UPDATE InboundChannelConfiguration; integrationObject(code)[unique = true]; authenticationType(code);
+                                         ; CpqIbmInboundCategory                 ; OAUTH                   ;

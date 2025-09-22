@@ -1,0 +1,14 @@
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]      ; type(code)               ; root[default = false]; itemTypeMatch(code)
+                                   ; PartnerQuoteCreateInbound             ; CpqPartnerRampUpSummary  ; CpqPartnerRampUpSummary  ;                      ; ALL_SUB_AND_SUPER_TYPES ;
+                                   ; PartnerQuoteCreateInbound             ; CpqPartnerCommerceRampUp ; CpqPartnerCommerceRampUp ;                      ; ALL_SUB_AND_SUPER_TYPES ;
+
+
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; PartnerQuoteCreateInbound:CpqPartnerRampUpSummary                  ; id                          ; CpqPartnerRampUpSummary:id                         ;                                                           ; true                   ;
+                                            ; PartnerQuoteCreateInbound:CpqPartnerRampUpSummary                  ; rampUpQuantity              ; CpqPartnerRampUpSummary:rampUpQuantity             ;                                                           ;                        ;
+                                            ; PartnerQuoteCreateInbound:CpqPartnerRampUpSummary                  ; rampUpPeriodDuration        ; CpqPartnerRampUpSummary:rampUpPeriodDuration       ;                                                           ;                        ;
+                                            ; PartnerQuoteCreateInbound:CpqPartnerCommerceRampUp                 ; id                          ; CpqPartnerCommerceRampUp:id                        ;                                                           ; true                   ;
+                                            ; PartnerQuoteCreateInbound:CpqPartnerCommerceRampUp                 ; rampUpPeriod                ; CpqPartnerCommerceRampUp:rampUpPeriod              ;                                                           ;                        ;
+                                            ; PartnerQuoteCreateInbound:CpqPartnerCommerceRampUp                 ; cpqPartnerRampUpSummary     ; CpqPartnerCommerceRampUp:cpqPartnerRampUpSummary   ; PartnerQuoteCreateInbound:CpqPartnerRampUpSummary         ;                        ; true
+                                            ; PartnerQuoteCreateInbound:CpqIbmPartnerQuoteEntry                  ; commerceRampUp              ; CpqIbmPartnerQuoteEntry:commerceRampUp             ; PartnerQuoteCreateInbound:CpqPartnerCommerceRampUp        ;                        ; true

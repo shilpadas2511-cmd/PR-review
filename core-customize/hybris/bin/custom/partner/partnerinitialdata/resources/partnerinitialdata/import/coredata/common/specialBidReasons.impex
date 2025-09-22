@@ -1,0 +1,7 @@
+# special bid reason information
+INSERT_UPDATE PartnerSpecialBidReason;code[unique=true,allownull=true];name[en];active[allownull=true];priority[allownull=true]
+                                     ;Bid iteration (previously approved);Bid iteration (previously approved);TRUE;0
+                                     ;Significant Competitive environment;Significant Competitive environment;TRUE;1
+                                     ;Multiple Quotes for single opportunity;Multiple Quotes for single opportunity;TRUE;2
+                                     ;Existing Contract;Existing Contract;TRUE;3
+

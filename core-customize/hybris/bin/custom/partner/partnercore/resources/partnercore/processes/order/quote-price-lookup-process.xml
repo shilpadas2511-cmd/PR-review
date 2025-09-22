@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+
+<process xmlns="http://www.hybris.de/xsd/processdefinition"
+  start="removeErrorMessageToCartAction" name="quote-price-lookup-process"
+  processClass="com.ibm.commerce.partner.core.model.PriceLookUpProcessModel">
+
+    <action id="removeErrorMessageToCartAction" bean="removeErrorMessageToCartAction">
+        <transition name="OK" to="partnerRemovePricingInformationAction"/>
+        <transition name="NOK" to="priceGettingFailedAction"/>
+    </action>
+
+    <action id="partnerRemovePricingInformationAction" bean="partnerRemovePricingInformationAction">
+        <transition name="OK" to="partnerOrderEntriesCheckAction"/>
+        <transition name="NOK" to="priceGettingFailedAction"/>
+    </action>
+
+    <action id="partnerOrderEntriesCheckAction" bean="partnerOrderEntriesCheckAction">
+        <transition name="OK" to="dealRegAction"/>
+        <transition name="NOK" to="partnerCalculateOrderAction"/>
+    </action>
+
+    <action id="dealRegAction" bean="dealRegAction">
+        <transition name="OK" to="fullPriceAction"/>
+        <transition name="NOK" to="priceGettingFailedAction"/>
+    </action>
+
+    <action id="fullPriceAction" bean="fullPriceAction">
+        <transition name="OK" to="partnerCalculateOrderAction"/>
+        <transition name="NOK" to="priceGettingFailedAction"/>
+    </action>
+
+    <action id="partnerCalculateOrderAction" bean="partnerCalculateOrderAction">
+        <transition name="OK" to="success"/>
+        <transition name="NOK" to="priceGettingFailedAction"/>
+    </action>
+
+    <action id="priceGettingFailedAction" bean="addErrorMessageToCartAction">
+        <transition name="OK" to="failed"/>
+        <transition name="NOK" to="error"/>
+    </action>
+
+    <end id="error" state="ERROR">Something went wrong.</end>
+    <end id="failed" state="FAILED">Quote cart price update failed.</end>
+    <end id="success" state="SUCCEEDED">Quote cart Price Updated.</end>
+
+</process>

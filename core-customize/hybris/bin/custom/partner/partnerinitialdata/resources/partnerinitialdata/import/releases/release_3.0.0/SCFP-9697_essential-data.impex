@@ -1,0 +1,3 @@
+# Filter Active Countries
+INSERT_UPDATE SearchRestriction; code[unique = true]            ; name[lang = en]                         ; principal(UID)   ; restrictedType(code)[unique = true]; active; generate; query
+                               ; IBMPartnerCountriesRestriction ; Search restriction for Active Countries ; b2bcustomergroup ; Country                            ; true  ; true    ; {active} = 1

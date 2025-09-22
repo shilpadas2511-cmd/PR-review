@@ -1,0 +1,14 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; PartnerQuoteSearchInbound; INBOUND
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code); root[default = false]; itemTypeMatch(code)
+                                   ; PartnerQuoteSearchInbound	; IbmPartnerQuote	; IbmPartnerQuote	; true	; ALL_SUB_AND_SUPER_TYPES	;
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; PartnerQuoteSearchInbound:IbmPartnerQuote	; cpqQuoteNumber    	; IbmPartnerQuote:cpqQuoteNumber    	;                           	; 	;
+                                            ; PartnerQuoteSearchInbound:IbmPartnerQuote	; version           	; IbmPartnerQuote:version           	;                           	; true	;
+                                            ; PartnerQuoteSearchInbound:IbmPartnerQuote	; cpqExternalQuoteId	; IbmPartnerQuote:cpqExternalQuoteId	;                           	; 	;
+                                            ; PartnerQuoteSearchInbound:IbmPartnerQuote	; code              	; IbmPartnerQuote:code              	;                           	; true	;
+
+INSERT_UPDATE InboundChannelConfiguration; integrationObject(code)[unique = true]; authenticationType(code);
+                                         ; PartnerQuoteSearchInbound                  ; OAUTH;

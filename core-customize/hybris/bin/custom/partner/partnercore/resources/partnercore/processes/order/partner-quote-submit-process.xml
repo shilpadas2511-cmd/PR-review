@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2024 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+
+
+<process xmlns="http://www.hybris.de/xsd/processdefinition"
+  start="partnerAddIbmSellerCollaboratorAction"
+  name="partner-quote-submit-process"
+  processClass="de.hybris.platform.commerceservices.model.process.QuoteProcessModel">
+
+    <action id="partnerAddIbmSellerCollaboratorAction" bean="partnerAddIbmSellerCollaboratorAction">
+        <transition name="OK" to="success"/>
+        <transition name="NOK" to="failed"/>
+    </action>
+
+    <end id="failed" state="FAILED">CollaboratorInfo sync to CPQ failed</end>
+    <end id="success" state="SUCCEEDED">CollaboratorInfo sync to CPQ successful</end>
+
+</process>

@@ -1,0 +1,9 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+
+$lang = en
+
+UPDATE PartnerCategoryFeatureComponent; $contentCV[unique = true]; uid[unique = true]               ; description[lang = $lang]
+                                      ;                          ; YourQuotesFeatureComponent       ; "View and manage your existing quotes"
+                                      ;                          ; SavedCartsFeatureComponent       ; "Access your saved carts"
+                                      ;                          ; ViewCartFeatureComponent         ; "Open your current cart"

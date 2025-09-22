@@ -1,0 +1,6 @@
+UPDATE QuoteState; code[unique = true]; name[lang = en];
+                 ; READY_TO_ORDER     ; Ready To Order
+                 ; IN_REVIEW          ; In Review
+                 ; NOT_APPROVED       ; Not Approved
+
+

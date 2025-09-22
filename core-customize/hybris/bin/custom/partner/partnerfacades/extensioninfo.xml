@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+
+
+    <extension abstractclassprefix="Generated" classprefix="Partnerfacades" jaloLogicFree="true"
+      managername="PartnerfacadesManager"
+      managersuperclass="de.hybris.platform.jalo.extension.Extension" name="partnerfacades"
+      usemaven="false">
+        <requires-extension name="partnercore"/>
+        <requires-extension name="b2bcommercefacades"/>
+        <requires-extension name="commonfacades"/>
+        <requires-extension name="b2bacceleratorfacades"/>
+        <requires-extension name="sapcpqquoteintegration"/>
+        <requires-extension name="outboundservices"/>
+        <requires-extension name="selectivecartfacades"/>
+        <coremodule generated="true"
+          manager="com.ibm.commerce.partner.facades.jalo.PartnerfacadesManager"
+          packageroot="com.ibm.commerce.partner.facades"/>
+
+    </extension>
+</extensioninfo>

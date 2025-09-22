@@ -1,0 +1,22 @@
+# -----------------------------------------------------------------------
+# Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+# -----------------------------------------------------------------------
+#
+# Import the Content Catalog
+#
+
+# Language
+
+$contentCatalog=partnerContentCatalog
+$language=en
+
+
+
+###### Content catalog for spartacus ######
+INSERT_UPDATE ContentCatalog;id[unique=true];name[lang=$language]
+                            ;$contentCatalog;"Partner Content Catalog"
+
+###### Site Context ######
+INSERT_UPDATE CmsSiteContext;code[unique=true];name[lang=$language]
+                            ;LANGUAGE;"language"
+                            ;CURRENCY;"currency"

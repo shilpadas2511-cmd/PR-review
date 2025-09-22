@@ -1,0 +1,5 @@
+$productCatalog = partnerProductCatalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$approvalStatus = approvalStatus(code)[default = 'approved']
+$supercategories = supercategories(code, $catalogVersion)
+$lang = en

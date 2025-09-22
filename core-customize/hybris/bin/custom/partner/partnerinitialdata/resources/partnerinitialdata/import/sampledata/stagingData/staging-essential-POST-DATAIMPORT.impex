@@ -1,0 +1,11 @@
+$productCatalog = partnerProductCatalog
+$productCatalogName = partner Product Catalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$approvalStatus = approvalStatus(code)[default = 'approved']
+$supercategories = supercategories(code, $catalogVersion)
+
+$lang = en
+
+UPDATE Product[batchmode=true]; itemtype(code)[unique = true]; unit(code)[default = pieces]; $catalogVersion
+                              ; IbmVariantProduct            ;
+                              ; IbmPartProduct               ;

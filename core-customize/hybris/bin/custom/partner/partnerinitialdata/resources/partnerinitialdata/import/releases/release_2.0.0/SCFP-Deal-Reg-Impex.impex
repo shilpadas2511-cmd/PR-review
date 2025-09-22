@@ -1,0 +1,2 @@
+UPDATE IbmConsumedDestination; id[unique = true]      ; url     ;
+                             ; dealRegPricingService  ; https://dev.api.ibm.com:1443/q2cdsw/bluetest/dswcom/dsw/services/sales/deal-reg-eligibility-check-service/check/v2/part ;

@@ -1,0 +1,15 @@
+#################################category#################################
+$productCatalog = partnerProductCatalog
+$productCatalogName = partner Product Catalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$approvalStatus = approvalStatus(code)[default = 'approved']
+$supercategories = supercategories(code, $catalogVersion)
+
+$lang = en
+
+INSERT_UPDATE IbmDeploymentType; code[unique = true]; name[lang = en]; tagCode    ; sapCode
+                               ; Appliances         ; Appliance     ; Appliance ; AL
+
+INSERT_UPDATE IbmVariantValueCategory; code[unique = true]; deploymentType(code); name[lang = $lang]; sequence; $supercategories[default = 'partnerDeploymentTypeConfigurator']; allowedPrincipals(uid)[default = 'customergroup']; $catalogVersion
+                                     ; Appliances         ; Appliances          ; Appliances        ; 130
+

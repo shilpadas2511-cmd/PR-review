@@ -1,0 +1,8 @@
+$solrIndexedType = partnerQuoteType
+
+UPDATE SolrIndexedProperty; solrIndexedType(identifier)[unique = true]; name[unique = true]; facetType(code)
+                          ; $solrIndexedType                          ; salesApplication   ; MultiSelectOr
+
+# Search query properties
+INSERT SolrSearchQueryProperty; indexedProperty(name, solrIndexedType(identifier))[unique = true]; facetType(code); searchQueryTemplate(name, indexedType(identifier))[unique = true][default = DEFAULT:$solrIndexedType]; facet; ftsPhraseQuery[default = false]; ftsPhraseQueryBoost; ftsQuery[default = false]; ftsQueryBoost; ftsFuzzyQuery[default = false]; ftsFuzzyQueryFuzziness; ftsFuzzyQueryBoost; ftsWildcardQuery[default = false]; ftsWildcardQueryType(code)[default = POSTFIX]; ftsWildcardQueryBoost; ftsWildcardQueryMinTermLength; includeInResponse[default = true]; useForHighlighting[default = false]
+                              ; salesApplication:$solrIndexedType                                ; MultiSelectOr  ;                                                                                                      ; TRUE ; TRUE                           ; 90                 ; TRUE                     ;              ;                               ;                       ;                   ; true                             ; POSTFIX                                      ; 45                   ; 2                            ;                                  ;

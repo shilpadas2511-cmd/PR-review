@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved. -->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="beans.xsd">
+
+    <bean class="com.ibm.commerce.partner.enums.data.DisplayTypeData">
+        <property name="code" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+    </bean>
+    <bean class="com.ibm.commerce.partner.data.PartnerB2BRegistrationData"
+      extends="de.hybris.platform.b2bcommercefacades.data.B2BRegistrationData">
+        <property name="uid" type="java.lang.String"/>
+        <property name="customerUid" type="java.lang.String"/>
+        <property name="firstName" type="java.lang.String"/>
+        <property name="lastName" type="java.lang.String"/>
+        <property name="defaultCountry"
+          type="de.hybris.platform.commercefacades.user.data.CountryData"/>
+        <property name="defaultLanguage"
+          type="de.hybris.platform.commercefacades.storesession.data.LanguageData"/>
+        <property name="siteId"
+          type="com.ibm.commerce.partner.company.data.IbmB2BUnitData"/>
+        <property name="active"
+          type="boolean">
+        </property>
+        <property name="roles"
+          type="java.util.List&lt;java.lang.String>">
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.data.order.entry.pricing.CpqPricingDetailData">
+        <property name="rolledUpBidExtendedPrice" type="java.lang.String"/>
+        <property name="pricingStrategy" type="java.lang.String"/>
+        <property name="listPrice" type="java.lang.String"/>
+        <property name="netPrice" type="java.lang.String"/>
+        <property name="extendedListPrice" type="java.lang.String"/>
+        <property name="discountAmount" type="java.lang.String"/>
+        <property name="discountPercent" type="java.lang.String"/>
+        <property name="rolledUpListPrice" type="java.lang.String"/>
+        <property name="rolledUpExtendedListPrice" type="java.lang.String"/>
+        <property name="rolledUpNetPrice" type="java.lang.String"/>
+        <property name="pricingType" type="java.lang.String"/>
+        <property name="totalExtendedPrice" type="java.lang.String"/>
+        <property name="overrideBidUnitPrice" type="java.lang.Double"/>
+        <property name="overrideDiscount" type="java.lang.Double"/>
+        <property name="channelMargin" type="java.lang.Double"/>
+        <property name="ytyPercentage" type="java.lang.Double"/>
+        <property name="overrideYearToYearGrowth" type="java.lang.Double"/>
+        <property name="overrideObsoletePrice" type="java.lang.Double"/>
+        <property name="eccPriceAvailable" type="boolean"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.quote.data.QuoteData"
+      extends="de.hybris.platform.commercefacades.order.data.AbstractOrderData">
+        <property name="opportunity"
+          type="com.ibm.commerce.partner.deal.data.IbmPartnerOpportunityData"/>
+        <property name="billToUnit"
+          type="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="soldThroughUnit"
+          type="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="shipToUnit"
+          type="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerEndCustomerB2BUnitData"/>
+        <property name="agreementDetail"
+          type="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerAgreementDetailData"/>
+        <property name="quoteCreater"
+          type="de.hybris.platform.commercefacades.user.data.CustomerData"/>
+        <property name="quoteSubmitter"
+          type="de.hybris.platform.commercefacades.user.data.CustomerData"/>
+        <property name="quoteExpirationDate"
+          type="java.util.Date"/>
+        <property name="ytyPercentage"
+          type="java.lang.Double"/>
+        <property name="totalBidExtendedPrice"
+          type="java.lang.Double"/>
+        <property name="totalMEPPrice"
+          type="java.lang.Double"/>
+        <property name="totalFullPrice"
+          type="java.lang.Double"/>
+        <property name="discount"
+          type="java.lang.Double"/>
+        <property name="quoteStatus" type="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="cpqQuoteStatus" type="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="submittedDate" type="java.lang.String"/>
+        <property name="fullPriceReceived" type="boolean"/>
+        <property name="specialBidReason"
+          type="com.ibm.commerce.partner.specialbidreason.data.PartnerSpecialBidReasonData"/>
+        <property name="specialBidReasons"
+          type="java.util.List&lt;com.ibm.commerce.partner.specialbidreason.data.PartnerSpecialBidReasonData>"/>
+        <property name="specialBidBusinessJustification" type="java.lang.String"/>
+        <property name="eccQuoteNumber" type="java.lang.String"/>
+        <property name="specialBid" type="boolean"/>
+        <property name="partnerQuestionsSelections" type="java.util.List&lt;com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsSelectionData>"/>
+        <property name="partnerCpqHeaderPricingDetails"
+          type="java.util.List&lt;com.ibm.commerce.partner.data.order.pricing.PartnerCpqHeaderPricingDetailData>"/>
+        <property name="vadView" type="boolean"/>
+        <property name="unit"
+          type="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="quoteAccessToSites" type="java.util.List&lt;String>"/>
+        <property name="cartId" type="java.lang.String"/>
+        <property name="statusName" type="java.lang.String"/>
+        <property name="salesApplication" type="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="orders" type="java.util.List&lt;com.ibm.commerce.partner.order.data.PartnerOrderData>"/>
+        <property name="cpqQuoteNumber" type="java.lang.String"/>
+        <property name="provisionForms" type="java.util.List&lt;com.ibm.commerce.partner.provision.form.data.ProvisioningFormData>"/>
+        <property name="collaboratorEmails" type="java.util.List&lt;String>"/>
+        <property name="provisionFormError" type="java.lang.String"/>
+        <property name="currency"
+          type="de.hybris.platform.commercefacades.storesession.data.CurrencyData"/>
+        <property name="cpqQuoteID" type="String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.order.data.CartData"
+      extends="de.hybris.platform.commercefacades.order.data.AbstractOrderData">
+        <property name="opportunity"
+          type="com.ibm.commerce.partner.deal.data.IbmPartnerOpportunityData"/>
+        <property name="billToUnit"
+          type="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="soldThroughUnit"
+          type="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="shipToUnit"
+          type="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerEndCustomerB2BUnitData"/>
+        <property name="agreementDetail"
+          type="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerAgreementDetailData"/>
+        <property name="modifiedtime" type="java.util.Date"/>
+        <property name="ytyPercentage"
+          type="java.lang.Double"/>
+        <property name="totalBidExtendedPrice"
+          type="java.lang.Double"/>
+        <property name="totalMEPPrice"
+          type="java.lang.Double"/>
+        <property name="discount"
+          type="java.lang.Double"/>
+        <property name="totalFullPrice"
+          type="java.lang.Double"/>
+        <property name="errorMessage"
+          type="java.lang.String"/>
+        <property name="quoteExpirationDate" type="java.util.Date"/>
+        <property name="fullPriceReceived" type="boolean"/>
+        <property name="editable" type="boolean"/>
+        <property name="priceStale" type="boolean"/>
+        <property name="specialBidReason"
+          type="com.ibm.commerce.partner.specialbidreason.data.PartnerSpecialBidReasonData"/>
+        <property name="specialBidReasons"
+          type="java.util.List&lt;com.ibm.commerce.partner.specialbidreason.data.PartnerSpecialBidReasonData>"/>
+        <property name="specialBidBusinessJustification" type="java.lang.String"/>
+        <property name="partnerCpqHeaderPricingDetail" type="com.ibm.commerce.partner.data.order.pricing.PartnerCpqHeaderPricingDetailData"/>
+        <property name="specialBid" type="boolean"/>
+        <property name="partnerQuestionsSelections" type="java.util.List&lt;com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsSelectionData>"/>
+        <property name="partnerCpqHeaderPricingDetails"
+          type="java.util.List&lt;com.ibm.commerce.partner.data.order.pricing.PartnerCpqHeaderPricingDetailData>"/>
+        <property name="vadView" type="boolean"/>
+        <property name="ytyYears" type="java.util.List&lt;com.ibm.commerce.partner.data.order.pricing.YtyYearData>"/>
+        <property name="provisionForms" type="java.util.List&lt;com.ibm.commerce.partner.provision.form.data.ProvisioningFormData>"/>
+        <property name="collaboratorEmails" type="java.util.List&lt;String>"/>
+        <property name="provisionFormError" type="java.lang.String"/>
+        <property name="currency" type="de.hybris.platform.commercefacades.storesession.data.CurrencyData"/>
+        <property name="cpqQuoteID" type="String"/>
+    </bean>
+
+
+    <bean
+      class="com.ibm.commerce.data.order.IbmAddToCartParamsData">
+        <property name="opportunity"
+          type="com.ibm.commerce.partner.deal.data.IbmPartnerOpportunityData"/>
+        <property name="billToUnit"
+          type="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="soldThroughUnit"
+          type="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="shipToUnit"
+          type="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerEndCustomerB2BUnitData"/>
+        <property name="agreementDetail"
+          type="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerAgreementDetailData"/>
+        <property name="quoteExpirationDate" type="java.lang.String"/>
+        <property name="salesApplication" type="java.lang.String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.b2bcommercefacades.company.data.B2BUnitData"
+      extends="de.hybris.platform.commercefacades.user.data.CompanyData">
+        <property name="country" type="de.hybris.platform.commercefacades.user.data.CountryData">
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.company.data.IbmB2BUnitData"
+      extends="de.hybris.platform.b2bcommercefacades.company.data.B2BUnitData">
+        <property name="type" type="com.ibm.commerce.partner.enums.data.DisplayTypeData">
+            <description>Indicates the type of the partner B2BUnit</description>
+        </property>
+        <property name="ibmCustomerNumber" type="java.lang.String"/>
+        <property name="currency"
+          type="de.hybris.platform.commercefacades.storesession.data.CurrencyData"/>
+        <property name="salesOrganisations"
+          type="java.util.List&lt;com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerSalesOrganisationData&gt;"/>
+
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"
+      extends="com.ibm.commerce.partner.company.data.IbmB2BUnitData">
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerSalesOrganisationData">
+        <property name="code" type="java.lang.String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerEndCustomerB2BUnitData"
+      extends="com.ibm.commerce.partner.company.data.IbmB2BUnitData">
+        <property name="goe" type="boolean">
+            <description>Indicates the end customer status is government operated entity
+            </description>
+        </property>
+        <property name="divestitureRetentions"
+          type="java.util.List&lt;com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerDivestitureRetentionData>"/>
+        <property name="ibmCustomerDCID" type="java.lang.String">
+            <description>Domestic Client Number
+            </description>
+        </property>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.catalog.data.CategoryHierarchyData"
+      extends="de.hybris.platform.commercefacades.catalog.data.AbstractCatalogItemData">
+        <property name="description" type="String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerAgreementDetailData">
+        <property name="programType" type="String">
+            <description>program type of Partner Agreement Detail Data</description>
+        </property>
+        <property name="agreementNumber" type="String">
+            <description>agreement Number of Partner Agreement Detail Data</description>
+        </property>
+        <property name="agreementOption" type="String">
+            <description>agreement Option of Partner Agreement Detail Data</description>
+        </property>
+        <property name="agreementLevel" type="String">
+            <description>agreement Level of Partner Agreement Detail Data</description>
+        </property>
+
+        <property name="anniversaryMonth" type="java.lang.String"/>
+        <property name="defaultProgramType" type="boolean">
+            <description>is default program type of Partner Agreement Detail Data</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerDivestitureRetentionData">
+        <property name="retainedEndDate" type="String">
+            <description>program type of Partner Agreement Detail Data</description>
+        </property>
+        <property name="sapDivsttrCode" type="String">
+            <description>agreement Number of Partner Agreement Detail Data</description>
+        </property>
+        <property name="entmtTypeDesc" type="String">
+            <description>agreement Option of Partner Agreement Detail Data</description>
+        </property>
+        <property name="entmtType" type="String">
+            <description>agreement Level of Partner Agreement Detail Data</description>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.deal.data.IbmPartnerOpportunityData">
+        <property name="code" type="String">
+            <description></description>
+        </property>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.user.data.CustomerData"
+      extends="de.hybris.platform.commercefacades.user.data.PrincipalData">
+        <property name="sites"
+          type="java.util.List&lt;com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData>"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.order.data.AddToCartParams">
+        <property name="configurationInfos"
+          type="java.util.List&lt;de.hybris.platform.commercefacades.order.data.ConfigurationInfoData>"/>
+        <property name="partProduct" type="boolean"/>
+        <property name="pidId" type="String"/>
+        <property name="configId" type="String"/>
+        <property name="createNewEntry" type="boolean"/>
+        <property name="errorDetails" type="com.ibm.commerce.partner.error.ErrorDetailsData"/>
+        <property name="entryStatus" type="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="commerceRampUpData" type="com.ibm.commerce.partner.data.order.entry.CommerceRampUpData"/>
+        <property name="configuratorPidId" type="String">
+            <description>Pid id used to trigger CPQ Product Configuration. This will be different from pid id in case of MultiPid </description>
+        </property>
+    </bean>
+    <bean
+      class="com.ibm.commerce.partner.error.ErrorDetailsData">
+        <property name="code"
+          type="java.lang.String"/>
+        <property name="description" type="java.lang.String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.order.data.OrderEntryData">
+        <property name="partProduct" type="boolean"/>
+        <property name="pidId" type="String"/>
+        <property name="configuratorPidId" type="String">
+            <description>Pid id used to trigger CPQ Product Configuration. This will be different from pid id in case of MultiPid </description>
+        </property>
+        <property name="configId" type="String"/>
+        <property name="createNewEntry" type="boolean"/>
+        <property name="cpqPricingDetails"
+          type="java.util.List&lt;com.ibm.commerce.partner.data.order.entry.pricing.CpqPricingDetailData>"/>
+        <property name="code" type="String"/>
+        <property name="calculated" type="boolean"/>
+        <property name="errorDetails" type="com.ibm.commerce.partner.error.ErrorDetailsData"/>
+        <property name="entryStatus" type="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="ytyEditable" type="boolean"/>
+        <property name="commerceRampUpData" type="com.ibm.commerce.partner.data.order.entry.CommerceRampUpData"/>
+
+    </bean>
+
+    <bean class="de.hybris.platform.commerceservices.order.CommerceCartModification">
+        <property name="entryGroupInfo"
+          type="de.hybris.platform.commercefacades.order.EntryGroupData"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.order.EntryGroupData">
+        <property name="configurationId" type="java.lang.String"/>
+        <property name="pidId" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+        <property name="description" type="java.lang.String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.facades.product.data.IbmDeploymentTypeData">
+        <property name="code" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+        <property name="tagCode" type="java.lang.String"/>
+    </bean>
+    <bean class="de.hybris.platform.commercefacades.product.data.ProductData">
+        <property name="configuratorCode" type="java.lang.String"/>
+        <property name="deploymentType"
+          type="com.ibm.commerce.partner.facades.product.data.IbmDeploymentTypeData"/>
+        <property name="sapMaterialCode" type="java.lang.String"/>
+        <property name="partNumber" type="java.lang.String"/>
+        <property name="type" type="com.ibm.commerce.partner.enums.data.DisplayTypeData">
+            <description>Indicates the type of part product</description>
+        </property>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.product.data.VariantOptionData">
+        <property name="category"
+          type="de.hybris.platform.commercefacades.product.data.CategoryData"/>
+        <property name="configuratorCode" type="String"/>
+        <property name="tagCode" type="String"/>
+        <property name="deploymentType" type="com.ibm.commerce.partner.facades.product.data.IbmDeploymentTypeData"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercefacades.user.data.CountryData">
+        <property name="sapCode" type="String"/>
+    </bean>
+
+    <bean class="de.hybris.platform.commercewebservices.core.order.data.CartDataList">
+        <property name="pagination"
+          type="de.hybris.platform.commerceservices.search.pagedata.PaginationData"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.specialbidreason.data.PartnerSpecialBidReasonData">
+        <property name="code" type="String">
+            <description>special bid code</description>
+        </property>
+        <property name="name" type="String">
+            <description>special bid name</description>
+        </property>
+        <property name="selected" type="boolean">
+        <description>special bid selected</description>
+        </property>
+        <property name="definition" type="java.lang.String">
+            <description>special bid definition</description>
+        </property>
+        <property name="description" type="java.lang.String">
+            <description>special bid description</description>
+        </property>
+        <property name="enabled" type="boolean">
+            <description>special bid description</description>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.specialbidreason.data.PartnerSpecialBidReasonListData">
+        <property name="specialBidReasons"
+          type="java.util.List&lt;com.ibm.commerce.partner.specialbidreason.data.PartnerSpecialBidReasonData>">
+            <description>special bid code data list</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.data.order.entry.pricing.PartnerOverrideHeaderPriceData">
+        <property name="overrideTotalPrice" type="java.lang.Double"/>
+        <property name="overrideTotalDiscount" type="java.lang.Double"/>
+        <property name="ytyYear" type="com.ibm.commerce.partner.data.order.pricing.YtyYearData"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.data.order.pricing.YtyYearData">
+        <property name="yearNumber" type="java.lang.String"/>
+        <property name="ytyOverride" type="java.lang.Double"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.data.order.entry.pricing.PartnerOverrideEntryPriceData">
+        <property name="entryNumber" type="java.lang.Integer"/>
+        <property name="overridePrice" type="java.lang.Double"/>
+        <property name="overrideDiscount" type="java.lang.Double"/>
+        <property name="overrideYearToYearGrowth" type="java.lang.Double"/>
+        <property name="overrideObsoletePrice" type="java.lang.Double"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.facades.opportunity.data.OpportunityDetailsData">
+        <property name="opportunityNumber" type="java.lang.String"/>
+        <property name="opportunityName" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.facades.opportunity.data.OpportunityDetailsListData">
+        <property name="opportunities"
+          type="java.util.List&lt;com.ibm.commerce.partner.facades.opportunity.data.OpportunityDetailsData>">
+            <description>List of opportunity Details</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.facades.opportunity.data.OpportunitySearchRequestData">
+        <property name="customerICN" type="java.lang.String"/>
+        <property name="resellerID" type="java.lang.String"/>
+        <property name="distributorID" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.data.order.pricing.PartnerCpqHeaderPricingDetailData">
+        <property name="overrideTotalPrice" type="java.lang.Double"/>
+        <property name="overrideTotalDiscount" type="java.lang.Double"/>
+        <property name="totalExtendedPrice" type="java.lang.Double"/>
+        <property name="totalDiscount" type="java.lang.Double"/>
+        <property name="ytyPercentage" type="java.lang.Double"/>
+        <property name="totalBidExtendedPrice" type="java.lang.Double"/>
+        <property name="totalMEPPrice" type="java.lang.Double"/>
+        <property name="totalOptimalPrice" type="java.lang.Double"/>
+        <property name="totalChannelMargin" type="java.lang.Double"/>
+        <property name="totalBpExtendedPrice" type="java.lang.Double"/>
+        <property name="transactionPriceLevel" type="java.lang.String"/>
+        <property name="pricingType" type="java.lang.String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsData">
+        <property name="code" type="String">
+            <description>partner question code</description>
+        </property>
+        <property name="name" type="String">
+            <description>partner question name</description>
+        </property>
+        <property name="description" type="String">
+            <description>partner question description</description>
+        </property>
+        <property name="answer" type="boolean">
+            <description>boolean answer</description>
+        </property>
+        <property name="questions"
+          type="java.util.List&lt;com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsData>">
+            <description>sub questions data list</description>
+        </property>
+        <property name="type" type="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="strAnswer" type="String">
+            <description>string answer</description>
+        </property>
+        <property name="visible" type="boolean"/>
+        <property name="mandatory" type="boolean"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsDataListData">
+        <property name="partnerQuestions"
+          type="java.util.List&lt;com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsData>">
+            <description>partner questions data list</description>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsSelectionData">
+        <property name="questions" type="com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsData">
+            <description>partner question selection</description>
+        </property>
+        <property name="answer" type="boolean">
+            <description>question answer</description>
+        </property>
+        <property name="name" type="String">
+            <description>partner question name</description>
+        </property>
+        <property name="code" type="String">
+            <description>partner question code</description>
+        </property>
+        <property name="description" type="String">
+            <description>partner question description</description>
+        </property>
+        <property name="strAnswer" type="String">
+            <description>question answer</description>
+        </property>
+        <property name="type" type="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="questionType" type="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="mandatory" type="boolean"/>
+        <property name="visible" type="boolean"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.facades.opportunity.data.OpportunitySearchbyNumberRequestData">
+        <property name="opportunityNumber" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.facades.opportunity.data.OpportunityOwnerMailSearchRequestData">
+        <property name="ownerMail" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.facades.opportunity.data.OpportunityCustomerNumberSearchRequestData">
+        <property name="customerNumber" type="java.lang.String"/>
+        <property name="countryCode" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.facades.opportunity.data.OpportunitySearchDetailsData">
+        <property name="opportunityNumber" type="java.lang.String"/>
+        <property name="opportunityName" type="java.lang.String"/>
+        <property name="customerName" type="java.lang.String" />
+        <property name="opportunityStatus" type="java.lang.String"/>
+        <property name="expirationDate" type="java.lang.String"/>
+        <property name="resellerCEID" type="java.lang.String"/>
+        <property name="distributorCEID" type="java.lang.String"/>
+        <property name="customerNumber" type="java.lang.String"/>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.facades.opportunity.data.OpportunitySearchDetailsListData">
+        <property name="opportunities"
+          type="java.util.List&lt;com.ibm.commerce.partner.facades.opportunity.data.OpportunitySearchDetailsData>">
+            <description>List of opportunity Details</description>
+        </property>
+    </bean>
+
+    <bean
+      class="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitListData">
+        <property name="sites"
+          type="java.util.List&lt;com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData>">
+            <description>List of site Details</description>
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.order.data.PartnerOrderData">
+        <property name="orderId" type="java.lang.String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.provision.form.data.ProvisioningFormData">
+        <property name="productSetCode" type="com.ibm.commerce.partner.provision.form.data.PartnerProductSetData"/>
+        <property name="code" type="java.lang.String"/>
+        <property name="url" type="java.lang.String"/>
+    </bean>
+    <bean class="com.ibm.commerce.data.order.QuoteCollaboratorsData">
+        <property name="collaboratorEmails" type="java.util.List&lt;String>"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.data.order.PartnerCpqQuoteCollaboratorsRequestData"
+      extends="com.ibm.commerce.partner.core.data.IbmBaseRequestData">
+        <import type="com.fasterxml.jackson.annotation.JsonProperty"/>
+        <import type="com.fasterxml.jackson.annotation.JsonInclude"/>
+        <annotations>@JsonInclude(JsonInclude.Include.NON_NULL)</annotations>
+        <property name="collaborators" type="java.util.List&lt;String>"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.provision.form.data.PartnerProductSetData">
+        <property name="code" type="java.lang.String"/>
+        <property name="name" type="java.lang.String"/>
+    </bean>
+    <bean class="com.ibm.commerce.partner.data.order.entry.RampUpSummaryData">
+        <property name="rampUpPeriodDuration" type="java.lang.String"/>
+        <property name="rampUpQuantity" type="java.lang.String"/>
+    </bean>
+    <bean class="com.ibm.commerce.partner.data.order.entry.CommerceRampUpData">
+        <property name="rampUpPeriod" type="java.lang.String"/>
+        <property name="rampUpSummary" type="java.util.List&lt;com.ibm.commerce.partner.data.order.entry.RampUpSummaryData>"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.data.solrindexer.SolrIndexJobResponseData">
+        <description>Specifies properties of the indexer job api respone.</description>
+        <property name="syncStatus" type="java.lang.String">
+        </property>
+        <property name="startDate" type="java.util.Date">
+        </property>
+        <property name="endDate" type="java.util.Date">
+        </property>
+        <property name="creationDate" type="java.util.Date">
+        </property>
+        <property name="lastModifiedDate" type="java.util.Date">
+        </property>
+        <property name="syncResult" type="java.lang.String">
+        </property>
+        <property name="code" type="java.lang.String">
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.data.solrindexer.SolrIndexJobRequestData">
+        <description>Specifies properties of the indexer job api requests.</description>
+        <property name="indexName" type="java.lang.String">
+        </property>
+        <property name="indexerOperation" type="java.lang.String">
+        </property>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenRolesInboundData">
+        <property name="scope" type="java.lang.String"/>
+        <property name="roleType" type="java.lang.String"/>
+        <property name="roleGroup" type="java.lang.String"/>
+        <property name="roleAPIName" type="java.lang.String"/>
+        <property name="roleTypeName" type="java.lang.String"/>
+    </bean>
+    <bean class="com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenCountryEnterpriseInboundData">
+        <property name="roles" type="java.util.List&lt;com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenRolesInboundData>"/>
+        <property name="countryCode" type="java.lang.String"/>
+        <property name="ceid" type="java.lang.String"/>
+        <property name="companyName" type="java.lang.String"/>
+    </bean>
+
+    <bean class="com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenEnterpriseInboundData">
+        <property name="id" type="java.lang.String"/>
+        <property name="countryEnterprises" type="java.util.List&lt;com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenCountryEnterpriseInboundData>"/>
+    </bean>
+    <bean class="com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenPartnerWorldInboundData">
+        <property name="enterprises" type="java.util.List&lt;com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenEnterpriseInboundData>"/>
+    </bean>
+    <bean class="com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenInboundData">
+        <property name="name" type="java.lang.String"/>
+        <property name="givenName" type="java.lang.String"/>
+        <property name="familyName" type="java.lang.String"/>
+        <property name="displayName" type="java.lang.String"/>
+        <property name="preferredUserName" type="java.lang.String"/>
+        <property name="uniqueSecurityName" type="java.lang.String"/>
+        <property name="email" type="java.lang.String"/>
+        <property name="countryCode" type="java.lang.String"/>
+        <property name="partnerWorld" type="com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenPartnerWorldInboundData"/>
+    </bean>
+</beans>

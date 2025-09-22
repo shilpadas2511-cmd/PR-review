@@ -1,0 +1,2048 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:utils="http://www.springframework.org/schema/util"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <alias name="defaultB2BRegistrationReversePopulator"
+      alias="b2bRegistrationReversePopulator"/>
+    <bean id="defaultB2BRegistrationReversePopulator"
+      class="com.ibm.commerce.partner.facades.user.converters.populator.B2BRegistrationReversePopulator">
+    </bean>
+
+    <alias name="defaultPartnerRegistrationReversePopulator"
+      alias="partnerRegistrationReversePopulator"/>
+    <bean id="defaultPartnerRegistrationReversePopulator"
+      class="com.ibm.commerce.partner.facades.user.converters.populator.PartnerRegistrationReversePopulator">
+        <constructor-arg name="defaultB2BUnit" value="${default.partner.b2bUnit.uid}"/>
+        <constructor-arg name="b2bUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+        <constructor-arg name="customerNameStrategy" ref="customerNameStrategy"/>
+        <constructor-arg name="languageService" ref="languageService"/>
+        <constructor-arg name="userService" ref="userService"/>
+    </bean>
+
+    <alias name="defaultPartnerRegistrationReverseConverter"
+      alias="partnerRegistrationReverseConverter"/>
+    <bean id="defaultPartnerRegistrationReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.PartnerB2BCustomerModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bRegistrationReversePopulator"/>
+                <ref bean="partnerRegistrationReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerRegistrationFacade"
+      alias="b2bRegistrationFacade"/>
+    <bean id="defaultPartnerRegistrationFacade"
+      class="com.ibm.commerce.partner.facades.user.impl.DefaultPartnerRegistrationFacade">
+        <constructor-arg name="partnerRegistrationReverseConverter"
+          ref="partnerRegistrationReverseConverter"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="userService" ref="partnerUserService"/>
+        <property name="baseSiteService" ref="baseSiteService"/>
+        <property name="commonI18NService" ref="commonI18NService"/>
+        <property name="modelService" ref="modelService"/>
+        <property name="baseStoreService" ref="baseStoreService"/>
+        <property name="userService" ref="userService"/>
+        <property name="workflowTemplateService"
+          ref="workflowTemplateService"/>
+        <property name="b2bRegistrationWorkflowFacade"
+          ref="b2bRegistrationWorkflowFacade"/>
+    </bean>
+
+    <alias name="defaultPartnerProvisionFormFacade"
+      alias="partnerProvisionFormFacade"/>
+    <bean id="defaultPartnerProvisionFormFacade"
+      class="com.ibm.commerce.partner.facades.order.impl.DefaultPartnerProvisionFormFacade">
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="partnerFormDetailsStrategy" ref="partnerFormDetailsStrategy"/>
+    </bean>
+
+    <alias name="defaultPartnerCheckoutFacade"
+      alias="checkoutFacade"/>
+    <alias name="defaultPartnerCheckoutFacade"
+      alias="partnerCheckoutFacade"/>
+    <bean id="defaultPartnerCheckoutFacade"
+      class="com.ibm.commerce.partner.facades.order.impl.DefaultPartnerCheckoutFacade"
+      parent="defaultCheckoutFacade">
+        <constructor-arg name="partnerCommerceCheckoutParameterConverter"
+          ref="partnerCommerceCheckoutParameterConverter"/>
+        <constructor-arg name="opportunityService"
+          ref="opportunityService"/>
+    </bean>
+
+    <alias name="defaultIbmQuoteDetailsPopulator"
+      alias="ibmQuoteDetailsPopulator"/>
+    <bean id="defaultIbmQuoteDetailsPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmQuoteDetailsPopulator">
+        <constructor-arg name="agreementDataConverter" ref="partnerAgreementDataConverter"/>
+        <constructor-arg name="endCustomerB2BUnitDataConverter"
+          ref="endCustomerB2BUnitDataConverter"/>
+        <constructor-arg name="b2bUnitDataConverter" ref="ibmPartnerB2BUnitDetailsConverter"/>
+        <constructor-arg name="opportunityDataConverter" ref="opportunityConverter"/>
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+        <constructor-arg name="partnerSpecialBidReasonConverter"
+          ref="partnerSpecialBidReasonConverter"/>
+        <constructor-arg name="dateFormat"
+          value="${partner.quote.submit.date.format}"/>
+        <constructor-arg name="partnerQuestionsSelectionDataConverter"
+          ref="partnerQuestionsSelectionDataConverter"/>
+        <constructor-arg name="userService" ref="partnerUserService"/>
+        <constructor-arg name="ibmPartnerOrderConverter" ref="ibmPartnerOrderConverter"/>
+        <constructor-arg name="commerceOrderService" ref="commerceOrderService"/>
+        <constructor-arg name="provisionFormConverter" ref="provisionFormConverter"/>
+        <constructor-arg name="currencyConverter" ref="currencyConverter"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+
+    <alias name="defaultIbmCartDetailsPopulator"
+      alias="ibmCartDetailsPopulator"/>
+    <bean id="defaultIbmCartDetailsPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmCartDetailsPopulator">
+        <constructor-arg name="agreementDataConverter" ref="partnerAgreementDataConverter"/>
+        <constructor-arg name="endCustomerB2BUnitDataConverter"
+          ref="endCustomerB2BUnitDataConverter"/>
+        <constructor-arg name="b2bUnitDataConverter" ref="ibmPartnerB2BUnitDetailsConverter"/>
+        <constructor-arg name="opportunityDataConverter" ref="opportunityConverter"/>
+        <constructor-arg name="partnerSpecialBidReasonConverter"
+          ref="partnerSpecialBidReasonConverter"/>
+        <constructor-arg name="partnerHeaderPricingDetailConverter" ref="partnerHeaderPricingDetailConverter"/>
+        <constructor-arg name="partnerQuestionsSelectionDataConverter"
+          ref="partnerQuestionsSelectionDataConverter"/>
+        <constructor-arg name="userService" ref="partnerUserService"/>
+        <constructor-arg name="partnerYtyOverrideConverter" ref="partnerYtyOverrideConverter"/>
+        <constructor-arg name="provisionFormConverter" ref="provisionFormConverter"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="currencyConverter" ref="currencyConverter"/>
+    </bean>
+
+    <alias name="defaultIbmQuoteUserDetailsPopulator" alias="ibmQuoteUserDetailsPopulator"/>
+    <bean id="defaultIbmQuoteUserDetailsPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmQuoteUserDetailsPopulator">
+        <constructor-arg name="b2bCustomerConverter" ref="customerConverter"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="quoteConverter"/>
+        <property name="add" ref="ibmQuoteUserDetailsPopulator"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="extendedCartConverter"/>
+        <property name="add" ref="ibmCartDetailsPopulator"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="defaultCartConverter"/>
+        <property name="add" ref="ibmCartDetailsPopulator"/>
+    </bean>
+
+    <alias name="defaultIbmCartEntryChildEntryPopulator"
+      alias="ibmCartEntryChildEntryPopulator"/>
+    <bean id="defaultIbmCartEntryChildEntryPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmCartEntryChildEntryPopulator">
+        <constructor-arg name="orderEntryConverter" ref="childEntryModelToOrderEntryDataConverter"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultIbmCartEntryPriceInfoPopulator"
+      alias="ibmCartEntryPriceInfoPopulator"/>
+    <bean id="defaultIbmCartEntryPriceInfoPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmCartEntryPriceInfoPopulator">
+        <constructor-arg name="cpqPricingConverter" ref="partnerPricingDetailsToEntryConverter"/>
+    </bean>
+
+    <alias name="defaultChildEntryToOrderEntryDataConverter"
+      alias="childEntryModelToOrderEntryDataConverter"/>
+    <bean id="defaultChildEntryToOrderEntryDataConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commercefacades.order.data.OrderEntryData"/>
+        <property name="populators">
+            <list>
+                <ref bean="orderEntryPopulator"/>
+                <ref bean="ibmCartEntryPriceInfoPopulator"/>
+                <ref bean="ibmCartEntryYTYPopulator"/>
+                <ref bean="defaultIbmCartEntryAdditionalInformationPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmCartEntryYTYPopulator" alias="ibmCartEntryYTYPopulator"/>
+    <bean id="defaultIbmCartEntryYTYPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmCartEntryYTYPopulator">
+        <constructor-arg name="configurationService" ref="configurationService"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="orderEntryConverter"/>
+        <property name="add" ref="ibmCartEntryChildEntryPopulator"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="orderEntryConverter"/>
+        <property name="add" ref="ibmCartEntryPriceInfoPopulator"/>
+    </bean>
+
+    <alias name="defaultIbmCartEntryProductConfigurationPopulator"
+      alias="ibmCartEntryProductConfigurationPopulator"/>
+    <bean id="defaultIbmCartEntryProductConfigurationPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmCartEntryProductConfigurationPopulator">
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="orderEntryConverter"/>
+        <property name="add" ref="ibmCartEntryProductConfigurationPopulator"/>
+    </bean>
+
+
+    <!--Partner Agreement detail-->
+
+    <alias name="defaultPartnerAgreementDataConverter" alias="partnerAgreementDataConverter"/>
+    <bean id="defaultPartnerAgreementDataConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerAgreementDetailData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerAgreementDetailPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerAgreementDetailPopulator" alias="partnerAgreementDetailPopulator"/>
+    <bean id="defaultPartnerAgreementDetailPopulator"
+      class="com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.PartnerAgreementDetailPopulator">
+    </bean>
+
+    <alias name="defaultPartnerAgreementDetailReversePopulator"
+      alias="partnerAgreementDetailReversePopulator"/>
+    <bean id="defaultPartnerAgreementDetailReversePopulator"
+      class="com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.PartnerAgreementDetailReversePopulator">
+    </bean>
+
+    <alias name="defaultPartnerAgreementDetailReverseConverter"
+      alias="partnerAgreementDetailReverseConverter"/>
+    <bean id="defaultPartnerAgreementDetailReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.IbmPartnerAgreementDetailModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerAgreementDetailReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerAgreementDetailComparator" alias="partnerAgreementDetailComparator"/>
+    <bean id="defaultPartnerAgreementDetailComparator"
+      class="com.ibm.commerce.partner.facades.comparators.PartnerAgreementDetailComparator"/>
+
+    <alias name="defaultPartnerRegionComparator" alias="partnerRegionComparator"/>
+    <bean id="defaultPartnerRegionComparator"
+      class="com.ibm.commerce.partner.facades.comparators.PartnerRegionComparator"/>
+
+    <alias name="defaultPartnerCountryComparator" alias="partnerCountryComparator"/>
+    <bean id="defaultPartnerCountryComparator"
+      class="com.ibm.commerce.partner.facades.comparators.PartnerCountryComparator"/>
+
+    <alias name="defaultPartnerAddressComparator" alias="partnerAddressComparator"/>
+    <bean id="defaultPartnerAddressComparator"
+      class="com.ibm.commerce.partner.facades.comparators.PartnerAddressComparator"/>
+
+    <alias name="defaultPartnerB2BUnitFacade" alias="partnerB2BUnitFacade"/>
+    <bean id="defaultPartnerB2BUnitFacade"
+      class="com.ibm.commerce.partner.facades.company.impl.DefaultPartnerB2BUnitFacade"
+      parent="defaultB2BUnitFacade">
+        <constructor-arg name="endCustomerAgreementStrategy"
+          ref="partnerEndCustomerAgreementStrategy"/>
+        <constructor-arg name="b2bUnitStrategy" ref="partnerB2BUnitStrategy"/>
+        <constructor-arg name="partnerB2BUnitDataConverter" ref="partnerResellerDetailsConveter"/>
+    </bean>
+
+    <alias name="defaultPartnerB2BUnitCreationFacade" alias="partnerB2BUnitCreationFacade"/>
+    <bean id="defaultPartnerB2BUnitCreationFacade"
+      class="com.ibm.commerce.partner.facades.company.impl.DefaultPartnerB2BUnitFacade"
+      parent="defaultB2BUnitFacade">
+        <constructor-arg name="endCustomerAgreementStrategy"
+          ref="partnerEndCustomerAgreementStrategy"/>
+        <constructor-arg name="b2bUnitStrategy" ref="partnerB2BUnitCreationStrategy"/>
+        <constructor-arg name="partnerB2BUnitDataConverter" ref="partnerResellerDetailsConveter"/>
+    </bean>
+
+    <alias name="defaultPartnerB2BUnitCreationStrategy" alias="partnerB2BUnitCreationStrategy"/>
+    <bean id="defaultPartnerB2BUnitCreationStrategy"
+      class="com.ibm.commerce.partner.facades.company.strategies.impl.DefaultPartnerB2BUnitStrategy">
+        <constructor-arg name="b2BUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="b2bUnitReverseConverterMap" ref="b2bUnitReverseConverterMap"/>
+        <constructor-arg name="updateB2bUnitReverseConverterMap"
+          ref="b2bUnitReverseConverterMap"/>
+        <constructor-arg name="enumerationService" ref="enumerationService"/>
+        <constructor-arg name="ibmB2BUnitDataConverter" ref="ibmB2BUnitDataConverter"/>
+    </bean>
+
+    <alias name="defaultPartnerB2BUserFacade" alias="b2bUserFacade"/>
+    <alias name="defaultPartnerB2BUserFacade" alias="partnerB2BUserFacade"/>
+    <bean id="defaultPartnerB2BUserFacade"
+      class="com.ibm.commerce.partner.facades.user.impl.DefaultPartnerB2BUserFacade"
+      parent="defaultB2BUserFacade">
+        <constructor-arg name="countryService" ref="partnerCountryService"/>
+        <constructor-arg name="currencyService" ref="partnerCurrencyService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="ssoTokenConverter" ref="partnerLoginJwtTokenDecoderConverter"/>
+        <constructor-arg name="ssoTokenToB2BRegistrationConverter" ref="partnerSsoTokenToB2BRegistrationConverter"/>
+        <constructor-arg name="registrationReverseConverter" ref="partnerRegistrationReverseConverter"/>
+        <constructor-arg name="userValidRole" value="${partner.user.prm.sso.valid.user.role.roleAPIName}"/>
+    </bean>
+
+    <alias name="defaultPartnerEmployeeReversePopulator" alias="partnerEmployeeReversePopulator"/>
+    <bean id="defaultPartnerEmployeeReversePopulator"
+      class="com.ibm.commerce.partner.facades.populators.PartnerEmployeeReversePopulator">
+        <constructor-arg name="customerNameStrategy" ref="customerNameStrategy"/>
+        <constructor-arg name="userService" ref="userService"/>
+
+    </bean>
+
+    <alias name="defaultPartnerEmployeeReverseConverter" alias="partnerEmployeeReverseConverter"/>
+    <bean id="defaultPartnerEmployeeReverseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.PartnerEmployeeModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerEmployeeReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultAddressStreetDetailsReversePopulator"
+      alias="addressStreetDetailsReversePopulator"/>
+    <bean id="defaultAddressStreetDetailsReversePopulator"
+      class="com.ibm.commerce.partner.facades.user.converters.populator.AddressStreetDetailsReversePopulator"/>
+
+    <alias name="defaultAddressBasicDetailsReversePopulator"
+      alias="addressBasicDetailsReversePopulator"/>
+    <bean id="defaultAddressBasicDetailsReversePopulator"
+      class="com.ibm.commerce.partner.facades.user.converters.populator.AddressBasicDetailsReversePopulator"/>
+
+    <alias name="defaultAddressRegionDetailsReversePopulator"
+      alias="addressRegionDetailsReversePopulator"/>
+    <bean id="defaultAddressRegionDetailsReversePopulator"
+      class="com.ibm.commerce.partner.facades.user.converters.populator.AddressRegionDetailsReversePopulator">
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerCountryService" ref="partnerCountryService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultAddressCountryDetailsReversePopulator"
+      alias="addressCountryDetailsReversePopulator"/>
+    <bean id="defaultAddressCountryDetailsReversePopulator"
+      class="com.ibm.commerce.partner.facades.user.converters.populator.AddressCountryDetailsReversePopulator">
+        <constructor-arg name="countryService" ref="partnerCountryService"/>
+    </bean>
+
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="defaultAddressReverseConverter"/>
+        <property name="add" ref="addressStreetDetailsReversePopulator"/>
+    </bean>
+
+    <alias name="defaultPartnerAddressReverseConverter" alias="partnerAddressReverseConverter"/>
+    <bean id="defaultPartnerAddressReverseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="de.hybris.platform.core.model.user.AddressModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="addressBasicDetailsReversePopulator"/>
+                <ref bean="addressStreetDetailsReversePopulator"/>
+                <ref bean="addressCountryDetailsReversePopulator"/>
+                <ref bean="addressRegionDetailsReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultCategoryHierarchyPopulator" alias="categoryHierarchyPopulator"/>
+    <bean id="defaultCategoryHierarchyPopulator"
+      class="com.ibm.commerce.partner.facades.catalog.converters.populator.PartnerCategoryHierarchyPopulator">
+        <property name="productConverter" ref="productConverter"/>
+        <property name="productService" ref="productService"/>
+        <property name="categoryUrlResolver" ref="categoryModelUrlResolver"/>
+    </bean>
+
+    <bean id="partnerSolrSearchQueryEncoderPopulator"
+      class="com.ibm.commerce.partner.facades.search.solrfacetsearch.converters.populator.PartnerSolrSearchQueryEncoderPopulator">
+        <constructor-arg name="userService" ref="partnerUserService"/>
+        <constructor-arg name="defaultSellerAudienceValue"
+          value="${partner.seller.audience.not.present}"/>
+        <constructor-arg name="defaultDeploymentType"
+          value="${partner.product.deployment.type.default}"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="solrSearchQueryEncoder"/>
+        <property name="add" ref="partnerSolrSearchQueryEncoderPopulator"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="cartConverter"/>
+        <property name="add" ref="ibmCartDetailsPopulator"/>
+    </bean>
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="quoteConverter"/>
+        <property name="add" ref="ibmQuoteDetailsPopulator"/>
+    </bean>
+
+    <alias name="defaultIbmSearchResultProductPopulator" alias="ibmSearchResultProductPopulator"/>
+    <bean id="defaultIbmSearchResultProductPopulator"
+      class="com.ibm.commerce.partner.facades.search.converters.populator.IbmSearchResultProductPopulator"
+      parent="defaultCommerceSearchResultProductPopulator">
+    </bean>
+
+    <alias name="defaultIbmSearchResultProductDeploymentTypePopulator"
+      alias="ibmSearchResultProductDeploymentTypePopulator"/>
+    <bean id="defaultIbmSearchResultProductDeploymentTypePopulator"
+      class="com.ibm.commerce.partner.facades.search.converters.populator.IbmSearchResultProductDeploymentTypePopulator"
+      parent="defaultCommerceSearchResultProductPopulator">
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="commerceSearchResultProductConverter"/>
+        <property name="add" ref="ibmSearchResultProductPopulator"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="commerceSearchResultProductConverter"/>
+        <property name="add" ref="ibmSearchResultProductDeploymentTypePopulator"/>
+    </bean>
+
+    <alias name="defaultPartnerFacetValuePopulator" alias="partnerFacetValuePopulator"/>
+    <bean id="defaultPartnerFacetValuePopulator"
+      class="com.ibm.commerce.partner.facades.search.converters.populator.PartnerFacetValuePopulator">
+        <constructor-arg name="childFacetValueConverter" ref="partnerFacetValueBasicConverter"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="defaultFacetValueConverter"/>
+        <property name="add" ref="partnerFacetValuePopulator"/>
+    </bean>
+
+    <alias name="defaultPartnerFacetValueBasicConverter" alias="partnerFacetValueBasicConverter"/>
+    <bean id="defaultPartnerFacetValueBasicConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commerceservices.search.facetdata.FacetValueData"/>
+        <property name="populators">
+            <list>
+                <ref bean="facetValuePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultB2BUnitDetailsPopulator" alias="b2bUnitDetailsPopulator"/>
+    <bean id="defaultB2BUnitDetailsPopulator"
+      class="com.ibm.commerce.partner.facades.company.converter.populators.B2BUnitBasicDetailsPopulator">
+        <constructor-arg name="commonI18NService" ref="commerceCommonI18NService"/>
+        <constructor-arg name="countryDataConverter" ref="countryConverter"/>
+    </bean>
+
+    <alias name="defaultB2BUnitActiveFlagDetailsPopulator"
+      alias="b2bUnitActiveFlagDetailsPopulator"/>
+    <bean id="defaultB2BUnitActiveFlagDetailsPopulator"
+      class="com.ibm.commerce.partner.facades.company.converter.populators.B2BUnitActiveFlagDetailsPopulator">
+        <constructor-arg name="b2BUnitFacade" ref="partnerB2BUnitFacade"/>
+    </bean>
+
+    <alias name="defaultIbmPartnerEndCustomerActiveFlagDetailsPopulator"
+      alias="ibmPartnerEndCustomerActiveFlagDetailsPopulator"/>
+    <bean id="defaultIbmPartnerEndCustomerActiveFlagDetailsPopulator"
+      class="com.ibm.commerce.partner.facades.company.converter.populators.IbmPartnerEndCustomerActiveFlagDetailsPopulator">
+    </bean>
+
+    <alias name="defaultB2BUnitAddressDetailsPopulator" alias="b2bUnitAddressDetailsPopulator"/>
+    <bean id="defaultB2BUnitAddressDetailsPopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.converter.populators.B2BUnitAddressDetailsPopulator">
+        <constructor-arg name="addressConverter" ref="addressConverter"/>
+    </bean>
+
+    <alias name="defaultB2BUnitReportingOrganizationDetailsPopulator"
+      alias="b2bUnitReportingOrganizationDetailsPopulator"/>
+    <bean id="defaultB2BUnitReportingOrganizationDetailsPopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.converter.populators.B2BUnitReportingOrganizationDetailsPopulator
+    ">
+        <constructor-arg name="b2BUnitDataConverter" ref="distributorB2BUnitDetailsConverter"/>
+    </bean>
+
+    <alias name="defaultB2BUnitParentDetailsConverter"
+      alias="b2bUnitParentDetailsConverter"/>
+    <bean id="defaultB2BUnitParentDetailsConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.b2bcommercefacades.company.data.B2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bUnitDetailsPopulator"/>
+                <ref bean="b2bUnitActiveFlagDetailsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmEndCustomerB2BUnitParentDetailsConverter"
+      alias="ibmEndCustomerB2BUnitParentDetailsConverter"/>
+    <bean id="defaultIbmEndCustomerB2BUnitParentDetailsConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.b2bcommercefacades.company.data.B2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bUnitDetailsPopulator"/>
+                <ref bean="ibmPartnerEndCustomerActiveFlagDetailsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultDistributorB2BUnitDetailsConverter"
+      alias="distributorB2BUnitDetailsConverter"/>
+    <bean id="defaultDistributorB2BUnitDetailsConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bUnitDetailsPopulator"/>
+                <ref bean="b2bUnitActiveFlagDetailsPopulator"/>
+                <ref bean="b2bUnitParentDetailsPopulator"/>
+                <ref bean="ibmB2BUnitBasicDetailsPopulator"/>
+                <ref bean="ibmB2BUnitCurrencyPopulator"/>
+                <ref bean="ibmB2BUnitTypePopulator"/>
+                <ref bean="b2bUnitAddressDetailsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmPartnerB2BUnitDetailsConverter"
+      alias="ibmPartnerB2BUnitDetailsConverter"/>
+    <bean id="defaultIbmPartnerB2BUnitDetailsConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bUnitDetailsPopulator"/>
+                <ref bean="b2bUnitActiveFlagDetailsPopulator"/>
+                <ref bean="b2bUnitParentDetailsPopulator"/>
+                <ref bean="ibmB2BUnitBasicDetailsPopulator"/>
+                <ref bean="ibmB2BUnitTypePopulator"/>
+                <ref bean="ibmB2BUnitCurrencyPopulator"/>
+                <ref bean="b2bUnitAddressDetailsPopulator"/>
+                <ref bean="b2bUnitReportingOrganizationDetailsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmPartnerEndCustomerB2BUnitDataConverter"
+      alias="endCustomerB2BUnitDataConverter"/>
+    <bean id="defaultIbmPartnerEndCustomerB2BUnitDataConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerEndCustomerB2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bUnitDetailsPopulator"/>
+                <ref bean="ibmPartnerEndCustomerActiveFlagDetailsPopulator"/>
+                <ref bean="ibmEndCustomerB2BUnitParentDetailsPopulator"/>
+                <ref bean="ibmB2BUnitBasicDetailsPopulator"/>
+                <ref bean="endCustomerGoeB2BUnitPopulator"/>
+                <ref bean="endCustomerDivestitureRetentionPopulator"/>
+                <ref bean="ibmB2BUnitCurrencyPopulator"/>
+                <ref bean="ibmB2BUnitTypePopulator"/>
+                <ref bean="b2bUnitAddressDetailsPopulator"/>
+                <ref bean="b2bUnitReportingOrganizationDetailsPopulator"/>
+                <ref bean="endCustomerBasicDetailsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerEmployeePopulator" alias="partnerEmployeePopulator"/>
+    <bean id="defaultPartnerEmployeePopulator"
+      class="com.ibm.commerce.partner.facades.populators.PartnerEmployeePopulator">
+        <constructor-arg name="customerNameStrategy" ref="customerNameStrategy"/>
+    </bean>
+
+    <alias name="defaultPartnerEmployeeConverter" alias="partnerEmployeeConverter"/>
+    <bean id="defaultPartnerEmployeeConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commercefacades.user.data.CustomerData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerEmployeePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerCartFacade" alias="b2bCartFacade"/>
+    <alias name="defaultPartnerCartFacade" alias="partnerCartFacade"/>
+    <bean id="defaultPartnerCartFacade"
+      class="com.ibm.commerce.partner.facades.order.impl.DefaultPartnerCartFacade"
+      parent="defaultB2BCartFacade">
+        <constructor-arg name="commerceCartParameterConverter"
+          ref="commerceCartParameterConverter"/>
+        <constructor-arg name="commerceCartService" ref="commerceCartService"/>
+        <constructor-arg name="cartModificationConverter" ref="cartModificationConverter"/>
+        <constructor-arg name="pidCartFactory" ref="pidCartFactory"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="priceLookUpService" ref="priceLookUpService"/>
+        <constructor-arg name="partnerSapCpqQuoteService" ref="partnerSapCpqQuoteService"/>
+        <constructor-arg name="partnerOverridePriceValidator" ref="partnerOverridePriceValidator"/>
+        <constructor-arg name="partnerCartHeaderPricingDetailsReverseConverter"
+          ref="partnerCartHeaderPricingDetailsReverseConverter"/>
+        <constructor-arg name="partnerCartEntryPricingDetailsReverseConverter"
+          ref="partnerCartEntryPricingDetailsReverseConverter"/>
+        <constructor-arg name="partnerCommerceCartService"
+          ref="commerceCartService"/>
+        <constructor-arg name="collaboratorEmailsLimit"
+          value="${partner.sellerCollaborator.emails.limit}"/>
+        <constructor-arg name="customerEmailResolutionService"
+          ref="customerEmailResolutionService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <utils:list id="ytyYearDataList" value-type="com.ibm.commerce.partner.data.order.pricing.YtyYearData"></utils:list>
+
+    <alias name="defaultPartnerYtyOverrideConverter" alias="partnerYtyOverrideConverter"/>
+    <bean id="defaultPartnerYtyOverrideConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value= "java.util.ArrayList"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerYtyOverridePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerYtyOverridePopulator" alias="partnerYtyOverridePopulator"/>
+    <bean id="defaultPartnerYtyOverridePopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.PartnerYtyOverridePopulator">
+    </bean>
+
+    <bean id="partnerCommerceCartParameterPopulator"
+      class="com.ibm.commerce.partner.facades.populators.PartnerCommerceCartParameterPopulator">
+        <constructor-arg name="sessionService" ref="sessionService"/>
+        <constructor-arg name="productService" ref="productService"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="commerceCartParameterConverter"/>
+        <property name="add" ref="partnerCommerceCartParameterPopulator"/>
+    </bean>
+
+    <alias name="defaultPartnerEntryGroupPopulator" alias="partnerEntryGroupPopulator"/>
+    <bean id="defaultPartnerEntryGroupPopulator"
+      class="com.ibm.commerce.partner.facades.populators.PartnerEntryGroupPopulator">
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="entryGroupConverter"/>
+        <property name="add" ref="partnerEntryGroupPopulator"/>
+    </bean>
+
+    <alias name="defaultPartnerOpportunityReversePopulator" alias="opportunityReversePopulator"/>
+    <bean id="defaultPartnerOpportunityReversePopulator"
+      class="
+    com.ibm.commerce.partner.facades.opportunity.converter.populator.PartnerOpportunityReversePopulator
+    "/>
+
+    <alias name="defaultPartnerOpportunityReverseConverter" alias="opportunityReverseConverter"/>
+    <bean id="defaultPartnerOpportunityReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.IbmPartnerOpportunityModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="opportunityReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerOpportunityPopulator" alias="opportunityPopulator"/>
+    <bean id="defaultPartnerOpportunityPopulator"
+      class="
+    com.ibm.commerce.partner.facades.opportunity.converter.populator.PartnerOpportunityPopulator"/>
+
+    <alias name="defaultPartnerOpportunityConverter" alias="opportunityConverter"/>
+    <bean id="defaultPartnerOpportunityConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.deal.data.IbmPartnerOpportunityData"/>
+        <property name="populators">
+            <list>
+                <ref bean="opportunityPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <alias name="defaultPartnerOpportunityFacade" alias="opportunityFacade"/>
+    <bean id="defaultPartnerOpportunityFacade"
+      class="com.ibm.commerce.partner.facades.opportunity.impl.DefaultPartnerOpportunityFacade">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="opportunityReverseConverter" ref="opportunityReverseConverter"/>
+        <constructor-arg name="opportunityResponseConverter" ref="opportunityResponseConverter"/>
+        <constructor-arg name="opportunityService" ref="opportunityService"/>
+        <constructor-arg name="opportunitySearchResponseConverter" ref="opportunitySearchResponseConverter"/>
+    </bean>
+
+
+    <alias name="defaultCommerceCheckoutParamOpportunityPopulator"
+      alias="commerceCheckoutParamOpportunityPopulator"/>
+    <bean id="defaultCommerceCheckoutParamOpportunityPopulator"
+      class="
+    com.ibm.commerce.partner.facades.order.populators.CommerceCheckoutParamOpportunityPopulator">
+        <constructor-arg name="opportunityFacade" ref="opportunityFacade"/>
+    </bean>
+
+    <alias name="defaultCommerceCheckoutParamAgreementDetailsPopulator"
+      alias="commerceCheckoutParamAgreementDetailsPopulator"/>
+    <bean id="defaultCommerceCheckoutParamAgreementDetailsPopulator"
+      class="
+    com.ibm.commerce.partner.facades.order.populators.CommerceCheckoutParamAgreementDetailsPopulator
+    ">
+        <constructor-arg name="b2BUnitFacade" ref="partnerB2BUnitFacade"/>
+    </bean>
+
+    <alias name="defaultCommerceCheckoutParamQuoteExpirationDatePopulator"
+      alias="commerceCheckoutParamQuoteExpirationDatePopulator"/>
+    <bean id="defaultCommerceCheckoutParamQuoteExpirationDatePopulator"
+      class="
+    com.ibm.commerce.partner.facades.order.populators.CommerceCheckoutParamQuoteExpirationDatePopulator
+    ">
+    </bean>
+
+    <alias name="defaultCommerceCheckoutParamSalesApplicationPopulator"
+      alias="commerceCheckoutParamSalesApplicationPopulator"/>
+    <bean id="defaultCommerceCheckoutParamSalesApplicationPopulator"
+      class="
+    com.ibm.commerce.partner.facades.order.populators.CommerceCheckoutParamSalesApplicationPopulator">
+    </bean>
+
+    <alias name="defaultCommerceCheckoutParamBillToPopulator"
+      alias="commerceCheckoutParamBillToPopulator"/>
+    <bean id="defaultCommerceCheckoutParamBillToPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.CommerceCheckoutParamBillToPopulator">
+        <constructor-arg name="b2BUnitFacade" ref="partnerB2BUnitFacade"/>
+    </bean>
+
+    <alias name="defaultCommerceCheckoutParamShipToPopulator"
+      alias="commerceCheckoutParamShipToPopulator"/>
+    <bean id="defaultCommerceCheckoutParamShipToPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.CommerceCheckoutParamShipToPopulator">
+        <constructor-arg name="b2BUnitFacade" ref="partnerB2BUnitFacade"/>
+    </bean>
+
+    <alias name="defaultCommerceCheckoutParamSoldThroughPopulator"
+      alias="commerceCheckoutParamSoldThroughPopulator"/>
+    <bean id="defaultCommerceCheckoutParamSoldThroughPopulator"
+      class="
+    com.ibm.commerce.partner.facades.order.populators.CommerceCheckoutParamSoldThroughPopulator">
+        <constructor-arg name="b2BUnitFacade" ref="partnerB2BUnitFacade"/>
+    </bean>
+
+    <alias name="defaultPartnerCommerceCheckoutParameterConverter"
+      alias="partnerCommerceCheckoutParameterConverter"/>
+    <bean id="defaultPartnerCommerceCheckoutParameterConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commerceservices.service.data.CommerceCheckoutParameter"/>
+        <property name="populators">
+            <list>
+                <ref bean="commerceCheckoutParamOpportunityPopulator"/>
+                <ref bean="commerceCheckoutParamBillToPopulator"/>
+                <ref bean="commerceCheckoutParamSoldThroughPopulator"/>
+                <ref bean="commerceCheckoutParamShipToPopulator"/>
+                <ref bean="commerceCheckoutParamAgreementDetailsPopulator"/>
+                <ref bean="commerceCheckoutParamQuoteExpirationDatePopulator"/>
+                <ref bean="commerceCheckoutParamSalesApplicationPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmB2BUnitDataPopulator" alias="ibmB2BUnitDataPopulator"/>
+    <bean id="defaultIbmB2BUnitDataPopulator"
+      class="com.ibm.commerce.partner.facades.company.converter.populators.IbmB2BUnitDataPopulator"/>
+
+    <alias name="defaultB2BUnitAddressDetailsReversePopulator"
+      alias="b2bUnitAddressDetailsReversePopulator"/>
+    <bean id="defaultB2BUnitAddressDetailsReversePopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.converter.populators.B2BUnitAddressDetailsReversePopulator
+    ">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="addressComparator" ref="partnerAddressComparator"/>
+        <constructor-arg name="b2BCommerceUnitService" ref="b2bCommerceUnitService"/>
+        <constructor-arg name="addressReverseConverter" ref="partnerAddressReverseConverter"/>
+    </bean>
+
+    <alias name="defaultB2BUnitSalesOrgReversePopulator" alias="b2bUnitSalesOrgReversePopulator"/>
+    <bean id="defaultB2BUnitSalesOrgReversePopulator"
+      class="com.ibm.commerce.partner.facades.company.converter.populators.B2BUnitSalesOrgReversePopulator">
+        <constructor-arg name="salesOrganizationFacade" ref="partnerSalesOrganizationFacade"/>
+    </bean>
+
+    <alias name="defaultIbmB2BUnitBasicDetailsReversePopulator"
+      alias="ibmB2BUnitBasicDetailsReversePopulator"/>
+    <bean id="defaultIbmB2BUnitBasicDetailsReversePopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.converter.populators.IbmB2BUnitBasicDetailsReversePopulator
+    "/>
+
+    <alias name="defaultIbmB2BUnitBasicDetailsPopulator"
+      alias="ibmB2BUnitBasicDetailsPopulator"/>
+    <bean id="defaultIbmB2BUnitBasicDetailsPopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.converter.populators.IbmB2BUnitBasicDetailsPopulator"/>
+
+    <alias name="defaultB2BUnitParentDetailsPopulator"
+      alias="b2bUnitParentDetailsPopulator"/>
+    <bean id="defaultB2BUnitParentDetailsPopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.converter.populators.B2BUnitParentDetailsPopulator">
+        <constructor-arg name="b2BUnitDataConverter" ref="b2bUnitParentDetailsConverter"/>
+        <constructor-arg name="b2BUnitService" ref="partnerB2BUnitService"/>
+    </bean>
+
+    <alias name="defaultIbmEndCustomerB2BUnitParentDetailsPopulator"
+      alias="ibmEndCustomerB2BUnitParentDetailsPopulator"/>
+    <bean id="defaultIbmEndCustomerB2BUnitParentDetailsPopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.converter.populators.B2BUnitParentDetailsPopulator">
+        <constructor-arg name="b2BUnitDataConverter"
+          ref="ibmEndCustomerB2BUnitParentDetailsConverter"/>
+        <constructor-arg name="b2BUnitService" ref="partnerB2BUnitService"/>
+    </bean>
+
+
+    <alias name="defaultIbmB2BUnitDataConverter"
+      alias="ibmB2BUnitDataConverter"/>
+    <bean id="defaultIbmB2BUnitDataConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.company.data.IbmB2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="ibmB2BUnitDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultB2BUnitBasicDetailsReversePopulator"
+      alias="b2bUnitBasicDetailsReversePopulator"/>
+    <bean id="defaultB2BUnitBasicDetailsReversePopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.converter.populators.B2BUnitBasicDetailsReversePopulator
+    ">
+        <constructor-arg name="commerceCommonI18NService" ref="commerceCommonI18NService"/>
+        <constructor-arg name="countryService" ref="partnerCountryService"/>
+    </bean>
+
+    <alias name="defaultB2BUnitBasicDetailsReverseConverter"
+      alias="b2bUnitBasicDetailsReverseConverter"/>
+    <bean id="defaultB2BUnitBasicDetailsReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.b2b.model.B2BUnitModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bUnitBasicDetailsReversePopulator"/>
+                <ref bean="b2bUnitAddressDetailsReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmB2BUnitTypeReversePopulator"
+      alias="ibmB2BUnitTypeReversePopulator"/>
+    <bean id="defaultIbmB2BUnitTypeReversePopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.converter.populators.IbmB2BUnitTypeReversePopulator"/>
+
+    <alias name="defaultEndCustomerGoeB2BUnitReversePopulator"
+      alias="endCustomerGoeB2BUnitReversePopulator"/>
+    <bean id="defaultEndCustomerGoeB2BUnitReversePopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.EndCustomerGoeB2BUnitReversePopulator
+    "/>
+
+    <alias name="defaultEndCustomerGoeB2BUnitPopulator"
+      alias="endCustomerGoeB2BUnitPopulator"/>
+    <bean id="defaultEndCustomerGoeB2BUnitPopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.EndCustomerGoeB2BUnitPopulator
+    "/>
+
+    <alias name="defaultIbmPartnerEndCustomerB2BUnitReverseConverter"
+      alias="ibmPartnerEndCustomerB2BUnitReverseConverter"/>
+    <bean id="defaultIbmPartnerEndCustomerB2BUnitReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.IbmPartnerEndCustomerB2BUnitModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bUnitBasicDetailsReversePopulator"/>
+                <ref bean="ibmB2BUnitCurrencyReversePopulator"/>
+                <ref bean="ibmB2BUnitBasicDetailsReversePopulator"/>
+                <ref bean="ibmB2BUnitTypeReversePopulator"/>
+                <ref bean="endCustomerGoeB2BUnitReversePopulator"/>
+                <ref bean="endCustomerDivestitureRetentionReversePopulator"/>
+                <ref bean="b2bUnitAddressDetailsReversePopulator"/>
+                <ref bean="endCustomerBasicDetailsReversePopulator"/>
+                <ref bean="b2bUnitSalesOrgReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultUpdateIbmPartnerEndCustomerB2BUnitReverseConverter"
+      alias="updateIbmPartnerEndCustomerB2BUnitReverseConverter"/>
+    <bean id="defaultUpdateIbmPartnerEndCustomerB2BUnitReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.IbmPartnerEndCustomerB2BUnitModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="endCustomerGoeB2BUnitReversePopulator"/>
+                <ref bean="b2bUnitAddressDetailsReversePopulator"/>
+                <ref bean="endCustomerDivestitureRetentionReversePopulator"/>
+                <ref bean="endCustomerBasicDetailsReversePopulator"/>
+                <ref bean="ibmB2BUnitBasicDetailsReversePopulator"/>
+                <ref bean="partnerCurrencyReversePopulator"/>
+                <ref bean="partnerCountryReversePopulator"/>
+                <ref bean="b2bUnitSalesOrgReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <alias name="defaultIbmPartnerB2BUnitReverseConverter"
+      alias="ibmPartnerB2BUnitReverseConverter"/>
+    <bean id="defaultIbmPartnerB2BUnitReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.IbmPartnerB2BUnitModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bUnitBasicDetailsReversePopulator"/>
+                <ref bean="ibmB2BUnitCurrencyReversePopulator"/>
+                <ref bean="ibmB2BUnitBasicDetailsReversePopulator"/>
+                <ref bean="ibmB2BUnitTypeReversePopulator"/>
+                <ref bean="b2bUnitAddressDetailsReversePopulator"/>
+                <ref bean="b2bUnitSalesOrgReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultUpdateB2BUnitReverseConverter"
+      alias="updateB2BUnitReverseConverter"/>
+    <bean id="defaultUpdateB2BUnitReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.b2b.model.B2BUnitModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="b2bUnitAddressDetailsReversePopulator"/>
+                <ref bean="partnerCurrencyReversePopulator"/>
+                <ref bean="partnerCountryReversePopulator"/>
+                <ref bean="b2bUnitSalesOrgReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmCartEntryProductPopulator"
+      alias="ibmCartEntryProductPopulator"/>
+    <bean id="defaultIbmCartEntryProductPopulator"
+      class="com.ibm.commerce.partner.facades.product.populators.IbmCartEntryProductPopulator">
+        <constructor-arg name="commerceCommonI18NService" ref="commerceCommonI18NService"/>
+        <constructor-arg name="partnerPartProductTypeStrategy"
+          ref="partnerPartProductTypeStrategy"/>
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="orderEntryProductConverter"/>
+        <property name="add" ref="ibmCartEntryProductPopulator"/>
+    </bean>
+
+    <utils:map id="b2bUnitReverseConverterMap"
+      key-type="com.ibm.commerce.partner.core.enums.IbmPartnerB2BUnitType"
+      value-type="de.hybris.platform.servicelayer.dto.converter.Converter">
+        <entry key="ENDCUSTOMER" value-ref="ibmPartnerEndCustomerB2BUnitReverseConverter"/>
+        <entry key="DISTRIBUTOR" value-ref="ibmPartnerB2BUnitReverseConverter"/>
+        <entry key="RESELLER" value-ref="ibmPartnerB2BUnitReverseConverter"/>
+        <entry key="DEFAULT" value-ref="b2bUnitBasicDetailsReverseConverter"/>
+        <entry key="RESELLER_TIER_1" value-ref="ibmPartnerB2BUnitReverseConverter"/>
+        <entry key="RESELLER_TIER_2" value-ref="ibmPartnerB2BUnitReverseConverter"/>
+        <entry key="RESELLER_TIER_1_TIER_2" value-ref="ibmPartnerB2BUnitReverseConverter"/>
+    </utils:map>
+
+    <utils:map id="updateB2BUnitReverseConverterMap"
+      key-type="com.ibm.commerce.partner.core.enums.IbmPartnerB2BUnitType"
+      value-type="de.hybris.platform.servicelayer.dto.converter.Converter">
+        <entry key="ENDCUSTOMER" value-ref="updateIbmPartnerEndCustomerB2BUnitReverseConverter"/>
+        <entry key="DISTRIBUTOR" value-ref="updateB2BUnitReverseConverter"/>
+        <entry key="RESELLER" value-ref="updateB2BUnitReverseConverter"/>
+        <entry key="DEFAULT" value-ref="updateB2BUnitReverseConverter"/>
+        <entry key="RESELLER_TIER_1" value-ref="updateB2BUnitReverseConverter"/>
+        <entry key="RESELLER_TIER_2" value-ref="updateB2BUnitReverseConverter"/>
+        <entry key="RESELLER_TIER_1_TIER_2" value-ref="updateB2BUnitReverseConverter"/>
+    </utils:map>
+
+    <alias name="defaultPartnerB2BUnitStrategy" alias="partnerB2BUnitStrategy"/>
+    <bean id="defaultPartnerB2BUnitStrategy"
+      class="com.ibm.commerce.partner.facades.company.strategies.impl.DefaultPartnerB2BUnitStrategy">
+        <constructor-arg name="b2BUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="b2bUnitReverseConverterMap" ref="b2bUnitReverseConverterMap"/>
+        <constructor-arg name="updateB2bUnitReverseConverterMap"
+          ref="updateB2BUnitReverseConverterMap"/>
+        <constructor-arg name="enumerationService" ref="enumerationService"/>
+        <constructor-arg name="ibmB2BUnitDataConverter" ref="ibmB2BUnitDataConverter"/>
+    </bean>
+
+    <alias name="defaultPartnerEndCustomerAgreementStrategy"
+      alias="partnerEndCustomerAgreementStrategy"/>
+    <bean id="defaultPartnerEndCustomerAgreementStrategy"
+      class="
+    com.ibm.commerce.partner.facades.company.endcustomer.strategies.impl.DefaultPartnerEndCustomerAgreementStrategy
+    ">
+        <constructor-arg name="agreementDetailComparator" ref="partnerAgreementDetailComparator"/>
+        <constructor-arg name="agreementDetailConverter" ref="partnerAgreementDataConverter"/>
+        <constructor-arg name="agreementDetailReverseConverter"
+          ref="partnerAgreementDetailReverseConverter"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultEnumerationDisplayTypeDataPopulator"
+      alias="enumerationDisplayTypeDataPopulator"/>
+    <bean id="defaultEnumerationDisplayTypeDataPopulator"
+      class="
+    com.ibm.commerce.partner.facades.enums.converter.populator.EnumerationDisplayTypeDataPopulator">
+        <constructor-arg name="commonI18NService" ref="commerceCommonI18NService"/>
+        <constructor-arg name="enumerationService" ref="enumerationService"/>
+    </bean>
+
+    <alias name="defaultEnumerationDisplayTypeDataConverter"
+      alias="enumerationDisplayTypeDataConverter"/>
+    <bean id="defaultEnumerationDisplayTypeDataConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.enums.data.DisplayTypeData"/>
+        <property name="populators">
+            <list>
+                <ref bean="enumerationDisplayTypeDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmB2BUnitTypePopulator" alias="ibmB2BUnitTypePopulator"/>
+    <bean id="defaultIbmB2BUnitTypePopulator"
+      class="com.ibm.commerce.partner.facades.company.converter.populators.IbmB2BUnitTypePopulator">
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+    </bean>
+
+    <alias name="defaultEndCustomerDivestitureRetentionReversePopulator"
+      alias="endCustomerDivestitureRetentionReversePopulator"/>
+    <bean id="defaultEndCustomerDivestitureRetentionReversePopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.EndCustomerDivestitureRetentionReversePopulator">
+        <constructor-arg name="divestitureRetentionDataReverseConverter"
+          ref="partnerDivestitureRetentionReverseConverter"/>
+        <constructor-arg name="partnerDivestitureRetentionModelComparator"
+          ref="partnerDivestitureRetentionModelComparator"/>
+    </bean>
+
+    <alias name="defaultEndCustomerBasicDetailsReversePopulator"
+      alias="endCustomerBasicDetailsReversePopulator"/>
+    <bean id="defaultEndCustomerBasicDetailsReversePopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.EndCustomerBasicDetailsReversePopulator">
+    </bean>
+
+    <alias name="defaultEndCustomerBasicDetailsPopulator"
+      alias="endCustomerBasicDetailsPopulator"/>
+    <bean id="defaultEndCustomerBasicDetailsPopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.EndCustomerBasicDetailsPopulator">
+    </bean>
+
+    <alias name="defaultEndCustomerDivestitureRetentionPopulator"
+      alias="endCustomerDivestitureRetentionPopulator"/>
+    <bean id="defaultEndCustomerDivestitureRetentionPopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.EndCustomerDivestitureRetentionPopulator
+    ">
+        <constructor-arg name="divestitureRetentionDataConverter"
+          ref="partnerDivestitureRetentionConverter"/>
+    </bean>
+
+    <alias name="defaultPartnerDivestitureRetentionPopulator"
+      alias="partnerDivestitureRetentionPopulator"/>
+    <bean id="defaultPartnerDivestitureRetentionPopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.PartnerDivestitureRetentionPopulator
+    "/>
+
+    <alias name="defaultPartnerDivestitureRetentionConverter"
+      alias="partnerDivestitureRetentionConverter"/>
+    <bean id="defaultPartnerDivestitureRetentionConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="
+    com.ibm.commerce.partner.company.endcustomer.data.IbmPartnerDivestitureRetentionData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerDivestitureRetentionPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerDivestitureRetentionReversePopulator"
+      alias="partnerDivestitureRetentionReversePopulator"/>
+    <bean id="defaultPartnerDivestitureRetentionReversePopulator"
+      class="
+    com.ibm.commerce.partner.facades.company.endcustomer.converter.populators.PartnerDivestitureRetentionReversePopulator
+    "/>
+
+
+    <alias name="defaultPartnerDivestitureRetentionReverseConverter"
+      alias="partnerDivestitureRetentionReverseConverter"/>
+    <bean id="defaultPartnerDivestitureRetentionReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.IbmPartnerDivestitureRetentionModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerDivestitureRetentionReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmPartnerDivestitureRetentionModelComparator"
+      alias="partnerDivestitureRetentionModelComparator"/>
+    <bean id="defaultIbmPartnerDivestitureRetentionModelComparator"
+      class="
+    com.ibm.commerce.partner.facades.comparators.IbmPartnerDivestitureRetentionModelComparator"/>
+
+    <alias name="defaultPartnerB2BCustomerPopulator" alias="partnerB2BCustomerPopulator"/>
+    <bean id="defaultPartnerB2BCustomerPopulator"
+      class="com.ibm.commerce.partner.facades.user.converters.populator.PartnerB2BCustomerPopulator">
+        <constructor-arg name="b2bUnitDataConverter" ref="ibmPartnerB2BUnitDetailsConverter"/>
+        <constructor-arg name="defaultPartnerB2BUnitId" value="${default.partner.b2bUnit.uid}"/>
+        <constructor-arg name="sessionService" ref="sessionService"/>
+        <constructor-arg name="b2BUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="customerConverter"/>
+        <property name="add" ref="partnerB2BCustomerPopulator"/>
+    </bean>
+
+    <alias name="defaultPartnerVariantCategoryDataPopulator"
+      alias="partnerVariantCategoryDataPopulator"/>
+    <bean id="defaultPartnerVariantCategoryDataPopulator"
+      class="com.ibm.commerce.partner.facades.product.populators.PartnerVariantCategoryDataPopulator">
+        <constructor-arg name="categoryConverter" ref="categoryConverter"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="variantOptionDataConverter"/>
+        <property name="add" ref="partnerVariantCategoryDataPopulator"/>
+    </bean>
+
+    <alias name="defaultPartnerPricingDetailsToEntryPopulator"
+      alias="partnerPricingDetailsToEntryPopulator"/>
+    <bean id="defaultPartnerPricingDetailsToEntryPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmPricingDetailsToEntryPopulator">
+        <constructor-arg name="validTags" value="${partner.pricingstrategy.valid.tags}"/>
+    </bean>
+
+    <alias name="defaultPartnerPricingDetailsToEntryConverter"
+      alias="partnerPricingDetailsToEntryConverter"/>
+    <bean id="defaultPartnerPricingDetailsToEntryConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.data.order.entry.pricing.CpqPricingDetailData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerPricingDetailsToEntryPopulator"/>
+                <ref bean="partnerDistributerPricingDetailsToEntryPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerPricingDetailsToChildEntryPopulator"
+      alias="partnerPricingDetailsToChildEntryPopulator"/>
+    <bean id="defaultPartnerPricingDetailsToChildEntryPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmPricingDetailsToChildEntryPopulator">
+        <constructor-arg name="cpqPricingConverter" ref="partnerPricingDetailsToEntryConverter"/>
+    </bean>
+
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="childEntryModelToOrderEntryDataConverter"/>
+        <property name="add" ref="partnerPricingDetailsToChildEntryPopulator"/>
+    </bean>
+
+    <alias name="defaultIbmB2BUnitCurrencyPopulator" alias="ibmB2BUnitCurrencyPopulator"/>
+    <bean id="defaultIbmB2BUnitCurrencyPopulator"
+      class="com.ibm.commerce.partner.facades.company.converter.populators.IbmB2BUnitCurrencyPopulator">
+        <constructor-arg name="currencyDataConverter" ref="currencyConverter"/>
+    </bean>
+
+    <alias name="defaultIbmB2BUnitCurrencyReversePopulator"
+      alias="ibmB2BUnitCurrencyReversePopulator"/>
+    <bean id="defaultIbmB2BUnitCurrencyReversePopulator"
+      class="com.ibm.commerce.partner.facades.company.converter.populators.IbmB2BUnitCurrencyReversePopulator">
+        <constructor-arg name="currencyService" ref="partnerCurrencyService"/>
+        <constructor-arg name="configurationService" ref="configurationService"/>
+    </bean>
+
+    <alias name="defaultPartnerCountryPopulator" alias="partnerCountryPopulator"/>
+    <bean id="defaultPartnerCountryPopulator"
+      class=" com.ibm.commerce.partner.facades.user.converters.populator.PartnerCountryPopulator"/>
+
+    <alias name="defaultPartnerCountryReversePopulator"
+      alias="partnerCountryReversePopulator"/>
+    <bean id="defaultPartnerCountryReversePopulator"
+      class="com.ibm.commerce.partner.facades.user.converters.populator.PartnerCountryReversePopulator">
+        <constructor-arg name="countryService" ref="partnerCountryService"/>
+    </bean>
+
+    <alias name="defaultPartnerCurrencyReversePopulator"
+      alias="partnerCurrencyReversePopulator"/>
+    <bean id="defaultPartnerCurrencyReversePopulator"
+      class="com.ibm.commerce.partner.facades.user.converters.populator.PartnerCurrencyReversePopulator">
+        <constructor-arg name="b2bUnitCurrencyReversePopulator" ref="ibmB2BUnitCurrencyReversePopulator"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="defaultCountryConverter"/>
+        <property name="add" ref="partnerCountryPopulator"/>
+    </bean>
+
+    <bean id="customerB2BUnitCreateProcessDefinitionResource"
+      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource"
+          value="classpath:/partnerfacades/processes/b2bunits/partner-customer-unit-creation-process.xml"/>
+    </bean>
+    <bean id="resellerB2BUnitCreateProcessDefinitionResource"
+      class="de.hybris.platform.processengine.definition.ProcessDefinitionResource">
+        <property name="resource"
+          value="classpath:/partnerfacades/processes/b2bunits/partner-reseller-unit-process.xml"/>
+    </bean>
+
+    <alias name="defaultPartnerSiteIdResponsePopulator" alias="partnerSiteIdResponsePopulator"/>
+    <bean id="defaultPartnerSiteIdResponsePopulator"
+      class="com.ibm.commerce.partner.facades.accountservice.company.converter.populators.PartnerSiteIdResponsePopulator">
+        <constructor-arg name="partnerSiteIdAddressConverter" ref="partnerSiteIdAddressConverter"/>
+        <constructor-arg name="ceidConverter" ref="ceidConverter"/>
+    </bean>
+
+    <alias name="defaultPartnerSiteIdAddressPopulator" alias="partnerSiteIdAddressPopulator"/>
+    <bean id="defaultPartnerSiteIdAddressPopulator"
+      class="com.ibm.commerce.partner.facades.accountservice.company.converter.populators.PartnerSiteIdAddressPopulator">
+        <constructor-arg name="partnerSiteIdCountryConverter" ref="partnerSiteIdCountryConverter"/>
+        <constructor-arg name="partnerSiteIdRegionConverter" ref="partnerSiteIdRegionConverter"/>
+    </bean>
+
+    <alias name="defaultPartnerSiteIdCountryPopulator" alias="partnerSiteIdCountryPopulator"/>
+    <bean id="defaultPartnerSiteIdCountryPopulator"
+      class="com.ibm.commerce.partner.facades.accountservice.company.converter.populators.PartnerSiteIdCountryPopulator">
+    </bean>
+
+    <alias name="defaultPartnerSiteIdRegionPopulator" alias="partnerSiteIdRegionPopulator"/>
+    <bean id="defaultPartnerSiteIdRegionPopulator"
+      class="com.ibm.commerce.partner.facades.accountservice.company.converter.populators.PartnerSiteIdRegionPopulator">
+    </bean>
+
+    <alias name="defaultPartnerSiteIdResponseConverter"
+      alias="partnerSiteIdResponseConverter"/>
+    <bean id="defaultPartnerSiteIdResponseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.company.data.IbmB2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSiteIdResponsePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerSiteIdCeidPopulator" alias="partnerSiteIdCeidPopulator"/>
+    <bean id="defaultPartnerSiteIdCeidPopulator"
+      class="com.ibm.commerce.partner.facades.accountservice.company.converter.populators.PartnerSiteIdCeidPopulator">
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+
+    </bean>
+    <alias name="defaultCeidConverter"
+      alias="ceidConverter"/>
+    <bean id="defaultCeidConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.company.data.IbmB2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSiteIdCeidPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerSiteIdAddressConverter" alias="partnerSiteIdAddressConverter"/>
+    <bean id="defaultPartnerSiteIdAddressConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commercefacades.user.data.AddressData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSiteIdAddressPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerSiteIdCountryConverter" alias="partnerSiteIdCountryConverter"/>
+    <bean id="defaultPartnerSiteIdCountryConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commercefacades.user.data.CountryData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSiteIdCountryPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerSiteIdRegionConverter" alias="partnerSiteIdRegionConverter"/>
+    <bean id="defaultPartnerSiteIdRegionConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commercefacades.user.data.RegionData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSiteIdRegionPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultFetchPartnerResellerAccountDetailsAction"
+      alias="fetchPartnerResellerAccountDetailsAction"/>
+    <bean id="defaultFetchPartnerResellerAccountDetailsAction"
+      class="com.ibm.commerce.partner.facades.actions.customer.FetchPartnerResellerAccountDetailsAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="outboundIntegrationService"
+          ref="partnerAccountServiceOutboundIntegrationService"/>
+        <property name="eligibleCountryList" ref="eligibleCountryList"/>
+        <constructor-arg name="businessProcessService" ref="businessProcessService"/>
+        <constructor-arg name="processCodeGenerator" ref="partnerUniqueUidKeyGenerator"/>
+    </bean>
+
+    <alias name="defaultFetchPartnerResellerDefaultDistributorAccountDetailsAction"
+      alias="fetchPartnerResellerDefaultDistributorAccountDetailsAction"/>
+    <bean id="defaultFetchPartnerResellerDefaultDistributorAccountDetailsAction"
+      class="com.ibm.commerce.partner.facades.actions.customer.FetchPartnerResellerDefaultDistributorAccountDetailsAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="outboundIntegrationService"
+          ref="partnerAccountServiceOutboundIntegrationService"/>
+    </bean>
+
+    <utils:list id="eligibleCountryList">
+        <value>US</value>
+        <value>USA</value>
+    </utils:list>
+
+    <alias name="defaultPersistResellerDetailsAction" alias="persistResellerDetailsAction"/>
+    <bean id="defaultPersistResellerDetailsAction"
+      class="com.ibm.commerce.partner.facades.actions.customer.PersistResellerDetailsAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="partnerB2BUnitFacade" ref="partnerB2BUnitCreationFacade"/>
+        <constructor-arg name="partnerB2BUnitDataConverter" ref="partnerResellerDetailsConveter"/>
+    </bean>
+
+    <alias name="defaultResellerSubprocessCompletionAction"
+      alias="resellerSubprocessCompletionAction"/>
+    <bean id="defaultResellerSubprocessCompletionAction"
+      class="com.ibm.commerce.partner.facades.actions.customer.ResellerSubprocessCompletionAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="businessProcessService" ref="businessProcessService"/>
+    </bean>
+
+    <alias name="defaultPartnerDistributorDetailsConverter"
+      alias="partnerDistributorDetailsConverter"/>
+    <bean id="defaultPartnerDistributorDetailsConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSiteIdResponsePopulator"/>
+                <ref bean="partnerDistributorSiteIdResponsePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerResellerDetailsConveter"
+      alias="partnerResellerDetailsConveter"/>
+    <bean id="defaultPartnerResellerDetailsConveter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSiteIdResponsePopulator"/>
+                <ref bean="partnerResellerSiteResponsePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerResellerSiteResponsePopulator"
+      alias="partnerResellerSiteResponsePopulator"/>
+    <bean id="defaultPartnerResellerSiteResponsePopulator"
+      class="com.ibm.commerce.partner.facades.accountservice.company.resellers.converter.populator.PartnerResellerSiteResponsePopulator">
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+        <constructor-arg name="distributorDetailsConverter"
+          ref="partnerDistributorDetailsConverter"/>
+    </bean>
+
+    <alias name="defaultPartnerDistributorSiteIdResponsePopulator"
+      alias="partnerDistributorSiteIdResponsePopulator"/>
+    <bean id="defaultPartnerDistributorSiteIdResponsePopulator"
+      class="com.ibm.commerce.partner.facades.accountservice.company.distributors.converters.populators.PartnerDistributorSiteIdResponsePopulator">
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+    </bean>
+
+    <alias name="defaultPersistAllSiteIdToCustomerDetailsAction"
+      alias="persistAllSiteIdToCustomerDetailsAction"/>
+    <bean id="defaultPersistAllSiteIdToCustomerDetailsAction"
+      class="com.ibm.commerce.partner.facades.actions.customer.PersistAllSiteIdToCustomerDetailsAction"
+      parent="partnerAbstractSimpleDecisionAction">
+        <constructor-arg name="b2BUnitService" ref="partnerB2BUnitService"/>
+        <constructor-arg name="defaultB2BUnitCode" value="${default.partner.b2bUnit.uid}"/>
+    </bean>
+
+    <alias name="defaultCheckAllSubProcessCompletionAction"
+      alias="checkAllSubProcessCompletionAction"/>
+    <bean id="defaultCheckAllSubProcessCompletionAction"
+      class="com.ibm.commerce.partner.facades.actions.customer.CheckAllSubProcessCompletionAction"
+      parent="partnerAbstractSimpleDecisionAction"/>
+
+    <alias name="defaultPartnerQuoteFacade" alias="quoteFacade"/>
+    <bean id="defaultPartnerQuoteFacade"
+      class="com.ibm.commerce.partner.facades.quote.impl.DefaultPartnerQuoteFacade"
+      parent="defaultQuoteFacade">
+        <property name="sapCpqQuoteService" ref="partnerSapCpqQuoteService"/>
+        <constructor-arg name="partnerQuoteServiceConverter" ref="partnerQuoteServiceConverter"/>
+        <constructor-arg name="partnerCommerceQuoteService" ref="commerceQuoteService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="cloneIbmQuoteStrategy" ref="cloneIbmQuoteStrategy"/>
+        <constructor-arg name="partnerImportQuoteReverseConverter" ref="partnerImportQuoteReverseConverter"/>
+    </bean>
+
+    <bean depends-on="commerceSaveCartRestorationMethodHooks" parent="listMergeDirective">
+        <property name="add" ref="cartPriceLookUpMethodHook"/>
+    </bean>
+
+    <alias name="defaultPartnerSpecialBidReasonConverter" alias="partnerSpecialBidReasonConverter"/>
+    <bean id="defaultPartnerSpecialBidReasonConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.specialbidreason.data.PartnerSpecialBidReasonData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSpecialBidReasonPopulator"/>
+                <ref bean="partnerSignificantCompetitiveReasonCodePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <alias name="defaultPartnerSpecialBidReasonPopulator" alias="partnerSpecialBidReasonPopulator"/>
+    <bean id="defaultPartnerSpecialBidReasonPopulator"
+      class="com.ibm.commerce.partner.facades.specialbidreason.converter.populator.PartnerSpecialBidReasonPopulator">
+    </bean>
+
+    <alias name="defaultPartnerSignificantCompetitiveReasonCodePopulator" alias="partnerSignificantCompetitiveReasonCodePopulator"/>
+    <bean id="defaultPartnerSignificantCompetitiveReasonCodePopulator"
+      class="com.ibm.commerce.partner.facades.specialbidreason.converter.populator.PartnerSignificantCompetitiveReasonCodePopulator">
+        <constructor-arg name="commerceCartService" ref="commerceCartService"/>
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="significantCompetitiveReasonCode" value="${partner.special.bid.reason.significant.competitive.bill.code}"/>
+    </bean>
+
+
+    <alias name="defaultPartnerSpecialBidFacade" alias="partnerSpecialBidFacade"/>
+    <bean id="defaultPartnerSpecialBidFacade"
+      class="com.ibm.commerce.partner.facades.specialbidreason.impl.DefaultPartnerSpecialBidBidReasonFacade">
+        <constructor-arg name="specialBidReasonService" ref="partnerSpecialBidReasonService"/>
+        <constructor-arg name="specialBidReasonConverter" ref="partnerSpecialBidReasonConverter"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+    </bean>
+
+    <alias name="defaultPartnerOverridePriceValidator" alias="partnerOverridePriceValidator"/>
+    <bean id="defaultPartnerOverridePriceValidator"
+      class="com.ibm.commerce.partner.facades.validator.impl.DefaultPartnerOverridePriceValidator">
+        <constructor-arg name="partnerPartProductTypeStrategy"
+          ref="partnerPartProductTypeStrategy"/>
+    </bean>
+
+    <alias name="defaultPartnerCartHeaderPricingDetailsReverseConverter"
+      alias="partnerCartHeaderPricingDetailsReverseConverter"/>
+    <bean id="defaultPartnerCartHeaderPricingDetailsReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.PartnerCpqHeaderPricingDetailModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerCartHeaderPricingDetailsReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerCartEntryPricingDetailsReverseConverter"
+      alias="partnerCartEntryPricingDetailsReverseConverter"/>
+    <bean id="defaultPartnerCartEntryPricingDetailsReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.PartnerCpqPricingDetailModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerCartEntryPricingDetailsReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerCartHeaderPricingDetailsReversePopulator"
+      alias="partnerCartHeaderPricingDetailsReversePopulator"/>
+    <bean id="defaultPartnerCartHeaderPricingDetailsReversePopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.PartnerCartHeaderPricingDetailsReversePopulator">
+    </bean>
+
+    <alias name="defaultPartnerCartEntryPricingDetailsReversePopulator"
+      alias="partnerCartEntryPricingDetailsReversePopulator"/>
+    <bean id="defaultPartnerCartEntryPricingDetailsReversePopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.PartnerCartEntryPricingDetailsReversePopulator">
+    </bean>
+
+
+    <alias name="defaultOpportunityResponsePopulator" alias="opportunityResponsePopulator"/>
+    <bean id="defaultOpportunityResponsePopulator"
+      class="com.ibm.commerce.partner.facades.opportunity.converters.populators.OpportunityResponsePopulator">
+    </bean>
+    <alias name="defaultOpportunityResponseConverter" alias="opportunityResponseConverter"/>
+    <bean id="defaultOpportunityResponseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.facades.opportunity.data.OpportunityDetailsData"/>
+        <property name="populators">
+            <list>
+                <ref bean="opportunityResponsePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerQuoteServicePopulator" alias="partnerQuoteServicePopulator"/>
+    <bean id="defaultPartnerQuoteServicePopulator"
+      class="com.ibm.commerce.partner.facades.quoteservice.converters.populators.PartnerQuoteServicePopulator">
+    </bean>
+    <alias name="defaultPartnerQuoteServiceConverter" alias="partnerQuoteServiceConverter"/>
+    <bean id="defaultPartnerQuoteServiceConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commercefacades.comment.data.CommentData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuoteServicePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerHeaderPricingDetailConverter"
+      alias="partnerHeaderPricingDetailConverter"/>
+    <bean id="defaultPartnerHeaderPricingDetailConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.data.order.pricing.PartnerCpqHeaderPricingDetailData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerHeaderPricingDetailPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerHeaderPricingDetailPopulator"
+      alias="partnerHeaderPricingDetailPopulator"/>
+    <bean id="defaultPartnerHeaderPricingDetailPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.PartnerCpqHeaderPricingDetailPopulator">
+    </bean>
+
+    <alias name="defaultPartnerQuestionsFacade" alias="partnerQuestionsFacade"/>
+    <bean id="defaultPartnerQuestionsFacade"
+      class="com.ibm.commerce.partner.facades.partnerquestions.impl.DefaultPartnerQuestionsFacade">
+        <constructor-arg name="questionService" ref="partnerQuestionService"/>
+        <constructor-arg name="questionsConverter" ref="partnerQuestionsConverter"/>
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="questionsMappingConverter" ref="partnerQuestionsMappingConverter"/>
+        <constructor-arg name="questionsSelectionToQuestionDataConverter" ref="partnerQuestionSelectionToQuestionDataConverter"/>
+    </bean>
+
+
+
+    <alias name="defaultPartnerQuestionMappingPopulator" alias="partnerQuestionMappingPopulator"/>
+    <bean id="defaultPartnerQuestionMappingPopulator" class="com.ibm.commerce.partner.facades.partnerquestions.converter.populator.PartnerQuestionMappingPopulator">
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultPartnerQuestionsMappingConverter" alias="partnerQuestionsMappingConverter"/>
+    <bean id="defaultPartnerQuestionsMappingConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuestionMappingPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerQuestionsConverter" alias="partnerQuestionsConverter"/>
+    <bean id="defaultPartnerQuestionsConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuestionsPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerQuestionsPopulator" alias="partnerQuestionsPopulator"/>
+    <bean id="defaultPartnerQuestionsPopulator"
+      class="com.ibm.commerce.partner.facades.partnerquestions.converter.populator.PartnerQuestionPopulator">
+        <constructor-arg name="partnerQuestionsConverter" ref="partnerQuestionsConverter"/>
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultPartnerQuestionsSelectionData"
+      alias="partnerQuestionsSelectionDataConverter"/>
+    <bean id="defaultPartnerQuestionsSelectionData" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsSelectionData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuestionsSelectionPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerQuestionsSelectionPopulator"
+      alias="partnerQuestionsSelectionPopulator"/>
+    <bean id="defaultPartnerQuestionsSelectionPopulator"
+      class="com.ibm.commerce.partner.facades.partnerquestions.converter.populator.PartnerQuestionsSelectionPopulator">
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+    </bean>
+
+    <alias name="defaultOpportunitySearchResponsePopulator" alias="opportunitySearchResponsePopulator"/>
+    <bean id="defaultOpportunitySearchResponsePopulator"
+      class="com.ibm.commerce.partner.facades.opportunity.converters.populators.OpportunitySearchResponsePopulator">
+    </bean>
+    <alias name="defaultOpportunitySearchResponseConverter" alias="opportunitySearchResponseConverter"/>
+    <bean id="defaultOpportunitySearchResponseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.facades.opportunity.data.OpportunitySearchDetailsData"/>
+        <property name="populators">
+            <list>
+                <ref bean="opportunitySearchResponsePopulator"/>
+            </list>
+        </property>
+    </bean>
+    <alias name="partnerDistributerPricingDetailsToEntryPopulator" alias="partnerDistributerPricingDetailsToEntryPopulator"/>
+    <bean id="partnerDistributerPricingDetailsToEntryPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.PartnerDistributerPricingDetailsToEntryPopulator">
+        <constructor-arg name="userService" ref="partnerUserService"/>
+    </bean>
+
+    <alias name="ibmCartLoaderStrategy" alias="cartLoaderStrategy"/>
+    <bean id="ibmCartLoaderStrategy"
+      class="com.ibm.commerce.partner.facades.strategies.impl.DefaultIbmCartLoaderStrategy"
+      parent="selectiveCartLoaderStrategy">
+        <constructor-arg name="commerceCartService" ref="commerceCartService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="customerEmailResolutionService"
+          ref="customerEmailResolutionService"/>
+    </bean>
+
+    <alias name="partnerPartProductTypeStrategy" alias="partnerPartProductTypeStrategy"/>
+    <bean id="partnerPartProductTypeStrategy"
+      class="com.ibm.commerce.partner.facades.strategies.impl.PartnerPartProductTypeStrategy">
+        <constructor-arg name="slaRevenueStreamCodes"
+          value="${partner.sla.revenue.stream.codes}"/>
+        <constructor-arg name="overageRevenueStreamCodes"
+          value="${partner.overage.revenue.stream.codes}"/>
+    </bean>
+
+    <alias name="defaultSolrPartnerQuoteSearchFacade"
+      alias="partnerQuoteSearchFacade"/>
+    <bean id="defaultSolrPartnerQuoteSearchFacade"
+      class="com.ibm.commerce.partner.facades.quote.search.impl.DefaultSolrPartnerQuoteSearchFacade">
+        <constructor-arg name="partnerQuoteSearchService" ref="partnerQuoteSearchService"/>
+        <constructor-arg name="autocompleteService" ref="commerceAutocompleteService"/>
+        <constructor-arg name="partnerQuoteSearchPageConverter" ref="partnerQuoteSearchPageConverter"/>
+        <constructor-arg name="searchQueryDecoder" ref="solrSearchQueryDecoder"/>
+        <constructor-arg name="autocompleteSuggestionConverter" ref="autocompleteSuggestionConverter"/>
+        <constructor-arg name="threadContextService" ref="threadContextService"/>
+    </bean>
+
+    <bean id="partnerQuoteSearchPageConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.search.facetdata.PartnerQuoteSearchPageData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuoteSearchPagePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="partnerQuoteSearchPagePopulator"
+      class="com.ibm.commerce.partner.facades.search.converters.populator.PartnerQuoteSearchPagePopulator">
+        <constructor-arg name="facetConverter" ref="facetConverter"/>
+        <constructor-arg name="partnerQuoteSearchResultConverter" ref="partnerQuoteSearchResultConverter"/>
+        <constructor-arg name="searchStateConverter" ref="partnerQuoteSolrSearchStateConverter"/>
+        <constructor-arg name="breadcrumbConverter" ref="breadcrumbConverter"/>
+        <constructor-arg name="spellingSuggestionConverter" ref="partnerSpellingSuggestionConverter"/>
+    </bean>
+
+    <!-- solrSearchStateConverter is used by productsolrsearch -->
+    <bean id="partnerQuoteSolrSearchStateConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="de.hybris.platform.commercefacades.search.data.SearchStateData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuoteSolrSearchStatePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="partnerQuoteSolrSearchStatePopulator"
+      class="com.ibm.commerce.partner.facades.search.solrfacetsearch.converters.populator.PartnerQuoteSolrSearchStatePopulator">
+        <property name="searchPath" value="/search"/>
+        <property name="searchQueryConverter"
+          ref="partnerQuoteSolrSearchQueryEncoder"/>
+    </bean>
+
+    <bean id="partnerQuoteSolrSearchQueryEncoder" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="de.hybris.platform.commercefacades.search.data.SearchQueryData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuoteSolrSearchQueryEncoderPopulator"/>
+            </list>
+        </property>
+    </bean>
+    <bean id="partnerQuoteSolrSearchQueryEncoderPopulator"
+      class="com.ibm.commerce.partner.facades.search.solrfacetsearch.converters.populator.PartnerQuoteSolrSearchQueryEncoderPopulator"/>
+
+    <bean id="partnerSpellingSuggestionConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commerceservices.search.facetdata.SpellingSuggestionData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSpellingSuggestionPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="partnerSpellingSuggestionPopulator"
+      class="de.hybris.platform.commercefacades.search.converters.populator.SpellingSuggestionPopulator"
+    >
+        <property name="searchStateConverter" ref="partnerQuoteSolrSearchStateConverter"/>
+    </bean>
+
+    <bean id="partnerBreadcrumbConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="de.hybris.platform.commerceservices.search.facetdata.BreadcrumbData"/>
+        <property name="populators">
+            <list>
+                <ref bean="breadcrumbPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="partnerBreadcrumbPopulator"
+      class="de.hybris.platform.commercefacades.search.converters.populator.BreadcrumbPopulator">
+        <property name="searchStateConverter" ref="partnerQuoteSolrSearchStateConverter"/>
+    </bean>
+    <!-- solrSearchStateConverter is used by productsolrsearch -->
+
+    <bean id="partnerQuoteSearchResultConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="de.hybris.platform.commercefacades.quote.data.QuoteData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuoteSearchResultPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="partnerQuoteSearchResultPopulator"
+      class="com.ibm.commerce.partner.facades.search.converters.populator.PartnerQuoteSearchResultPopulator">
+        <constructor-arg name="dateFormat"
+          value="${partner.quote.submit.date.format}"/>
+        <constructor-arg name="currencyConverter" ref="currencyConverter"/>
+    </bean>
+
+    <alias name="defaultIbmPartnerOrderConverter" alias="ibmPartnerOrderConverter"/>
+    <bean id="defaultIbmPartnerOrderConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.order.data.PartnerOrderData"/>
+        <property name="populators">
+            <list>
+                <ref bean="ibmPartnerOrderPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+
+    <alias name="defaultIbmPartnerOrderPopulator" alias="ibmPartnerOrderPopulator"/>
+    <bean id="defaultIbmPartnerOrderPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmPartnerOrderPopulator">
+    </bean>
+
+    <alias name="partnerImportQuoteMediaReverseConverter" alias="partnerImportQuoteMediaReverseConverter" />
+    <bean id="partnerImportQuoteMediaReverseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="de.hybris.platform.core.model.media.MediaModel" />
+        <property name="populators">
+            <list>
+                <ref bean="partnerImportQuoteMediaReversePopulator" />
+            </list>
+        </property>
+    </bean>
+
+    <alias name="partnerImportQuoteMediaReversePopulator" alias="partnerImportQuoteMediaReversePopulator" />
+    <bean id="partnerImportQuoteMediaReversePopulator" class="com.ibm.commerce.partner.facades.quote.converter.populator.PartnerImportQuoteMediaReversePopulator" >
+        <constructor-arg name="mediaCodeKeyGenerator" ref="partnerMediaCodeKeyGenerator"/>
+    </bean>
+
+    <alias name="partnerImportQuoteReverseConverter" alias="partnerImportQuoteReverseConverter" />
+    <bean id="partnerImportQuoteReverseConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.ibm.commerce.partner.core.model.IbmPartnerQuoteModel" />
+        <property name="populators">
+            <list>
+                <ref bean="partnerImportQuoteReversePopulator" />
+            </list>
+        </property>
+    </bean>
+
+    <alias name="partnerImportQuoteReversePopulator" alias="partnerImportQuoteReversePopulator" />
+    <bean id="partnerImportQuoteReversePopulator" class="com.ibm.commerce.partner.facades.quoteservice.converters.populators.PartnerImportQuoteReversePopulator" >
+        <constructor-arg name="commonI18NService" ref="commonI18NService"/>
+        <constructor-arg name="quoteCodeKeyGenerator" ref="quoteCodeGenerator"/>
+        <constructor-arg name="partnerImportQuoteMediaReverseConverter" ref="partnerImportQuoteMediaReverseConverter"/>
+        <property name="modelService" ref="modelService"/>
+        <property name="userService" ref="userService"/>
+    </bean>
+
+
+    <alias name="provisionFormConverter" alias="provisionFormConverter" />
+    <bean id="provisionFormConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.ibm.commerce.partner.provision.form.data.ProvisioningFormData" />
+        <property name="populators">
+            <list>
+                <ref bean="provisionFormPopulator" />
+            </list>
+        </property>
+    </bean>
+    <alias name="provisionFormPopulator" alias="provisionFormPopulator"/>
+    <bean id="provisionFormPopulator" class="com.ibm.commerce.partner.facades.provision.populators.ProvisionFormPopulator">
+        <constructor-arg name="partnerProductSetConverter" ref="partnerProductSetConverter"/>
+    </bean>
+
+    <alias name="partnerProductSetConverter" alias="partnerProductSetConverter" />
+    <bean id="partnerProductSetConverter" parent="abstractPopulatingConverter">
+        <property name="targetClass" value="com.ibm.commerce.partner.provision.form.data.PartnerProductSetData" />
+        <property name="populators">
+            <list>
+                <ref bean="partnerProductSetPopulator" />
+            </list>
+        </property>
+    </bean>
+    <alias name="partnerProductSetPopulator" alias="partnerProductSetPopulator"/>
+    <bean id="partnerProductSetPopulator" class="com.ibm.commerce.partner.facades.provision.populators.PartnerProductSetPopulator">
+    </bean>
+
+    <alias name="defaultIbmCartEntryAdditionalInformationPopulator" alias="ibmCartEntryAdditionalInformationPopulator"/>
+    <bean id="defaultIbmCartEntryAdditionalInformationPopulator"
+      class="com.ibm.commerce.partner.facades.order.populators.IbmCartEntryAdditionalInformationPopulator">
+    </bean>
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="orderEntryConverter"/>
+        <property name="add" ref="defaultIbmCartEntryAdditionalInformationPopulator"/>
+    </bean>
+
+    <alias name="ibmSearchResultVariantOptionsProductPopulator"
+      alias="commerceSearchResultProductPopulator"/>
+    <bean id="ibmSearchResultVariantOptionsProductPopulator"
+      class="com.ibm.commerce.partner.facades.search.converters.populator.IbmSearchResultVariantOptionsProductPopulator"
+      parent="variantOptionsCommerceSearchResultProductPopulator">
+        <constructor-arg name="variantOptionDataConverter" ref="ibmVariantOptionProductConverter"/>
+    </bean>
+
+    <alias name="defaultIbmVariantOptionProductConverter"
+      alias="ibmVariantOptionProductConverter"/>
+    <bean id="defaultIbmVariantOptionProductConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="de.hybris.platform.commercefacades.product.data.VariantOptionData"/>
+        <property name="populators">
+            <list>
+                <ref bean="ibmVariantOptionProductPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmVariantOptionProductPopulator"
+      alias="ibmVariantOptionProductPopulator"/>
+    <bean id="defaultIbmVariantOptionProductPopulator"
+      class="com.ibm.commerce.partner.facades.search.converters.populator.IbmVariantOptionProductPopulator">
+    </bean>
+
+    <alias name="defaultPartnerSolrJobStatusPopulator" alias="partnerSolrJobStatusPopulator"/>
+    <bean id="defaultPartnerSolrJobStatusPopulator"
+      class="com.ibm.commerce.partner.facades.populators.PartnerSolrJobStatusPopulator">
+    </bean>
+
+    <alias name="defaultPartnerSolrJobStatusConverter" alias="partnerSolrJobStatusConverter"/>
+    <bean id="defaultPartnerSolrJobStatusConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.data.solrindexer.SolrIndexJobResponseData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSolrJobStatusPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultIbmProductVariantMatrixPopulator"
+      alias="productVariantMatrixPopulator"/>
+    <bean id="defaultIbmProductVariantMatrixPopulator"
+      class="com.ibm.commerce.partner.facades.search.converters.populator.IbmProductVariantMatrixPopulator"
+      parent="defaultProductVariantMatrixPopulator">
+        <constructor-arg name="partnerProductSearchAvailabilityService" ref="partnerProductSearchAvailabilityService"/>
+    </bean>
+
+    <alias name="defaultPartnerSalesOrganizationFacade" alias="partnerSalesOrganizationFacade"/>
+    <bean id="defaultPartnerSalesOrganizationFacade"
+      class="com.ibm.commerce.partner.facades.company.impl.DefaultPartnerSalesOrganizationFacade">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="salesOrgService" ref="partnerSalesOrgService"/>
+        <constructor-arg name="salesOrganisationReverseConverter"
+          ref="partnerSalesOrganisationReverseConverter"/>
+    </bean>
+
+    <alias name="defaultPartnerSalesOrgReversePopulator" alias="partnerSalesOrgReversePopulator"/>
+    <bean id="defaultPartnerSalesOrgReversePopulator"
+      class="com.ibm.commerce.partner.facades.company.converter.populators.PartnerSalesOrgReversePopulator">
+
+    </bean>
+    <alias name="defaultPartnerSalesOrganisationReverseConverter"
+      alias="partnerSalesOrganisationReverseConverter"/>
+    <bean id="defaultPartnerSalesOrganisationReverseConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.core.model.PartnerSalesOrganisationModel"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSalesOrgReversePopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerCustomTokenGranter" alias="customTokenGranter"/>
+    <bean id="defaultPartnerCustomTokenGranter"
+      class="com.ibm.commerce.partner.facades.oauth2.provider.custom.PartnerCustomTokenGranter">
+        <constructor-arg name="tokenServices" ref="oauthTokenServices"/>
+        <constructor-arg name="clientDetailsService" ref="oauthClientDetails"/>
+        <constructor-arg name="requestFactory" ref="oAuth2RequestFactory"/>
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="userDetailsService" ref="wsUserDetailsService"/>
+        <constructor-arg name="grantType" value="${partner.oauth.custom.granttype}"/>
+        <constructor-arg name="userFacade" ref="partnerB2BUserFacade"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+        <constructor-arg name="sessionService" ref="sessionService"/>
+    </bean>
+
+    <alias name="defaultPartnerSsoTokenBasicDetailsPopulator"
+      alias="partnerSsoTokenBasicDetailsPopulator"/>
+    <bean id="defaultPartnerSsoTokenBasicDetailsPopulator"
+      class="com.ibm.commerce.partner.facades.oauth2.prm.converter.populators.PartnerSsoTokenBasicDetailsPopulator">
+    </bean>
+
+    <alias name="defaultPartnerSsoTokenEnterprisesPopulator"
+      alias="partnerSsoTokenEnterprisesPopulator"/>
+    <bean id="defaultPartnerSsoTokenEnterprisesPopulator"
+      class="com.ibm.commerce.partner.facades.oauth2.prm.converter.populators.PartnerSsoTokenEnterprisesPopulator">
+    </bean>
+
+    <alias name="defaultPartnerLoginJwtTokenDecoderConverter"
+      alias="partnerLoginJwtTokenDecoderConverter"/>
+    <bean id="defaultPartnerLoginJwtTokenDecoderConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.sso.prm.data.IbmPartnerSSOUserTokenInboundData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSsoTokenBasicDetailsPopulator"/>
+                <ref bean="partnerSsoTokenEnterprisesPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerSsoTokenToB2BRegistrationBasicPopulator" alias="partnerSsoTokenToB2BRegistrationBasicPopulator"/>
+    <bean id="defaultPartnerSsoTokenToB2BRegistrationBasicPopulator" class="com.ibm.commerce.partner.facades.user.converters.populator.PartnerSsoTokenToB2BRegistrationBasicPopulator">
+    </bean>
+
+    <alias name="defaultPartnerSsoTokenToB2BRegistrationConverter"
+      alias="partnerSsoTokenToB2BRegistrationConverter"/>
+    <bean id="defaultPartnerSsoTokenToB2BRegistrationConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.data.PartnerB2BRegistrationData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerSsoTokenToB2BRegistrationBasicPopulator"/>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerCustomerEmailPopulator" alias="partnerCustomerEmailPopulator"/>
+    <bean id="defaultPartnerCustomerEmailPopulator"
+      class="com.ibm.commerce.partner.facades.populators.PartnerCustomerEmailPopulator">
+        <constructor-arg name="customerEmailResolutionService"
+          ref="customerEmailResolutionService"/>
+    </bean>
+
+    <bean parent="modifyPopulatorList">
+        <property name="list" ref="customerConverter"/>
+        <property name="add" ref="partnerCustomerEmailPopulator"/>
+    </bean>
+
+    <alias name="defaultPartnerQuestionSelectionToQuestionDataPopulator" alias="partnerQuestionSelectionToQuestionDataPopulator"/>
+    <bean id="defaultPartnerQuestionSelectionToQuestionDataPopulator" class="com.ibm.commerce.partner.facades.partnerquestions.converter.populator.PartnerQuestionSelectionToQuestionDataPopulator">
+        <constructor-arg name="displayTypeDataConverter" ref="enumerationDisplayTypeDataConverter"/>
+    </bean>
+
+    <alias name="defaultpartnerQuestionSelectionToQuestionDataConverter" alias="partnerQuestionSelectionToQuestionDataConverter"/>
+    <bean id="defaultpartnerQuestionSelectionToQuestionDataConverter"
+      parent="abstractPopulatingConverter">
+        <property name="targetClass"
+          value="com.ibm.commerce.partner.partnerquestions.data.PartnerQuestionsData"/>
+        <property name="populators">
+            <list>
+                <ref bean="partnerQuestionSelectionToQuestionDataPopulator"/>
+            </list>
+        </property>
+    </bean>
+</beans>

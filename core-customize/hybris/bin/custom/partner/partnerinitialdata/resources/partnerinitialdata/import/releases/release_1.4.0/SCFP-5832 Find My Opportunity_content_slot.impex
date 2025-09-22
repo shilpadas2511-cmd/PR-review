@@ -1,0 +1,25 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$productCatalog = partnerProductCatalog
+$productCV = catalogVersion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$lang = en
+
+## components in slot 2 ##
+INSERT_UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; name                                  ; &componentRef             ; ; ; ;
+                                   ;                          ; HeadlineSection2Paragraph ; Headline Section2 Paragraph Paragraph ; HeadlineSection2Paragraph ; ; ; ;
+
+INSERT_UPDATE PartnerCategoryFeatureComponent; $contentCV[unique = true]; uid[unique = true]          ; name                        ; category(code, $productCV); &componentRef
+                                             ;                          ; FindOpportunityFeatureComponent ; FindOpportunityFeatureComponent ;                           ; FindOpportunityFeatureComponent
+                                             ;                          ; AllProductsFeatureComponent     ; AllProductsFeatureComponent     ;                           ; AllProductsFeatureComponent
+                                             ;                          ; YourQuotesFeatureComponent      ; YourQuotesFeatureComponent      ;                           ; YourQuotesFeatureComponent
+                                             ;                          ; SavedCartsFeatureComponent      ; SavedCartsFeatureComponent      ;                           ; SavedCartsFeatureComponent
+                                             ;                          ; ViewCartFeatureComponent        ; ViewCartFeatureComponent        ;                           ; ViewCartFeatureComponent
+
+
+
+UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]    ; name                       ; active; cmsComponents(&componentRef)
+                         ;                          ; Section2Slot-Homepage ; Section2 Slot for Homepage ; true  ; HeadlineSection2Paragraph,FindOpportunityFeatureComponent,AllProductsFeatureComponent,YourQuotesFeatureComponent,SavedCartsFeatureComponent,ViewCartFeatureComponent
+ 
+
+UPDATE PartnerCategoryFeatureComponent; $contentCV[unique = true]; uid[unique = true]          ; title[lang = $lang]; description[lang = $lang]
+                                      ;                          ; FindOpportunityFeatureComponent ; Find My Opportunity; "Search for your opportunity number"

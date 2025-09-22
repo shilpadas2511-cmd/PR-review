@@ -1,0 +1,2 @@
+UPDATE Country[batchmode = true]; itemtype(code)[unique = true]; active
+                                ; Country                      ; false

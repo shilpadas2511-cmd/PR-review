@@ -1,0 +1,29 @@
+$quoteSubmitService-Content-Type = Content-Type->application/json
+$quoteSubmitService-UserAgent = User-Agent->insomnia/2023.5.8
+$quoteSubmitService-additional-properties = $quoteSubmitService-Content-Type|$quoteSubmitService-UserAgent
+$consumed_oauth_credential = ibmQ2CQuoteCommonCredential
+$customValidateUrl = https://dev.api.ibm.com/q2cdsw/bluedev/api/quote/v2/{cpqQuoteId}/transition/validate
+$customSubmitUrl = https://dev.api.ibm.com/q2cdsw/bluedev/api/quote/v2/{cpqQuoteId}/transition/submit?submitterName = {submitterName}&submitterEmail = {submitterEmail}
+$url = https://dev.api.ibm.com/q2cdsw/bluedev/api/quote/v2
+$validate_end_point = cpqQuoteValidationService
+$submit_end_point = cpqQuoteEndpointSubmitService
+$validation_destination_target = cpqQuoteValidateService
+$submit_destination_target = cpqQuoteValidateSubmitService
+$validation_consumed_destination = cpqQuoteCommonValidationService
+$submit_consumed_destination = cpqQuoteCommonSubmitService
+
+UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
+$baseUrl = $config-ibm.quote.common.base.url
+
+INSERT_UPDATE DestinationTarget; id[unique = true]              ; registrationStatus; destinationChannel(code)
+                               ; $validation_destination_target ;                   ; SAPCPQQUOTESERVICE
+                               ; $submit_destination_target     ;                   ; SAPCPQQUOTESERVICE
+
+INSERT_UPDATE Endpoint; id[unique = true]   ; version[unique = true]; name                          ; specUrl
+                      ; $validate_end_point ; 1                     ; cpqQuoteValidationService     ; cpqQuoteValidationService
+                      ; $submit_end_point   ; 1                     ; cpqQuoteEndpointSubmitService ; cpqQuoteEndpointSubmitService
+
+
+INSERT_UPDATE IbmConsumedDestination; id[unique = true]                ; customUri                                                                                                              ; endpoint(id, version) ; credential(id)             ; destinationTarget(id)          ; additionalProperties(key, value)[map-delimiter = |]; active[default = true]; url
+                                    ; $validation_consumed_destination ; $baseUrl/api/quote/v2/{cpqQuoteId}/transition/validate                                                                 ; $validate_end_point:1 ; $consumed_oauth_credential ; $validation_destination_target ; $quoteSubmitService-additional-properties          ;                       ; $baseUrl/api/quote/v2
+                                    ; $submit_consumed_destination     ; $baseUrl/api/quote/v2/{cpqQuoteId}/transition/submit?submitterName = {submitterName}&submitterEmail = {submitterEmail} ; $submit_end_point:1   ; $consumed_oauth_credential ; $submit_destination_target     ; $quoteSubmitService-additional-properties          ;                       ; $baseUrl/api/quote/v2

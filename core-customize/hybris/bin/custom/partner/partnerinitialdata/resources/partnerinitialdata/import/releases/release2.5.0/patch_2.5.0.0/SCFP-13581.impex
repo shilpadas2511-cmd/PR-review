@@ -1,0 +1,4 @@
+UPDATE IbmDeploymentType; code[unique = true]; name[lang = en]       ; tagCode; sapCode
+                        ; SaaS               ; Software as a service ; SaaS   ; SAAS
+                        ; Bespoke-MultiPid   ; Software as a service ; SaaS   ; SAAS
+                        ; Bespoke            ; Software as a service ; SaaS   ; SAAS

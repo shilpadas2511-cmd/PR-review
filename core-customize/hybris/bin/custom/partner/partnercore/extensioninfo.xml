@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+ Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<extensioninfo xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="extensioninfo.xsd">
+
+
+    <extension abstractclassprefix="Generated" classprefix="Partnercore" jaloLogicFree="true"
+      managername="PartnercoreManager"
+      managersuperclass="de.hybris.platform.jalo.extension.Extension" name="partnercore"
+      usemaven="false">
+
+
+        <requires-extension name="commoncore"/>
+        <requires-extension name="b2bcommerce"/>
+        <requires-extension name="samlsinglesignon"/>
+        <requires-extension name="b2bapprovalprocess"/>
+        <requires-extension name="sapproductconfigservices"/>
+        <requires-extension name="inboundservices"/>
+        <requires-extension name="outboundservices"/>
+        <requires-extension name="sapcpqquoteintegration"/>
+        <requires-extension name="selectivecartservices"/>
+        <requires-extension name="sapmodel"/>
+        <requires-extension name="sapquoteintegration"/>
+        <requires-extension name='b2bacceleratorfacades'/>
+        <requires-extension name='commonappconfigurationcore'/>
+        <requires-extension name='b2bacceleratorservices'/>
+
+
+        <coremodule generated="true" manager="com.ibm.commerce.partner.core.jalo.PartnercoreManager"
+          packageroot="com.ibm.commerce.partner.core"/>
+
+
+    </extension>
+
+
+</extensioninfo>

@@ -1,0 +1,26 @@
+# -----------------------------------------------------------------------
+# Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+# -----------------------------------------------------------------------
+# 
+# Create the BaseStore
+#
+
+$productCatalog=partnerProductCatalog
+$currencies=USD
+$storeUid=partner
+$defaultCurrency=USD
+$languages=en
+$defaultLanguage=en
+$deliveryCountries=US
+$billingCountries=US
+$pickupInStoreMode=DISABLED
+$customerAllowedToIgnoreSuggestions=true
+$checkoutFlowGroup=defaultCheckoutGroup
+
+
+# Base Store
+INSERT_UPDATE BaseStore;uid[unique=true];catalogs(id)	;currencies(isocode);defaultCurrency(isocode);languages(isocode);defaultLanguage(isocode)	;deliveryCountries(isocode);billingCountries(isocode);pickupInStoreMode(code);customerAllowedToIgnoreSuggestions;maxRadiusForPoSSearch;checkoutFlowGroup;createReturnProcessCode;
+					;$storeUid			;$productCatalog;$currencies		;$defaultCurrency		 ;$languages		;$defaultLanguage			;$deliveryCountries		   ;$billingCountries        ;$pickupInStoreMode     ;$customerAllowedToIgnoreSuggestions;;;;
+
+
+

@@ -1,0 +1,8 @@
+UPDATE PartnerQuestions; code[unique = true]; answerType(code)[default = 'BOOLEAN']; active[default = true]; visible[default = true]; defaultAnswer[default = false]; mandatory[default = false]
+                       ; IBM_SBQ_QKEY_2_6   ;                                      ;                       ;                        ;                               ;
+                       ; IBM_SBQ_QKEY_4_8   ;                                      ;                       ;                        ;                               ;
+                       ; IBM_SBQ_QKEY_6_10  ;                                      ;                       ;                        ;                               ;
+                       ; IBM_SBQ_QKEY_5_9   ;                                      ;                       ;                        ;                               ;
+                       ; IBM_SBQ_QKEY_2_6   ;                                      ;                       ;                        ;                               ;
+                       ; IBM_SBQ_QKEY_1_5   ;                                      ;                       ;                        ;                               ;
+                       ; IBM_SBQ_QKEY_3_7   ;                                      ;                       ;                        ;                               ;

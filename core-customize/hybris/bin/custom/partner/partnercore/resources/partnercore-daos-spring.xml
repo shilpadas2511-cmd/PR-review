@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2021 SAP SE or an SAP affiliate company. All rights reserved. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <alias name="defaultIbmDeploymentTypeDao" alias="ibmDeploymentTypeDao"/>
+    <bean id="defaultIbmDeploymentTypeDao"
+      class="com.ibm.commerce.partner.core.product.dao.impl.DefaultIbmDeploymentTypeDao">
+        <constructor-arg name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+
+    <alias name="defaultPartnerOpportunityDao" alias="opportunityDao"/>
+    <bean id="defaultPartnerOpportunityDao"
+      class="com.ibm.commerce.partner.core.opportunity.dao.impl.DefaultPartnerOpportunityDao">
+    </bean>
+
+    <alias name="defaultPartnerCategoryDao" alias="categoryDao"/>
+    <bean id="defaultPartnerCategoryDao"
+      class="com.ibm.commerce.partner.core.category.daos.impl.DefaultPartnerCategoryDao"
+      parent="abstractItemDao">
+    </bean>
+
+    <alias name="defaultPartnerCountryDao" alias="partnerCountryDao"/>
+    <bean id="defaultPartnerCountryDao"
+      class="com.ibm.commerce.partner.core.country.daos.impl.DefaultPartnerCountryDao"
+      parent="countryDao"/>
+
+    <alias name="defaultIbmConsumedDestinationDao" alias="ibmConsumedDestinationDao"/>
+    <bean id="defaultIbmConsumedDestinationDao"
+      class="com.ibm.commerce.partner.core.daos.impl.DefaultIbmConsumedDestinationDao"
+      parent="destinationDao"/>
+
+    <alias name="defaultPartnerUserDao" alias="partnerUserDao"/>
+    <bean id="defaultPartnerUserDao"
+      class="com.ibm.commerce.partner.core.user.dao.impl.DefaultPartnerUserDao">
+    </bean>
+
+    <alias name="defaultPartnerProcessDao" alias="partnerProcessDao"/>
+    <bean id="defaultPartnerProcessDao"
+      class="com.ibm.commerce.partner.core.daos.impl.DefaultPartnerProcessDao">
+        <constructor-arg name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+
+    <alias name="defaultPartnerSpecialBidReasonDao" alias="partnerSpecialBidReasonDao"/>
+    <bean id="defaultPartnerSpecialBidReasonDao" class="com.ibm.commerce.partner.core.specialbidreason.dao.impl.DefaultPartnerSpecialBidReasonDao">
+        <constructor-arg name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+
+    <alias name="defaultPartnerQuestionDao" alias="partnerQuestionDao"/>
+    <bean id="defaultPartnerQuestionDao" class="com.ibm.commerce.partner.core.partnerquestions.dao.impl.DefaultPartnerQuestionDao">
+        <constructor-arg name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+
+    <alias name="defaultPartnerPidAgreementDao" alias="partnerPidAgreementDao"/>
+    <bean id="defaultPartnerPidAgreementDao"
+      class="com.ibm.commerce.partner.core.partnerPidAgreement.dao.impl.DefaultPartnerPidAgreementDao">
+    </bean>
+
+    <alias name="defaultPartnerCommerceOrderDao" alias="commerceOrderDao"/>
+    <bean id="defaultPartnerCommerceOrderDao" class="com.ibm.commerce.partner.core.order.dao.impl.DefaultPartnerCommerceOrderDao" parent="defaultCommerceOrderDao">
+        <constructor-arg name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+
+    <alias name="defaultPartnerCurrencyDao" alias="partnerCurrencyDao"/>
+    <bean id="defaultPartnerCurrencyDao"
+      class="com.ibm.commerce.partner.core.currency.daos.impl.DefaultPartnerCurrencyDao"
+      parent="currencyDao"/>
+
+    <alias name="defaultPartnerProvisionFormDao" alias="partnerProvisionFormDao"/>
+    <bean id="defaultPartnerProvisionFormDao"
+      class="com.ibm.commerce.partner.core.provisionform.Dao.impl.DefaultPartnerProvisionFormDao">
+        <constructor-arg name="flexibleSearchService" ref="flexibleSearchService"/>
+    </bean>
+
+    <alias name="defaultPartnerSalesOrgDao" alias="partnerSalesOrgDao"/>
+    <bean id="defaultPartnerSalesOrgDao"
+      class="com.ibm.commerce.partner.core.partnerSalesOrg.dao.impl.DefaultPartnerSalesOrgDao">
+    </bean>
+
+</beans>

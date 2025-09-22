@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved. -->
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="items.xsd">
+    <collectiontypes>
+    </collectiontypes>
+
+    <enumtypes>
+    </enumtypes>
+
+    <relations>
+        <relation code="IbmProduct2PartProductRelation"
+          localized="false">
+            <description>Many to many relation between Pid and Part products</description>
+            <deployment table="pid2partRelation" typecode="20003"/>
+            <sourceElement type="IbmVariantProduct"
+              qualifier="pidProducts" cardinality="many" collectiontype="list">
+                <description>List of Pid products</description>
+            </sourceElement>
+            <targetElement type="IbmPartProduct"
+              qualifier="partProducts" cardinality="many" collectiontype="list">
+                <description>List of Part products</description>
+            </targetElement>
+        </relation>
+        <relation code="Part2SellerAudienceMaskRelation"
+          localized="false">
+            <description>Many to many relation between Part products and Seller Audience Masks
+            </description>
+            <deployment table="part2SellerAudienceRelation"
+              typecode="20005"/>
+            <sourceElement type="IbmPartProduct"
+              qualifier="partProducts" cardinality="many">
+                <description>List of Part products</description>
+            </sourceElement>
+            <targetElement type="SellerAudienceMask"
+              qualifier="sellerAudienceMasks" cardinality="many"
+              collectiontype="list">
+                <description>List of Seller Audience Masks</description>
+            </targetElement>
+        </relation>
+    </relations>
+
+    <itemtypes>
+        <itemtype code="SellerAudienceMask">
+            <description>This is to create the Seller Audience Mask</description>
+            <deployment table="SellerAudienceMask" typecode="20002"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers optional="false" initial="true" unique="true"/>
+                    <description>Seller Audience Mask Code.</description>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="SellerAudienceMaskIdx">
+                    <key attribute="code"/>
+                </index>
+            </indexes>
+        </itemtype>
+
+        <itemtype code="IbmVariantValueCategory"
+          extends="VariantValueCategory">
+            <description>This is to create Ibm Variant Value Category.</description>
+            <attributes>
+                <attribute qualifier="deploymentType"
+                  type="IbmDeploymentType">
+                    <persistence type="property"/>
+                    <modifiers optional="false" initial="true"/>
+                    <description>Ibm deployment type</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmCategory" extends="Category">
+            <description>This is to create Ibm Category.</description>
+            <attributes>
+                <attribute qualifier="cpqId" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>CPQ Generated ID</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmProduct" extends="Product">
+            <description>This is to create Ibm Product.</description>
+            <attributes>
+
+            </attributes>
+        </itemtype>
+        <itemtype code="IbmDeploymentType">
+            <description>This is to create Ibm deployment Type.</description>
+            <deployment table="IbmDeploymentType" typecode="20004"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <modifiers optional="false" initial="true" unique="true"/>
+                    <persistence type="property"/>
+                    <description>Deployment Type code</description>
+                </attribute>
+                <attribute qualifier="name"
+                  type="localized:java.lang.String">
+                    <persistence type="property"/>
+                    <description>Name of the Deployment Type</description>
+                </attribute>
+                <attribute qualifier="sapCode" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Sap Code</description>
+                </attribute>
+                <attribute qualifier="tagCode" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>tag Code</description>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="IbmDeploymentTypeIdx">
+                    <key attribute="code"/>
+                </index>
+            </indexes>
+        </itemtype>
+        <itemtype code="IbmRevenueStream">
+            <description>This is to create Ibm Revenue Stream.</description>
+            <deployment table="IbmRevenueStream" typecode="20006"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <modifiers optional="false" initial="true" unique="true"/>
+                    <persistence type="property"/>
+                    <description>Revenue Stream code.</description>
+                </attribute>
+                <attribute qualifier="name"
+                  type="localized:java.lang.String">
+                    <persistence type="property"/>
+                    <description>Revenue Stream Name.</description>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="IbmRevenueStreamIdx">
+                    <key attribute="code"/>
+                </index>
+            </indexes>
+        </itemtype>
+        <itemtype code="IbmVariantProduct"
+          extends="GenericVariantProduct">
+            <description>This is to create IbmVariant Product.</description>
+            <attributes>
+                <attribute qualifier="partNumber" type="java.lang.String">
+                    <modifiers optional="false" initial="true" unique="true"/>
+                    <persistence type="property"/>
+                    <description>Unique number represent as part product.</description>
+                </attribute>
+                <attribute qualifier="deploymentType"
+                  type="IbmDeploymentType">
+                    <modifiers optional="false" initial="true" unique="true"/>
+                    <persistence type="property"/>
+                    <description>Deployment type of the PID product.</description>
+                </attribute>
+                <attribute qualifier="configuratorCode"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>PID configurator code</description>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="IbmVariantProductIdx">
+                    <key attribute="partNumber"/>
+                    <key attribute="deploymentType"/>
+                </index>
+            </indexes>
+        </itemtype>
+        <itemtype code="IbmPartProduct" extends="Product">
+            <description>This is to create Ibm Part Product.</description>
+            <attributes>
+                <attribute qualifier="partNumber" type="java.lang.String">
+                    <modifiers optional="false" initial="true" unique="true"/>
+                    <persistence type="property"/>
+                    <description>Part Product Number.</description>
+                </attribute>
+                <attribute qualifier="deploymentType"
+                  type="IbmDeploymentType">
+                    <modifiers initial="true" unique="true"/>
+                    <persistence type="property"/>
+                    <description>Deployment Type for Product</description>
+                </attribute>
+                <attribute qualifier="sapMaterialCode"
+                  type="java.lang.String">
+                    <description>Sap material code</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="revenueStream"
+                  type="IbmRevenueStream">
+                    <description>Revenue Stream</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="productSetCode" type="PartnerProductSet">
+                    <description>product set code</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="IbmPartProductIdx">
+                    <key attribute="partNumber"/>
+                    <key attribute="deploymentType"/>
+                </index>
+            </indexes>
+        </itemtype>
+        <typegroup name="PartnerProductSet">
+            <itemtype code="PartnerProductSet">
+                <description>Partner product set</description>
+                <deployment table="PartnerProductSet" typecode="20130"/>
+                <attributes>
+                    <attribute qualifier="code" type="java.lang.String">
+                        <description>code</description>
+                        <persistence type="property"/>
+                        <modifiers unique="true" optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="name" type="java.lang.String">
+                        <description>name</description>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+        </typegroup>
+    </itemtypes>
+</items>

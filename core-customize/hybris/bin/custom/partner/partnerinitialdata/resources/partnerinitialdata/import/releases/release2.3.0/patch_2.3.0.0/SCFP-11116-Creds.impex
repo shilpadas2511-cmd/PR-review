@@ -1,0 +1,16 @@
+INSERT IbmPartnerConsumedDestinationOAuthCredential; id[unique = true]               ; clientId                         ; clientSecret                     ; acubicApi
+                                                   ; ibmQ2CDSWCredential ; ''     ; ''      ; ''  ; ''    ; ''             ; ''
+                                                   ; ibmQ2CHubCredential ; ''     ; ''      ; ''  ; ''    ; ''             ; ''
+                                                   ; ibmQ2CHubDevCredential ; ''  ; ''      ; ''  ; ''    ; ''             ; ''
+
+
+UPDATE IbmConsumedDestination; id[unique = true]     ; credential(id) ;
+                             ; entitledPricingService ; ibmQ2CDSWCredential
+                             ; fullPricingService     ; ibmQ2CDSWCredential
+                             ; dealRegPricingService  ; ibmQ2CDSWCredential
+                             ; opportunitySearchService;  ibmQ2CHubCredential
+                             ; opportunitySearchByNumberService; ibmQ2CHubCredential
+                             ; opportunitySearchByEmailService;ibmQ2CHubCredential
+                             ; opportunitySearchByCustomerNumberService;ibmQ2CHubCredential
+                             ; cpqApprovalCommentsService;  ibmQ2CHubDevCredential
+                             ; cpqQuoteSubmitSyncCollaboratorService ; ibmQ2CHubDevCredential

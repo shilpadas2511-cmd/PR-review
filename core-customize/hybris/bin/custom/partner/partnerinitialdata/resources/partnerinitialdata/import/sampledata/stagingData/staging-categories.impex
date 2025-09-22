@@ -1,0 +1,708 @@
+$productCatalog = partnerProductCatalog
+$productCatalogName = partner Product Catalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$approvalStatus = approvalStatus(code)[default = 'approved']
+$supercategories = supercategories(code, $catalogVersion)
+
+$lang = en
+$productCatalog = partnerProductCatalog
+$productCatalogName = partner Product Catalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$approvalStatus = approvalStatus(code)[default = 'approved']
+$supercategories = supercategories(code, $catalogVersion)
+
+$lang = en
+
+INSERT_UPDATE IbmDeploymentType; code[unique = true]        ; name[lang = $lang]; sapCode
+                               ; Appliances                 ; Appliances
+                               ; beeSpoke_SaaS_Configurator ; BeeSpoke SaaS Configurator
+                               ; Monthly                    ; Monthly
+                               ; Perpetual                  ; Perpetual         ; PL
+                               ; SaaS                       ; SaaS
+                               ; Subscription               ; Subscription
+
+# Insert Categories
+INSERT_UPDATE Category; code[unique = true]; allowedPrincipals(uid)[default = 'customergroup']; $catalogVersion
+                      ; rootcategory       ;
+
+INSERT_UPDATE VariantCategory; code[unique = true]               ; name[lang = $lang]; allowedPrincipals(uid)[default = 'customergroup']; $catalogVersion
+                             ; partnerDeploymentTypeConfigurator ; Deployment Type Configurator
+
+#select distinct ';',{code},';',{name},';',{sequence} from {IbmVariantValueCategory}
+INSERT_UPDATE IbmVariantValueCategory; code[unique = true]        ; deploymentType(code)       ; name[lang = $lang]         ; sequence; $supercategories[default = 'partnerDeploymentTypeConfigurator']; allowedPrincipals(uid)[default = 'customergroup']; $catalogVersion
+                                     ; Appliances                 ; Appliances                 ; Appliances                 ; 104
+                                     ; beeSpoke_SaaS_Configurator ; beeSpoke_SaaS_Configurator ; beeSpoke_SaaS_Configurator ; 106
+                                     ; Monthly                    ; Monthly                    ; Monthly                    ; 103
+                                     ; Perpetual                  ; Perpetual                  ; Perpetual                  ; 102
+                                     ; SaaS                       ; SaaS                       ; SaaS                       ; 101
+                                     ; Subscription               ; Subscription               ; Subscription               ; 105
+
+
+INSERT_UPDATE IbmCategory; code[unique = true]; name[lang = en]                                              ; description[lang = en]; $catalogVersion; allowedPrincipals(uid)[default = 'customergroup']
+                         ; 17ADM              ; Hybrid Cloud Management                                      ; Hybrid Cloud Management
+                         ; 17O9S              ; Storage for Data Resiliency Market                           ; Storage for Data Resiliency Market
+                         ; 17SST              ; Security Software Top (AUO)                                  ; Security Software Top (AUO)
+                         ; 17WKL              ; Storage for Primary Block Market                             ; Storage for Primary Block Market
+                         ; 17ADD              ; Z Application Modernization                                  ; Z Application Modernization
+                         ; 17HMG              ; App Modernization                                            ; App Modernization
+                         ; 17ZTT              ; zTPS Operations / Services Market                            ; zTPS Operations / Services Market
+                         ; 17OAP              ; Data and AI Top (AUO)                                        ; Data and AI Top (AUO)
+                         ; 17UO2              ; IT Automation                                                ; IT Automation
+                         ; 17HIN              ; Integration                                                  ; Integration
+                         ; 17MSC              ; Miscellaneous Market                                         ; Miscellaneous Market
+                         ; 17HTR              ; Business Automation                                          ; Business Automation
+                         ; 17DSR              ; Data Fabric & Data Management                                ; Data Fabric & Data Management
+                         ; 17APP              ; Application Platforms                                        ; Application Platforms
+                         ; 17IRP              ; Identity and Access Management                               ; Identity and Access Management
+                         ; 17OZB              ; Data Exchange                                                ; Data Exchange
+                         ; 177EB              ; Digital Labor                                                ; Digital Labor
+                         ; 17CTT              ; IT Automation & App Modernization Top (AUO)                  ; IT Automation & App Modernization Top (AUO)
+                         ; 17WMK              ; Watson Marketing and Commerce                                ; Watson Marketing and Commerce
+                         ; 17HMG              ; Cloud Platform                                               ; Cloud Platform
+                         ; 17ICP              ; Systems Engineering                                          ; Systems Engineering
+                         ; 17CLB              ; Collaboration                                                ; Collaboration
+                         ; 17W1X              ; Fabric Market                                                ; Fabric Market
+                         ; 1753Z              ; Storage for Data and AI Market                               ; Storage for Data and AI Market
+                         ; 17TMS              ; Storage Operations / Services Market                         ; Storage Operations / Services Market
+                         ; 17QEP              ; Data Security                                                ; Data Security
+                         ; 17ITT              ; Asset & Environment Management                               ; Asset & Environment Management
+                         ; 17WSP              ; Supply Chain Information Management                          ; Supply Chain Information Management
+                         ; 17UXI              ; AIX / IBM i Market                                           ; AIX / IBM i Market
+                         ; 17SOR              ; Security Threat Management                                   ; Security Threat Management
+                         ; 17ITM              ; Sustainability Software Top (AUO)                            ; Sustainability Software Top (AUO)
+                         ; 17NCS              ; Traditional Services Withdrawn                               ; Traditional Services Withdrawn
+                         ; 17GVR              ; Government Health and Human Services (GHHS) Withdrawn        ; Government Health and Human Services (GHHS) Withdrawn
+                         ; 17WTM              ; The Weather Company Top Market (AUO)                         ; The Weather Company Top Market (AUO)
+                         ; 17CTM              ; Cognitive Talent Management                                  ; Cognitive Talent Management
+                         ; 17HZC              ; Network Automation                                           ; Network Automation
+                         ; 17DVS              ; Public Cloud PaaS                                            ; Public Cloud PaaS
+                         ; 17YKT              ; IBM Software Top Market (AUO)                                ; IBM Software Top Market (AUO)
+                         ; 17EXT              ; Traditional Distributed External Storage Market              ; Traditional Distributed External Storage Market
+                         ; 177EB              ; Data Application Market                                      ; Data Application Market
+                         ; 17OAG              ; Oncology & Genomics Withdrawn                                ; Oncology & Genomics Withdrawn
+                         ; 17HW9              ; Storage Tape Market                                          ; Storage Tape Market
+                         ; 17PCS              ; Public Cloud Contracts                                       ; Public Cloud Contracts
+                         ; 17PVD              ; Provider Withdrawn                                           ; Provider Withdrawn
+                         ; 17LSC              ; Life Sciences Withdrawn                                      ; Life Sciences Withdrawn
+                         ; 17MVT              ; Multiscreen Video Technology Withdrawn                       ; Multiscreen Video Technology Withdrawn
+                         ; 17EVP              ; Enterprise Video Platform                                    ; Enterprise Video Platform
+                         ; 17IFS              ; Infrastructure                                               ; Infrastructure
+                         ; 17TBB              ; Weather Solutions                                            ; Weather Solutions
+                         ; 17ITT              ; Asset Management Market                                      ; Asset Management Market
+                         ; 17ZUQ              ; Public Cloud IaaS (IUO)                                      ; Public Cloud IaaS (IUO)
+                         ; 17ISM              ; Public Cloud IaaS                                            ; Public Cloud IaaS
+                         ; 17APH              ; PaaS, Virtualization and Linux Foundation                    ; PaaS, Virtualization and Linux Foundation
+                         ; 17MCS              ; GTS Multicloud Services Withdrawn                            ; GTS Multicloud Services Withdrawn
+                         ; 17MVS              ; Multivendor Services                                         ; Multivendor Services
+                         ; 17PYR              ; Payer Withdrawn                                              ; Payer Withdrawn
+                         ; 17GHI              ; PaaS Foundation & aaS Offerings Market - Private Cloud       ; PaaS Foundation & aaS Offerings Market - Private Cloud
+                         ; 17C5Y              ; Acoustic Marketing                                           ; Acoustic Marketing
+                         ; 17US7              ; Acoustic Content                                             ; Acoustic Content
+                         ; 17JDF              ; Acoustic Analytics                                           ; Acoustic Analytics
+                         ; 17DAL              ; Acoustic Lifecycle Pricing & Promotion Market                ; Acoustic Lifecycle Pricing & Promotion Market
+                         ; 17DSR              ; Data Management Market                                       ; Data Management Market
+                         ; 17EYM              ; Red Hat Top Market (AUO)                                     ; Red Hat Top Market (AUO)
+                         ; 17WSM              ; Watson Media Solutions Withdrawn                             ; Watson Media Solutions Withdrawn
+                         ; 17M2K              ; Storage for Hybrid Cloud Market                              ; Storage for Hybrid Cloud Market
+                         ; 17S52              ; Red Hat Marketplace Market                                   ; Red Hat Marketplace Market
+                         ; 17EDC              ; Education Market                                             ; Education Market
+                         ; 17IPM              ; Core Industry Platforms Market                               ; Core Industry Platforms Market
+                         ; 17WHP              ; Watson Health Platform Withdrawn                             ; Watson Health Platform Withdrawn
+                         ; 17BCH              ; Blockchain                                                   ; Blockchain
+                         ; 17ITU              ; Industry                                                     ; Industry
+                         ; 17WMT              ; Watson Media Top Market (AUO)                                ; Watson Media Top Market (AUO)
+                         ; 17ADD              ; Application Modernization                                    ; Application Modernization
+                         ; 17E3E              ; Red Hat Marketplace Top Market (AUO)                         ; Red Hat Marketplace Top Market (AUO)
+                         ; 17TSL              ; IBM ConsultingTop Service Line Market (AUO)                  ; IBM ConsultingTop Service Line Market (AUO)
+                         ; 17MLC              ; Quantum Market                                               ; Quantum Market
+                         ; 17ENL              ; Enterprise Linux Market                                      ; Enterprise Linux Market
+                         ; 17ITM              ; Sustainability Software Top Market (AUO)                     ; Sustainability Software Top Market (AUO)
+                         ; 17BG2              ; AI & Data Platform                                           ; AI & Data Platform
+                         ; 17KD8              ; Public Cloud TEL & Support                                   ; Public Cloud TEL & Support
+                         ; 17POS              ; Point of Sale - Technology Lifecycle Services                ; Point of Sale - Technology Lifecycle Services
+                         ; 176JN              ; Storage for Data Resiliency SW Market                        ; Storage for Data Resiliency SW Market
+                         ; 17OGO              ; Storage for Primary Block SW Market                          ; Storage for Primary Block SW Market
+                         ; 17KBG              ; Storage for Data and AI SW Market                            ; Storage for Data and AI SW Market
+                         ; 17VRA              ; Power TPS Market                                             ; Power TPS Market
+                         ; 17LS8              ; Traditional Distributed External Storage SW Market           ; Traditional Distributed External Storage SW Market
+                         ; 17JPE              ; Storage Tape SW Market                                       ; Storage Tape SW Market
+                         ; 17IOJ              ; Storage for Hybrid Cloud SW Market                           ; Storage for Hybrid Cloud SW Market
+                         ; 17OZJ              ; Storage Operations / Services SW Market                      ; Storage Operations / Services SW Market
+                         ; 20JEK              ; Enterprise Application Management - Cloud Portfolio          ; Enterprise Application Management - Cloud Portfolio
+                         ; 20CSN              ; Storage for Data Resiliency                                  ; Storage for Data Resiliency
+                         ; 20B1Z              ; Security Software Top Portfolio (AUO)                        ; Security Software Top Portfolio (AUO)
+                         ; 20COP              ; Storage for Primary Block                                    ; Storage for Primary Block
+                         ; 20C02              ; Compilation Technology & Enterprise Products                 ; Compilation Technology & Enterprise Products
+                         ; 20A0X              ; App Runtimes                                                 ; App Runtimes
+                         ; 20C0T              ; zTPS Operations / Services                                   ; zTPS Operations / Services
+                         ; 20A0V              ; Data and AI Top Portfolio (AUO)                              ; Data and AI Top Portfolio (AUO)
+                         ; 20APO              ; AI Ops                                                       ; AI Ops
+                         ; 20A0W              ; Integration Portfolio                                        ; Integration Portfolio
+                         ; 20F02              ; Other - Miscellaneous                                        ; Other - Miscellaneous
+                         ; 20A0Y              ; Business Automation Portfolio                                ; Business Automation Portfolio
+                         ; 20A0M              ; Databases                                                    ; Databases
+                         ; 20C03              ; z Enterprise Transaction Systems & integration               ; z Enterprise Transaction Systems & integration
+                         ; 20APO              ; IT Automation Portfolio                                      ; IT Automation Portfolio
+                         ; 20B14              ; Identity and Access Mgmt                                     ; Identity and Access Mgmt
+                         ; 20B2P              ; B2B Integration                                              ; B2B Integration
+                         ; 20AU4              ; Regulatory Tech                                              ; Regulatory Tech
+                         ; 20A0U              ; IT Automation & App Modernization Top Portfolio (AUO)        ; IT Automation & App Modernization Top Portfolio (AUO)
+                         ; 20C01              ; Z DevX and AI                                                ; Z DevX and AI
+                         ; 20B2N              ; Digital Experience                                           ; Digital Experience
+                         ; 20A0X              ; Cloud Platform Portfolio                                     ; Cloud Platform Portfolio
+                         ; 20B1C              ; Engineering Lifecycle Management                             ; Engineering Lifecycle Management
+                         ; 20B02              ; Email Applications                                           ; Email Applications
+                         ; 20C04              ; z Enterprise Transactional Systems & Non-relational DBMS     ; z Enterprise Transactional Systems & Non-relational DBMS
+                         ; 20B2J              ; Omni-Channel Commerce                                        ; Omni-Channel Commerce
+                         ; 20A11              ; Data Fabric Portfolio                                        ; Data Fabric Portfolio
+                         ; 20COE              ; Storage for Data and AI                                      ; Storage for Data and AI
+                         ; 20C0U              ; Storage Operations / Services                                ; Storage Operations / Services
+                         ; 20B15              ; Data Security Platform                                       ; Data Security Platform
+                         ; 20B1A              ; Enterprise Asset Management                                  ; Enterprise Asset Management
+                         ; 20B01              ; Enterprise Social Networks                                   ; Enterprise Social Networks
+                         ; 20A0O              ; Planning & Business Analytics                                ; Planning & Business Analytics
+                         ; 20A0K              ; Fabric Foundation Portfolio                                  ; Fabric Foundation Portfolio
+                         ; 20B2O              ; Supply Chain Intelligence                                    ; Supply Chain Intelligence
+                         ; 20CLD              ; IBM i                                                        ; IBM i
+                         ; 20AJ5              ; AI Assistants                                                ; AI Assistants
+                         ; 20NYE              ; Security Threat Mgmt                                         ; Security Threat Mgmt
+                         ; 20B1Y              ; Sustainability Software Top Portfolio (AUO)                  ; Sustainability Software Top Portfolio (AUO)
+                         ; 20C0H              ; AIX & Other                                                  ; AIX & Other
+                         ; 20BZ5              ; Order and Inventory Management                               ; Order and Inventory Management
+                         ; 20B2L              ; Personalized Marketing                                       ; Personalized Marketing
+                         ; 20B2M              ; Customer Insights Portfolio                                  ; Customer Insights Portfolio
+                         ; 20BMD              ; Real Estate Operations Management                            ; Real Estate Operations Management
+                         ; 20G8N              ; GTS IS Traditional Services Top (AUO) Withdrawn              ; GTS IS Traditional Services Top (AUO) Withdrawn
+                         ; 20BEQ              ; Legacy Solutions                                             ; Legacy Solutions
+                         ; 20B0E              ; Government Portfolio Withdrawn                               ; Government Portfolio Withdrawn
+                         ; 20D0P              ; The Weather Company Top Portfolio (AUO)                      ; The Weather Company Top Portfolio (AUO)
+                         ; 20B0Z              ; Security Threat Management Infrastructure                    ; Security Threat Management Infrastructure
+                         ; 20F03              ; Non-IBM Products                                             ; Non-IBM Products
+                         ; 20B0T              ; Renewals Only - Talent Acquisition                           ; Renewals Only - Talent Acquisition
+                         ; 20B0U              ; Renewals Only - Talent Development                           ; Renewals Only - Talent Development
+                         ; 20B1Q              ; Renewals Only - Talent Assessments                           ; Renewals Only - Talent Assessments
+                         ; 20B0V              ; Renewals Only - Talent Engagement                            ; Renewals Only - Talent Engagement
+                         ; 20AOF              ; Network Automation Portfolio                                 ; Network Automation Portfolio
+                         ; 20D03              ; Data and Analytics                                           ; Data and Analytics
+                         ; 20D0F              ; Cloud Native PaaS                                            ; Cloud Native PaaS
+                         ; 20B13              ; Advanced Fraud Protection                                    ; Advanced Fraud Protection
+                         ; 20AXK              ; IBM Software Top Portfolio (AUO)                             ; IBM Software Top Portfolio (AUO)
+                         ; 20B12              ; Mobile Security and Management                               ; Mobile Security and Management
+                         ; 20B2B              ; Watson Marketing and Commerce Top Portfolio (AUO)            ; Watson Marketing and Commerce Top Portfolio (AUO)
+                         ; 20C0M              ; Traditional Distributed External Storage                     ; Traditional Distributed External Storage
+                         ; 20AJ5              ; Customer Care Portfolio                                      ; Customer Care Portfolio
+                         ; 20A17              ; Support, Garage, Exp Svcs, ICCT                              ; Support, Garage, Exp Svcs, ICCT
+                         ; 20B0W              ; Renewals Only - Talent Analytics                             ; Renewals Only - Talent Analytics
+                         ; 20B0M              ; Oncology and Genomics (Watson Health Solutions) Withdrawn    ; Oncology and Genomics (Watson Health Solutions) Withdrawn
+                         ; 20CEQ              ; Storage Tape                                                 ; Storage Tape
+                         ; 20BJH              ; Environmental Intelligence                                   ; Environmental Intelligence
+                         ; 20A46              ; Public Cloud Enterprise Savings Plans                        ; Public Cloud Enterprise Savings Plans
+                         ; 20AMT              ; Cloud Platform & Security                                    ; Cloud Platform & Security
+                         ; 20B1T              ; Provider Portfolio Withdrawn                                 ; Provider Portfolio Withdrawn
+                         ; 20B1R              ; Watson Health Solutions Life Sciences Withdrawn              ; Watson Health Solutions Life Sciences Withdrawn
+                         ; 20D0B              ; Media Portfolio Withdrawn                                    ; Media Portfolio Withdrawn
+                         ; 20D0A              ; Streaming Portfolio                                          ; Streaming Portfolio
+                         ; 20C08              ; IBM Z and LinuxONE Midrange                                  ; IBM Z and LinuxONE Midrange
+                         ; 20AYJ              ; Databases for z/OS                                           ; Databases for z/OS
+                         ; 20BL5              ; Media & Broadcast                                            ; Media & Broadcast
+                         ; 20BJH              ; Environmental Intelligence Portfolio                         ; Environmental Intelligence Portfolio
+                         ; 20CL0              ; Public Cloud IaaS Top (IUO)                                  ; Public Cloud IaaS Top (IUO)
+                         ; 20GWT              ; Security & Resiliency Project Services Withdrawn             ; Security & Resiliency Project Services Withdrawn
+                         ; 20AW9              ; Extended Enterprise                                          ; Extended Enterprise
+                         ; 20CHY              ; Paas Foundation & aaS Offerings - Public Cloud               ; Paas Foundation & aaS Offerings - Public Cloud
+                         ; 20D0C              ; Cloud Native IaaS                                            ; Cloud Native IaaS
+                         ; 20GKU              ; MANAGE: Multicloud Management Services Withdrawn             ; MANAGE: Multicloud Management Services Withdrawn
+                         ; 20G19              ; TLS - Multivendor Services Withdrawn                         ; TLS - Multivendor Services Withdrawn
+                         ; 20D0L              ; Weather Consumer Solutions with Watson Advertising           ; Weather Consumer Solutions with Watson Advertising
+                         ; 20B1S              ; Payer Portfolio Withdrawn                                    ; Payer Portfolio Withdrawn
+                         ; 20C8P              ; PaaS Foundation & aaS Offerings Portfolio - Private Cloud    ; PaaS Foundation & aaS Offerings Portfolio - Private Cloud
+                         ; 20B03              ; Team Collaboration                                           ; Team Collaboration
+                         ; 20EH8              ; Acoustic Campaign Portfolio                                  ; Acoustic Campaign Portfolio
+                         ; 20EMH              ; Acoustic Content Portfolio                                   ; Acoustic Content Portfolio
+                         ; 20ETP              ; Acoustic Analytics Portfolio                                 ; Acoustic Analytics Portfolio
+                         ; 20E3N              ; Acoustic Marketing Insights Portfolio                        ; Acoustic Marketing Insights Portfolio
+                         ; 20EGG              ; Acoustic Lifecycle Pricing & Promotion Portfolio             ; Acoustic Lifecycle Pricing & Promotion Portfolio
+                         ; 20EHK              ; Acoustic Personalization Portfolio                           ; Acoustic Personalization Portfolio
+                         ; 20A0M              ; Databases Portfolio                                          ; Databases Portfolio
+                         ; 20CZJ              ; Z Security and Compliance                                    ; Z Security and Compliance
+                         ; 20ATC              ; Red Hat Top Portfolio (AUO)                                  ; Red Hat Top Portfolio (AUO)
+                         ; 20D0M              ; Watson Media Portfolio Withdrawn                             ; Watson Media Portfolio Withdrawn
+                         ; 20CZA              ; Storage for Hybrid Cloud                                     ; Storage for Hybrid Cloud
+                         ; 20A0O              ; Planning Analytics & Cognos                                  ; Planning Analytics & Cognos
+                         ; 20BXY              ; Red Hat Marketplace Portfolio                                ; Red Hat Marketplace Portfolio
+                         ; 20B0P              ; Watson Classroom Portfolio                                   ; Watson Classroom Portfolio
+                         ; 20B1N              ; Core Platforms Withdrawn                                     ; Core Platforms Withdrawn
+                         ; 20L5L              ; Watson Foundation for Health Withdrawn                       ; Watson Foundation for Health Withdrawn
+                         ; 20B18              ; Blockchain Solutions Portfolio                               ; Blockchain Solutions Portfolio
+                         ; 20JX1              ; Industry Portfolio                                           ; Industry Portfolio
+                         ; 20B2C              ; Blockchain Top Portfolio (AUO)                               ; Blockchain Top Portfolio (AUO)
+                         ; 20ATM              ; ZaaS and Hyper Protect Services                              ; ZaaS and Hyper Protect Services
+                         ; 20D0R              ; Watson Media Top Portfolio (AUO)                             ; Watson Media Top Portfolio (AUO)
+                         ; 20CKV              ; Z Hybrid Cloud                                               ; Z Hybrid Cloud
+                         ; 20B1Z              ; Security Software Top Porfolio (AUO)                         ; Security Software Top Porfolio (AUO)
+                         ; 20B6F              ; Red Hat Marketplace Top Portfolio (AUO)                      ; Red Hat Marketplace Top Portfolio (AUO)
+                         ; 20A00              ; Distributed Cloud                                            ; Distributed Cloud
+                         ; 20B14              ; Identity and Access Management Portfolio                     ; Identity and Access Management Portfolio
+                         ; 20C07              ; IBM Z and LinuxONE High End                                  ; IBM Z and LinuxONE High End
+                         ; 20J12              ; IBM Consulting Top Service Line Portfolio (AUO)              ; IBM Consulting Top Service Line Portfolio (AUO)
+                         ; 20BG0              ; ESG Data Management                                          ; ESG Data Management
+                         ; 20C1B              ; Quantum Access Portfolio                                     ; Quantum Access Portfolio
+                         ; 20C0G              ; Enterprise Linux                                             ; Enterprise Linux
+                         ; 20AQR              ; watsonx                                                      ; watsonx
+                         ; 20QTQ              ; IaaS True Up / Top (AUO)                                     ; IaaS True Up / Top (AUO)
+                         ; 20C89              ; Quantum Safe Portfolio                                       ; Quantum Safe Portfolio
+                         ; 20A0W              ; Integration                                                  ; Integration
+                         ; 20A0Y              ; Business Automation                                          ; Business Automation
+                         ; 20A11              ; Data Fabric                                                  ; Data Fabric
+                         ; 20AOF              ; Network Automation                                           ; Network Automation
+                         ; 20AGK              ; PaaS True Up / Top (AUO)                                     ; PaaS True Up / Top (AUO)
+                         ; 20A9N              ; APIs, SDKs and Data Services                                 ; APIs, SDKs and Data Services
+                         ; 20A17              ; Technology Expert Labs & Support                             ; Technology Expert Labs & Support
+                         ; 20AJ7              ; PaaS Third Party Services                                    ; PaaS Third Party Services
+                         ; 20AQR              ; Core Platform                                                ; Core Platform
+                         ; 20QBV              ; IaaS Third Party Services                                    ; IaaS Third Party Services
+                         ; 20GCY              ; Point of Sale - Storage Expert Care                          ; Point of Sale - Storage Expert Care
+                         ; 20A3A              ; Technology Cost Management                                   ; Technology Cost Management
+                         ; 20COH              ; Storage for Data Resiliency SW                               ; Storage for Data Resiliency SW
+                         ; 20C1X              ; Storage for Primary Block SW                                 ; Storage for Primary Block SW
+                         ; 20CQR              ; Storage for Data and AI SW                                   ; Storage for Data and AI SW
+                         ; 20CCK              ; Power TPS Portfolio                                          ; Power TPS Portfolio
+                         ; 20CHA              ; Traditional Distributed External Storage SW                  ; Traditional Distributed External Storage SW
+                         ; 20CO8              ; Storage Tape SW                                              ; Storage Tape SW
+                         ; 20C1T              ; Storage for Hybrid Cloud SW                                  ; Storage for Hybrid Cloud SW
+                         ; 20CFF              ; Storage Operations / Services SW                             ; Storage Operations / Services SW
+                         ; 30S3J              ; CAI-ORCL Retail in the Cloud Withdrawn                       ; CAI-ORCL Retail in the Cloud Withdrawn
+                         ; 30CGC              ; Storage Protect                                              ; Storage Protect
+                         ; 30N5A              ; Security Software Divestiture Associated (AUO)               ; Security Software Divestiture Associated (AUO)
+                         ; 30CGD              ; Storage Insights/Pro & Spectrum Control                      ; Storage Insights/Pro & Spectrum Control
+                         ; 30CE9              ; Host Integration (HATS and HACP)                             ; Host Integration (HATS and HACP)
+                         ; 30CEB              ; Icing (Focus, Legacy)                                        ; Icing (Focus, Legacy)
+                         ; 30CG7              ; Storage Virtualize                                           ; Storage Virtualize
+                         ; 30A15              ; WebSphere Application Server                                 ; WebSphere Application Server
+                         ; 30CGY              ; zTPS Top - Acctg Adj, BP Rebates (AUO)                       ; zTPS Top - Acctg Adj, BP Rebates (AUO)
+                         ; 30AGY              ; Data & AI Top (AUO)                                          ; Data & AI Top (AUO)
+                         ; 30A6X              ; Workload Automation                                          ; Workload Automation
+                         ; 30A1D              ; MQ                                                           ; MQ
+                         ; 30FE8              ; Other/Unk IBM SW                                             ; Other/Unk IBM SW
+                         ; 30A04              ; Content - CM8                                                ; Content - CM8
+                         ; 30AG3              ; Db2                                                          ; Db2
+                         ; 30CEE              ; TXSeries                                                     ; TXSeries
+                         ; 30AH8              ; Application Monitoring                                       ; Application Monitoring
+                         ; 30AG4              ; Informix                                                     ; Informix
+                         ; 30BIF              ; Verify Governance                                            ; Verify Governance
+                         ; 30BR3              ; Sterling B2B Integration                                     ; Sterling B2B Integration
+                         ; 30AH9              ; Operations Insights                                          ; Operations Insights
+                         ; 30BIH              ; Verify Access                                                ; Verify Access
+                         ; 30AUE              ; Financial Transactions,Payments & Insights                   ; Financial Transactions,Payments & Insights
+                         ; 30FE9              ; Other/Unk IBM Svcs                                           ; Other/Unk IBM Svcs
+                         ; 30AGW              ; Automation Top (AUO)                                         ; Automation Top (AUO)
+                         ; 30C9D              ; IDz & PD Tools                                               ; IDz & PD Tools
+                         ; 30BQU              ; Digital Experience Software                                  ; Digital Experience Software
+                         ; 30AAM              ; ClearCase and ClearQuest                                     ; ClearCase and ClearQuest
+                         ; 30AAC              ; DevOps Other                                                 ; DevOps Other
+                         ; 30AZI              ; DevOps Automation                                            ; DevOps Automation
+                         ; 30AWQ              ; Rational Analysis, Design & Construction                     ; Rational Analysis, Design & Construction
+                         ; 30B7H              ; ELM Application Suite                                        ; ELM Application Suite
+                         ; 30CE6              ; Z Compilers                                                  ; Z Compilers
+                         ; 30BE4              ; Notes/Domino                                                 ; Notes/Domino
+                         ; 30CEJ              ; TPF                                                          ; TPF
+                         ; 30AX3              ; WebSphere Application Server Network Deployment              ; WebSphere Application Server Network Deployment
+                         ; 30BQG              ; Commerce Software                                            ; Commerce Software
+                         ; 30A09              ; Content - ILG                                                ; Content - ILG
+                         ; 30CEF              ; CICS Transaction Gateway                                     ; CICS Transaction Gateway
+                         ; 30ABX              ; App Connect Enterprise                                       ; App Connect Enterprise
+                         ; 30AD0              ; Content - Legacy                                             ; Content - Legacy
+                         ; 30A9U              ; Content - CMOD                                               ; Content - CMOD
+                         ; 30AG9              ; Optim & Master Data Management                               ; Optim & Master Data Management
+                         ; 30AWI              ; Workflow - Legacy                                            ; Workflow - Legacy
+                         ; 30AE5              ; Data Integration & Replication                               ; Data Integration & Replication
+                         ; 30A8D              ; WebSphere Service Registry/Repository                        ; WebSphere Service Registry/Repository
+                         ; 30CG8              ; Storage Scale                                                ; Storage Scale
+                         ; 30CH0              ; Storage Top - Rental, Rebates, Other (AUO)                   ; Storage Top - Rental, Rebates, Other (AUO)
+                         ; 30BPD              ; Sterling Transformation Extender Withdrawn                   ; Sterling Transformation Extender Withdrawn
+                         ; 30BIL              ; Guardium Data Encryption                                     ; Guardium Data Encryption
+                         ; 30BH6              ; Maximo Application Suite                                     ; Maximo Application Suite
+                         ; 30AL5              ; Capture - Legacy                                             ; Capture - Legacy
+                         ; 30ACE              ; Content - FNCM                                               ; Content - FNCM
+                         ; 30AAC              ; DevOps Other Withdrawn                                       ; DevOps Other Withdrawn
+                         ; 30BE0              ; Connections                                                  ; Connections
+                         ; 30BIM              ; Guardium Key Lifecycle Management                            ; Guardium Key Lifecycle Management
+                         ; 30CYZ              ; Host Toolsz                                                  ; Host Toolsz
+                         ; 30AGB              ; Cognos Analytics                                             ; Cognos Analytics
+                         ; 30AGF              ; Planning Analytics                                           ; Planning Analytics
+                         ; 30BE3              ; Verse                                                        ; Verse
+                         ; 30AA0              ; WebSphere eXtreme Scale                                      ; WebSphere eXtreme Scale
+                         ; 30BE1              ; Connections Cloud                                            ; Connections Cloud
+                         ; 30AFW              ; Decision Optimization                                        ; Decision Optimization
+                         ; 30B7L              ; Supply Chain Intelligence Top (AUO)                          ; Supply Chain Intelligence Top (AUO)
+                         ; 30CVQ              ; Power Middleware                                             ; Power Middleware
+                         ; 30A17              ; Watson Discovery                                             ; Watson Discovery
+                         ; 30CCE              ; Enterprise COBOL for z/OS                                    ; Enterprise COBOL for z/OS
+                         ; 30BOB              ; X-force Threat Intelligence                                  ; X-force Threat Intelligence
+                         ; 30AYO              ; SPSS Statistics                                              ; SPSS Statistics
+                         ; 30AFV              ; SPSS Modeler                                                 ; SPSS Modeler
+                         ; 30BIK              ; Guardium Data Protection                                     ; Guardium Data Protection
+                         ; 30AVA              ; Decisions                                                    ; Decisions
+                         ; 30ADD              ; Cloudera & Hadoop                                            ; Cloudera & Hadoop
+                         ; 30BJ4              ; IOC Withdrawn                                                ; IOC Withdrawn
+                         ; 30AW5              ; Capture                                                      ; Capture
+                         ; 30A52              ; App Connect Professional                                     ; App Connect Professional
+                         ; 30A0G              ; Control Desk Withdrawn                                       ; Control Desk Withdrawn
+                         ; 30AX2              ; DataPower Appliances                                         ; DataPower Appliances
+                         ; 30CE7              ; Power Compilers                                              ; Power Compilers
+                         ; 30B9V              ; Sterling Managed File Transfer                               ; Sterling Managed File Transfer
+                         ; 30BQJ              ; Sterling Order & Inventory Management                        ; Sterling Order & Inventory Management
+                         ; 30BQN              ; Marketing Software                                           ; Marketing Software
+                         ; 30ADA              ; OpenPages                                                    ; OpenPages
+                         ; 30A94              ; Cloud Pak System                                             ; Cloud Pak System
+                         ; 30BQY              ; Sterling B2B Integration (SaaS)                              ; Sterling B2B Integration (SaaS)
+                         ; 30BQQ              ; IBM Watson Customer Experience Analytics                     ; IBM Watson Customer Experience Analytics
+                         ; 30ATB              ; Netezza                                                      ; Netezza
+                         ; 30B69              ; TRIRIGA Application Suite                                    ; TRIRIGA Application Suite
+                         ; 30A4C              ; Pure Application                                             ; Pure Application
+                         ; 30CFL              ; Spectrum High Performance Computing                          ; Spectrum High Performance Computing
+                         ; 30G0H              ; Shared aged codes group (AUO) Withdrawn                      ; Shared aged codes group (AUO) Withdrawn
+                         ; 30BP5              ; Partner Rebates, Unassigned, Miscds, Other (AUO)             ; Partner Rebates, Unassigned, Miscds, Other (AUO)
+                         ; 30CE1              ; Test Tools - ZD&T & ZVTP                                     ; Test Tools - ZD&T & ZVTP
+                         ; 30AHF              ; Blueworks Live                                               ; Blueworks Live
+                         ; 30BQH              ; Websphere Commerce Managed Hosted Withdrawn                  ; Websphere Commerce Managed Hosted Withdrawn
+                         ; 30BR0              ; Procurement - Software Withdrawn                             ; Procurement - Software Withdrawn
+                         ; 30BMF              ; Social Program and Care Management Withdrawn                 ; Social Program and Care Management Withdrawn
+                         ; 30AYS              ; IT Automation Heritage                                       ; IT Automation Heritage
+                         ; 30N78              ; Verify Privilege                                             ; Verify Privilege
+                         ; 30BQE              ; Pricing and Promo Optimization                               ; Pricing and Promo Optimization
+                         ; 30DGO              ; The Weather Company Top (AUO)                                ; The Weather Company Top (AUO)
+                         ; 30BPU              ; Watson FSS Top (AUO)                                         ; Watson FSS Top (AUO)
+                         ; 30A0U              ; Watson Subscription & Expert Labs                            ; Watson Subscription & Expert Labs
+                         ; 30A34              ; Mobile Foundation                                            ; Mobile Foundation
+                         ; 30BHY              ; QRadar SIEM                                                  ; QRadar SIEM
+                         ; 30BQZ              ; Procurement - SaaS Withdrawn                                 ; Procurement - SaaS Withdrawn
+                         ; 30BQR              ; Customer Insights Software                                   ; Customer Insights Software
+                         ; 30BOX              ; Sustainability Software Top-BP Rebates, Acctg Miscodes (AUO) ; Sustainability Software Top-BP Rebates, Acctg Miscodes (AUO)
+                         ; 30A3M              ; API Connect                                                  ; API Connect
+                         ; 30CZV              ; Software - PowerHA (not HPC, nor VA Linux)                   ; Software - PowerHA (not HPC, nor VA Linux)
+                         ; 30BI7              ; Security Network Protection                                  ; Security Network Protection
+                         ; 30A4R              ; UrbanCode                                                    ; UrbanCode
+                         ; 30FEF              ; Non-IBM SW                                                   ; Non-IBM SW
+                         ; 30BHK              ; Renewals Only - Kenexa Talent Acquisition Suite              ; Renewals Only - Kenexa Talent Acquisition Suite
+                         ; 30BHR              ; Renewals Only - Legacy Offerings                             ; Renewals Only - Legacy Offerings
+                         ; 30BHN              ; Renewals Only - Kenexa LCMS Premier                          ; Renewals Only - Kenexa LCMS Premier
+                         ; 30BHP              ; Renewals Only - Kenexa LMS                                   ; Renewals Only - Kenexa LMS
+                         ; 30BHU              ; Renewals Only - Assessments                                  ; Renewals Only - Assessments
+                         ; 30BHQ              ; Renewals Only - Kenexa Talent Frameworks                     ; Renewals Only - Kenexa Talent Frameworks
+                         ; 30BHT              ; Renewals Only - Kenexa Employee Voice                        ; Renewals Only - Kenexa Employee Voice
+                         ; 30A47              ; watsonx Assistant                                            ; watsonx Assistant
+                         ; 30C1J              ; Spectrum Computing Top (AUO)                                 ; Spectrum Computing Top (AUO)
+                         ; 30BW9              ; IoT Platform Withdrawn                                       ; IoT Platform Withdrawn
+                         ; 30AH8              ; Application Monitoring Withdrawn                             ; Application Monitoring Withdrawn
+                         ; 30A3O              ; Cloud Pak for Network Automation                             ; Cloud Pak for Network Automation
+                         ; 30BQM              ; IBM Watson Campaign Automation                               ; IBM Watson Campaign Automation
+                         ; 30DE7              ; Cloudant                                                     ; Cloudant
+                         ; 30A0R              ; PaaS Classic                                                 ; PaaS Classic
+                         ; 30DF9              ; Deployment Automation - CD                                   ; Deployment Automation - CD
+                         ; 30BII              ; Verify on Cloud                                              ; Verify on Cloud
+                         ; 30A2L              ; AI Assistants Top (AUO)                                      ; AI Assistants Top (AUO)
+                         ; 30BR2              ; Sterling Partner Engagement Manager Withdrawn                ; Sterling Partner Engagement Manager Withdrawn
+                         ; 30BID              ; Trusteer Fraud Protection                                    ; Trusteer Fraud Protection
+                         ; 30ALY              ; Software Components (61) Top (AUO)                           ; Software Components (61) Top (AUO)
+                         ; 30A2T              ; MQ Appliances                                                ; MQ Appliances
+                         ; 30BIB              ; MaaS360 Mobile Security and Management                       ; MaaS360 Mobile Security and Management
+                         ; 30AHI              ; Aspera                                                       ; Aspera
+                         ; 30BPM              ; Watson Marketing and Commerce Top-Divested and Miscodes(AUO) ; Watson Marketing and Commerce Top-Divested and Miscodes(AUO)
+                         ; 30A2Q              ; Decisions - Legacy                                           ; Decisions - Legacy
+                         ; 30BZS              ; TRIRIGA Application Suite (SaaS)                             ; TRIRIGA Application Suite (SaaS)
+                         ; 30BQV              ; Digital Experience Managed Hosted Withdrawn                  ; Digital Experience Managed Hosted Withdrawn
+                         ; 30C6O              ; Spectrum Accelerate                                          ; Spectrum Accelerate
+                         ; 30ABC              ; Watson APIs                                                  ; Watson APIs
+                         ; 30A4O              ; PaaS True Up, Allocations and Other (AUO)                    ; PaaS True Up, Allocations and Other (AUO)
+                         ; 30DFC              ; IBM Cloud Expert Labs                                        ; IBM Cloud Expert Labs
+                         ; 30APO              ; Third Party Services                                         ; Third Party Services
+                         ; 30BQF              ; Payments - Omni-Channel Commerce Withdrawn                   ; Payments - Omni-Channel Commerce Withdrawn
+                         ; 30BHW              ; Renewals Only - Watson Talent Insight                        ; Renewals Only - Watson Talent Insight
+                         ; 30BNV              ; Clinical Trial Matching Withdrawn                            ; Clinical Trial Matching Withdrawn
+                         ; 30BGV              ; Oncology Withdrawn                                           ; Oncology Withdrawn
+                         ; 30AST              ; Cloud Containers                                             ; Cloud Containers
+                         ; 30AHU              ; Cloud Pak for Data                                           ; Cloud Pak for Data
+                         ; 30A19              ; Event Streams for IBM Cloud                                  ; Event Streams for IBM Cloud
+                         ; 30ABQ              ; Data Fabric Ecosystem & Emerging                             ; Data Fabric Ecosystem & Emerging
+                         ; 30CGE              ; Storage Archive                                              ; Storage Archive
+                         ; 30DFS              ; Environmental Intelligence Suite                             ; Environmental Intelligence Suite
+                         ; 30BQD              ; IBM Digital Commerce                                         ; IBM Digital Commerce
+                         ; 30ACH              ; IBM Cloud Subscription (BP & Annuity Use Only)               ; IBM Cloud Subscription (BP & Annuity Use Only)
+                         ; 30AUS              ; Cloud Security Services                                      ; Cloud Security Services
+                         ; 30CGA              ; Storage Suite                                                ; Storage Suite
+                         ; 30AWW              ; WebSphere Application Server Family Edition                  ; WebSphere Application Server Family Edition
+                         ; 30CE3              ; ADDI                                                         ; ADDI
+                         ; 30CE2              ; CICD - SCM Tools & DBB                                       ; CICD - SCM Tools & DBB
+                         ; 30BRS              ; Engagement Withdrawn                                         ; Engagement Withdrawn
+                         ; 30DE8              ; Cloud Databases & Compose                                    ; Cloud Databases & Compose
+                         ; 30C8R              ; Storage DS8K HW                                              ; Storage DS8K HW
+                         ; 30CG9              ; Cloud Object Storage SW                                      ; Cloud Object Storage SW
+                         ; 30BRO              ; Performance Management Withdrawn                             ; Performance Management Withdrawn
+                         ; 30BNP              ; Explorys Life Sciences Withdrawn                             ; Explorys Life Sciences Withdrawn
+                         ; 30C4F              ; Cloud Object Storage HW                                      ; Cloud Object Storage HW
+                         ; 30BI1              ; QRadar SOAR                                                  ; QRadar SOAR
+                         ; 30BZ9              ; Watson Platform for Health Legacy Withdrawn                  ; Watson Platform for Health Legacy Withdrawn
+                         ; 30DEW              ; Logistics Manager Withdrawn                                  ; Logistics Manager Withdrawn
+                         ; 30DEV              ; Catalog and Subscriber Manager Withdrawn                     ; Catalog and Subscriber Manager Withdrawn
+                         ; 30DEX              ; Verified Access Withdrawn                                    ; Verified Access Withdrawn
+                         ; 30A7M              ; Cloud Public Subscription (Cross BU)                         ; Cloud Public Subscription (Cross BU)
+                         ; 30DES              ; Video Streaming                                              ; Video Streaming
+                         ; 30B6L              ; Blockchain Support                                           ; Blockchain Support
+                         ; 30BNK              ; Pre Clinical Development Withdrawn                           ; Pre Clinical Development Withdrawn
+                         ; 30CWS              ; Storage Protect Plus (inc CDM & Sentinel)                    ; Storage Protect Plus (inc CDM & Sentinel)
+                         ; 30BWS              ; Connected Vehicle Insights                                   ; Connected Vehicle Insights
+                         ; 30BQT              ; IBM Watson Content Hub                                       ; IBM Watson Content Hub
+                         ; 30AWK              ; App Run: Subscription, Edu, and Special Offerings Srvcs Only ; App Run: Subscription, Edu, and Special Offerings Srvcs Only
+                         ; 30B5X              ; Engineering Lifecycle Management Top (AUO)                   ; Engineering Lifecycle Management Top (AUO)
+                         ; 30BNN              ; Clinical Development Portfolio Withdrawn                     ; Clinical Development Portfolio Withdrawn
+                         ; 30CZQ              ; Software - AIX                                               ; Software - AIX
+                         ; 30BHZ              ; QRadar Watson for Cybersecurity Withdrawn                    ; QRadar Watson for Cybersecurity Withdrawn
+                         ; 30CF1              ; LinuxONE Rockhopper Withdrawn                                ; LinuxONE Rockhopper Withdrawn
+                         ; 30AHN              ; Db2 for Z                                                    ; Db2 for Z
+                         ; 30DFO              ; The Weather Company Media                                    ; The Weather Company Media
+                         ; 30AC1              ; Observability                                                ; Observability
+                         ; 30DGY              ; IBM Cloud Premium & Advanced Support                         ; IBM Cloud Premium & Advanced Support
+                         ; 30AG1              ; Db2 Tools for Z                                              ; Db2 Tools for Z
+                         ; 30CTR              ; IaaS Allocation, True Up & Other (IUO)                       ; IaaS Allocation, True Up & Other (IUO)
+                         ; 30GHR              ; (KYN) 6950-15Q Resiliency Orchestration SW - Fulfillment     ; (KYN) 6950-15Q Resiliency Orchestration SW - Fulfillment
+                         ; 30A5G              ; Cloud Private                                                ; Cloud Private
+                         ; 30A1F              ; IaaS Classic                                                 ; IaaS Classic
+                         ; 30AKM              ; OEM Automation Anywhere                                      ; OEM Automation Anywhere
+                         ; 30CGP              ; IBM Blockchain Platform Cloud Services (IBM Z)               ; IBM Blockchain Platform Cloud Services (IBM Z)
+                         ; 30AII              ; Cloud Object Storage                                         ; Cloud Object Storage
+                         ; 30AZZ              ; Database EcoSystem                                           ; Database EcoSystem
+                         ; 30BMP              ; Micromedex Withdrawn                                         ; Micromedex Withdrawn
+                         ; 30BMH              ; Health and Human Services Analytics Withdrawn                ; Health and Human Services Analytics Withdrawn
+                         ; 30C40              ; Spectrum NAS Withdrawn                                       ; Spectrum NAS Withdrawn
+                         ; 30A4I              ; Cloud Pak for Integration                                    ; Cloud Pak for Integration
+                         ; 30BMR              ; Strategic Alternatives Withdrawn                             ; Strategic Alternatives Withdrawn
+                         ; 30BRK              ; Operational IQ Withdrawn                                     ; Operational IQ Withdrawn
+                         ; 30AE8              ; DevOps Heritage                                              ; DevOps Heritage
+                         ; 30AHL              ; IT Management Bundles                                        ; IT Management Bundles
+                         ; 30A8K              ; Cloud Pak for Business Automation                            ; Cloud Pak for Business Automation
+                         ; 30CGN              ; Tape - High End Virtualization                               ; Tape - High End Virtualization
+                         ; 30A8X              ; Workflow                                                     ; Workflow
+                         ; 30GJ5              ; 6950-04Z Int Mngd Infra Svcs (IMI for IBM cloud) Withdrawn   ; 6950-04Z Int Mngd Infra Svcs (IMI for IBM cloud) Withdrawn
+                         ; 30A7Q              ; Event Automation                                             ; Event Automation
+                         ; 30B4X              ; Blockchain Platform Top (AUO)                                ; Blockchain Platform Top (AUO)
+                         ; 30GKT              ; 6950-13H Support Services for Multivendor Software Withdrawn ; 6950-13H Support Services for Multivendor Software Withdrawn
+                         ; 30C1M              ; LinuxONE Rockhopper II Withdrawn                             ; LinuxONE Rockhopper II Withdrawn
+                         ; 30DFZ              ; Cognitive Media Platform                                     ; Cognitive Media Platform
+                         ; 30DFY              ; Advertisement & Media Products                               ; Advertisement & Media Products
+                         ; 30CVA              ; Storwize V5xxx HW                                            ; Storwize V5xxx HW
+                         ; 30BMN              ; Watson Assistant for Health Benefits Withdrawn               ; Watson Assistant for Health Benefits Withdrawn
+                         ; 30CK9              ; Hyper Protect Virtual Servers - Private Cloud                ; Hyper Protect Virtual Servers - Private Cloud
+                         ; 30CZL              ; Storage Discover                                             ; Storage Discover
+                         ; 30BJ0              ; Enterprise Asset Management Withdrawn                        ; Enterprise Asset Management Withdrawn
+                         ; 30BQX              ; Supply Chain Intelligence Suite                              ; Supply Chain Intelligence Suite
+                         ; 30AB9              ; Runtimes                                                     ; Runtimes
+                         ; 30BMC              ; Box Relay Workflow                                           ; Box Relay Workflow
+                         ; 30BRA              ; Top - Life Sciences (AUO) Withdrawn                          ; Top - Life Sciences (AUO) Withdrawn
+                         ; 30BRF              ; Top - Provider (AUO) Withdrawn                               ; Top - Provider (AUO) Withdrawn
+                         ; 30B2W              ; Top - Oncology (AUO) Withdrawn                               ; Top - Oncology (AUO) Withdrawn
+                         ; 30EIW              ; Acoustic Campaign Automation                                 ; Acoustic Campaign Automation
+                         ; 30E39              ; Acoustic Campaign Services                                   ; Acoustic Campaign Services
+                         ; 30EPA              ; Acoustic Content Hub                                         ; Acoustic Content Hub
+                         ; 30EKJ              ; Acoustic Analytics (CXA)                                     ; Acoustic Analytics (CXA)
+                         ; 30E3Y              ; Acoustic Marketing Insights                                  ; Acoustic Marketing Insights
+                         ; 30E8F              ; Acoustic Customer Analytics                                  ; Acoustic Customer Analytics
+                         ; 30EO4              ; Acoustic Lifecycle Pricing & Promotion                       ; Acoustic Lifecycle Pricing & Promotion
+                         ; 30E4S              ; Acoustic Personalization                                     ; Acoustic Personalization
+                         ; 30A9V              ; Netezza for Cloud Pak for Data                               ; Netezza for Cloud Pak for Data
+                         ; 30CNF              ; CICS TX                                                      ; CICS TX
+                         ; 30C7A              ; Hyper Protect Data Controller Withdrawn                      ; Hyper Protect Data Controller Withdrawn
+                         ; 30AXK              ; Cloud Pak for AIOps                                          ; Cloud Pak for AIOps
+                         ; 30A53              ; Sysdig                                                       ; Sysdig
+                         ; 30ABL              ; Red Hat Top (AUO)                                            ; Red Hat Top (AUO)
+                         ; 30AXL              ; Cloud Pak for Applications                                   ; Cloud Pak for Applications
+                         ; 30BOC              ; Video Analytics Withdrawn                                    ; Video Analytics Withdrawn
+                         ; 30AOP              ; AI Ops Partnerships                                          ; AI Ops Partnerships
+                         ; 30AIT              ; Cloud Pak for Red Hat (AUO)                                  ; Cloud Pak for Red Hat (AUO)
+                         ; 30N9J              ; Guardium Insights Hosted                                     ; Guardium Insights Hosted
+                         ; 30AM2              ; Db2 for Cloud Pak for Data                                   ; Db2 for Cloud Pak for Data
+                         ; 30NEB              ; QRadar Suite (Software)                                      ; QRadar Suite (Software)
+                         ; 30C0F              ; Storage Suite for IBM Cloud Paks                             ; Storage Suite for IBM Cloud Paks
+                         ; 30A7C              ; Humio                                                        ; Humio
+                         ; 30ADZ              ; Plan & Bus Analytics for Cloud Pak for Data                  ; Plan & Bus Analytics for Cloud Pak for Data
+                         ; 30AP9              ; Edge Application Manager                                     ; Edge Application Manager
+                         ; 30AY5              ; Turbonomic - ARM                                             ; Turbonomic - ARM
+                         ; 30LQE              ; Payer Platform Solutions Withdrawn                           ; Payer Platform Solutions Withdrawn
+                         ; 30CZU              ; Software - IBM i System (not HPC, nor VA Linux)              ; Software - IBM i System (not HPC, nor VA Linux)
+                         ; 30AV9              ; VMware managed and solutions                                 ; VMware managed and solutions
+                         ; 30A73              ; Planning & Business Analytics Ecosystem                      ; Planning & Business Analytics Ecosystem
+                         ; 30A5C              ; Robotic Process Automation (RPA)                             ; Robotic Process Automation (RPA)
+                         ; 30AUW              ; Guardium Suite                                               ; Guardium Suite
+                         ; 30B7Z              ; Third Party Software                                         ; Third Party Software
+                         ; 30A9B              ; WebSphere Hybrid Edition                                     ; WebSphere Hybrid Edition
+                         ; 30A3P              ; DevOps Partnerships                                          ; DevOps Partnerships
+                         ; 30AO8              ; Observability with Instana                                   ; Observability with Instana
+                         ; 30BHO              ; Renewals Only - Watson Career Coach                          ; Renewals Only - Watson Career Coach
+                         ; 30BHL              ; Renewals Only - Watson Recruitment                           ; Renewals Only - Watson Recruitment
+                         ; 30DG8              ; Watson Video Enrichment Withdrawn                            ; Watson Video Enrichment Withdrawn
+                         ; 30BOA              ; Data Protection on Cloud Withdrawn                           ; Data Protection on Cloud Withdrawn
+                         ; 30A9E              ; Financial Risk Withdrawn                                     ; Financial Risk Withdrawn
+                         ; 30BPY              ; Renewals Only - Watson Candidate Assistant                   ; Renewals Only - Watson Candidate Assistant
+                         ; 30BH9              ; IBM Watson Education Classroom                               ; IBM Watson Education Classroom
+                         ; 30DFH              ; Data and Analytics Top (AUO)                                 ; Data and Analytics Top (AUO)
+                         ; 30BPW              ; MetroPulse Platform Withdrawn                                ; MetroPulse Platform Withdrawn
+                         ; 30DG6              ; Cloud SQL Query                                              ; Cloud SQL Query
+                         ; 30A11              ; Content - BACS                                               ; Content - BACS
+                         ; 30BFQ              ; Watson Foundation for Health and Common Services Withdrawn   ; Watson Foundation for Health and Common Services Withdrawn
+                         ; 30BN7              ; IBM Blockchain Transparent Supply(incl.Food Trust) Withdrawn ; IBM Blockchain Transparent Supply(incl.Food Trust) Withdrawn
+                         ; 30AVK              ; Int: Subscription, Edu, and Special Offerings Srvcs Only     ; Int: Subscription, Edu, and Special Offerings Srvcs Only
+                         ; 30BN3              ; Strategic Advisory Consulting (Promontory) Withdrawn         ; Strategic Advisory Consulting (Promontory) Withdrawn
+                         ; 30BIU              ; TradeLens                                                    ; TradeLens
+                         ; 30ABS              ; BA: Subscription, Edu, and Special Offerings Srvcs Only      ; BA: Subscription, Edu, and Special Offerings Srvcs Only
+                         ; 30BPO              ; Blockchain Top-BP Rebates, Unassigned, Acctg Miscodes (AUO)  ; Blockchain Top-BP Rebates, Unassigned, Acctg Miscodes (AUO)
+                         ; 30ALB              ; VPC Offerings                                                ; VPC Offerings
+                         ; 30LYX              ; Access and Value Connect Withdrawn                           ; Access and Value Connect Withdrawn
+                         ; 30DWV              ; Video Highlights Withdrawn                                   ; Video Highlights Withdrawn
+                         ; 30DXV              ; Video Recommendations Withdrawn                              ; Video Recommendations Withdrawn
+                         ; 30BFW              ; MarketScan Withdrawn                                         ; MarketScan Withdrawn
+                         ; 30CXT              ; Hyper Protect DBaaS - Public Cloud                           ; Hyper Protect DBaaS - Public Cloud
+                         ; 30C70              ; Hyper Protect Crypto Services - Public Cloud                 ; Hyper Protect Crypto Services - Public Cloud
+                         ; 30C5R              ; Power Systems for Google Cloud                               ; Power Systems for Google Cloud
+                         ; 30DDG              ; ZaaS and Hyper Protect                                       ; ZaaS and Hyper Protect
+                         ; 30C1Z              ; PowerVS on IBM Cloud for AIX/Other                           ; PowerVS on IBM Cloud for AIX/Other
+                         ; 30CCC              ; Hyper Protect Virtual Servers - Public Cloud                 ; Hyper Protect Virtual Servers - Public Cloud
+                         ; 30CAP              ; PowerVS on IBM Cloud for IBM i                               ; PowerVS on IBM Cloud for IBM i
+                         ; 30DFT              ; Retail Withdrawn                                             ; Retail Withdrawn
+                         ; 30AMT              ; Power Virtual Server                                         ; Power Virtual Server
+                         ; 30B9M              ; Red Hat Marketplace Platform Services                        ; Red Hat Marketplace Platform Services
+                         ; 30DGT              ; Watson Media Top - Bus Partner Rebates, Miscodes (AUO)       ; Watson Media Top - Bus Partner Rebates, Miscodes (AUO)
+                         ; 30DEZ              ; Cloud Infrastructure Withdrawn                               ; Cloud Infrastructure Withdrawn
+                         ; 30APV              ; Skytap on IBM Cloud                                          ; Skytap on IBM Cloud
+                         ; 30CC0              ; IBM Z and Cloud Modernization Stack                          ; IBM Z and Cloud Modernization Stack
+                         ; 30BVR              ; Expert Essentials Threat Management                          ; Expert Essentials Threat Management
+                         ; 30A7N              ; IBM Cloud Enterprise Savings Plan (Annuity Use Only)         ; IBM Cloud Enterprise Savings Plan (Annuity Use Only)
+                         ; 30BQY              ; Sterling Data Exchange SaaS                                  ; Sterling Data Exchange SaaS
+                         ; 30BYP              ; Maximo Application Suite Dedicated                           ; Maximo Application Suite Dedicated
+                         ; 30BVP              ; Red Hat Marketplace Top (AUO)                                ; Red Hat Marketplace Top (AUO)
+                         ; 30B73              ; TRIRIGA Service Offering (Expert Labs Only)                  ; TRIRIGA Service Offering (Expert Labs Only)
+                         ; 30AOC              ; Satellite                                                    ; Satellite
+                         ; 30BNS              ; ELM Service Offering (Expert Labs Only)                      ; ELM Service Offering (Expert Labs Only)
+                         ; 30BYN              ; Maximo Service Offering (Expert Labs Only)                   ; Maximo Service Offering (Expert Labs Only)
+                         ; 30NGL              ; Security Garage                                              ; Security Garage
+                         ; 30GVJ              ; 69XX-IUA IS Unassigned (AUO) Withdrawn                       ; 69XX-IUA IS Unassigned (AUO) Withdrawn
+                         ; 30BBP              ; Watson Works Withdrawn                                       ; Watson Works Withdrawn
+                         ; 30AM9              ; Automation Foundation                                        ; Automation Foundation
+                         ; 30BG3              ; Consumer - Payer Withdrawn                                   ; Consumer - Payer Withdrawn
+                         ; 30ATD              ; Integration OEM Partnerships                                 ; Integration OEM Partnerships
+                         ; 30NJL              ; Security Digital Learning                                    ; Security Digital Learning
+                         ; 30B5L              ; Blockchain Solutions for Health Withdrawn                    ; Blockchain Solutions for Health Withdrawn
+                         ; 30L4U              ; Health Data and Analytics as a Service Withdrawn             ; Health Data and Analytics as a Service Withdrawn
+                         ; 30ADM              ; Code Engine                                                  ; Code Engine
+                         ; 30B3J              ; TRIRIGA Application Suite Managed Service                    ; TRIRIGA Application Suite Managed Service
+                         ; 30AA9              ; WebSphere Automation                                         ; WebSphere Automation
+                         ; 30A82              ; Guardium Discover and Classify                               ; Guardium Discover and Classify
+                         ; 30CPP              ; Cognitive Top (AUO)                                          ; Cognitive Top (AUO)
+                         ; 30CEY              ; "Misc (all retail revenue that doesn't have a PID)"          ; "Misc (all retail revenue that doesn't have a PID)"
+                         ; 30B4H              ; Enterprise Asset Management Top (AUO)                        ; Enterprise Asset Management Top (AUO)
+                         ; 30ASJ              ; Power VSI Enterprise Savings Plan (Annuity Use Only)         ; Power VSI Enterprise Savings Plan (Annuity Use Only)
+                         ; 30AX0              ; Power VSI Subscription - (BP & Annuity Use Only)             ; Power VSI Subscription - (BP & Annuity Use Only)
+                         ; 30BC4              ; Data Exchange Service Offering (Expert Labs Only)            ; Data Exchange Service Offering (Expert Labs Only)
+                         ; 30B8F              ; Supply Chain Service Offering (Expert Labs Only)             ; Supply Chain Service Offering (Expert Labs Only)
+                         ; 30B5Y              ; EIS Service Offering (Expert Labs Only)                      ; EIS Service Offering (Expert Labs Only)
+                         ; 30AKY              ; IBM Process Mining                                           ; IBM Process Mining
+                         ; 30JIJ              ; IBM Consulting Top Service Line Offering (AUO)               ; IBM Consulting Top Service Line Offering (AUO)
+                         ; 30B3B              ; Maximo Application Suite (SaaS)                              ; Maximo Application Suite (SaaS)
+                         ; 30AS5              ; Watson Orchestrate                                           ; Watson Orchestrate
+                         ; 30AKH              ; SevOne                                                       ; SevOne
+                         ; 30BRB              ; Top - Payer (AUO) Withdrawn                                  ; Top - Payer (AUO) Withdrawn
+                         ; 30AZJ              ; QRadar EDR & XDR                                             ; QRadar EDR & XDR
+                         ; 30CNP              ; Storage Fusion                                               ; Storage Fusion
+                         ; 30CU3              ; Wazi aaS                                                     ; Wazi aaS
+                         ; 30C0R              ; Storage Protect for Cloud                                    ; Storage Protect for Cloud
+                         ; 30A0F              ; Flexera One with IBM Observability                           ; Flexera One with IBM Observability
+                         ; 30A3I              ; watsonx Orders                                               ; watsonx Orders
+                         ; 30BZD              ; Envizi ESG Suite                                             ; Envizi ESG Suite
+                         ; 30CRV              ; Quantum Qiskit                                               ; Quantum Qiskit
+                         ; 30CNN              ; IBM Cloud LinuxOne Bare Metal                                ; IBM Cloud LinuxOne Bare Metal
+                         ; 30ADZ              ; Business Analytics Enterprise                                ; Business Analytics Enterprise
+                         ; 30CV5              ; PowerVS on IBM Cloud for Enterprise Linux                    ; PowerVS on IBM Cloud for Enterprise Linux
+                         ; 30BYH              ; IBM Cloud Pak for Security - Verify                          ; IBM Cloud Pak for Security - Verify
+                         ; 30AVM              ; Tanium with IBM Automation                                   ; Tanium with IBM Automation
+                         ; 30AJI              ; Software Networking Top (AUO)                                ; Software Networking Top (AUO)
+                         ; 30AYV              ; Business Automation Open Editions                            ; Business Automation Open Editions
+                         ; 30C21              ; Quantum Premium                                              ; Quantum Premium
+                         ; 30BPD              ; Sterling Transformation Extender                             ; Sterling Transformation Extender
+                         ; 30B9E              ; Data Observability by Databand                               ; Data Observability by Databand
+                         ; 30AT3              ; Security Randori ASM                                         ; Security Randori ASM
+                         ; 30APR              ; Embeddable AI Libraries                                      ; Embeddable AI Libraries
+                         ; 30CTC              ; Storage Ceph                                                 ; Storage Ceph
+                         ; 30A3F              ; QRadar Log Insights                                          ; QRadar Log Insights
+                         ; 30ALJ              ; AIOps Insights                                               ; AIOps Insights
+                         ; 30AN2              ; StepZen                                                      ; StepZen
+                         ; 30AX6              ; watsonx.ai                                                   ; watsonx.ai
+                         ; 30C6U              ; Software - Cloud Management Console                          ; Software - Cloud Management Console
+                         ; 30Q95              ; IaaS Allocation, True Up & Other (AUO)                       ; IaaS Allocation, True Up & Other (AUO)
+                         ; 30C9X              ; Storage Defender                                             ; Storage Defender
+                         ; 30AW0              ; watsonx.data                                                 ; watsonx.data
+                         ; 30CBE              ; Quantum Safe Explorer                                        ; Quantum Safe Explorer
+                         ; 30A99              ; NS1 Managed DNS Connect                                      ; NS1 Managed DNS Connect
+                         ; 30AOK              ; watsonx Code Assistant for Z                                 ; watsonx Code Assistant for Z
+                         ; 30A3C              ; Apptio Cloudability                                          ; Apptio Cloudability
+                         ; 30AL8              ; ApptioOne                                                    ; ApptioOne
+                         ; 30AYB              ; Apptio Targetprocess                                         ; Apptio Targetprocess
+                         ; 30ASC              ; Hybrid Cloud Mesh                                            ; Hybrid Cloud Mesh
+                         ; 30A04              ; Content Manager (CM8)                                        ; Content Manager (CM8)
+                         ; 30A09              ; Content Information Lifecycle Governance                     ; Content Information Lifecycle Governance
+                         ; 30ACE              ; Filenet Content Manager                                      ; Filenet Content Manager
+                         ; 30A9U              ; Content Manager On Demand                                    ; Content Manager On Demand
+                         ; 30A8X              ; Workflow Automation                                          ; Workflow Automation
+                         ; 30AVA              ; Decision Management                                          ; Decision Management
+                         ; 30A3O              ; Hybrid Cloud Network Automation                              ; Hybrid Cloud Network Automation
+                         ; 30DE8              ; Cloud Data Services                                          ; Cloud Data Services
+                         ; 30DFC              ; Technology Expert Labs - Cloud                               ; Technology Expert Labs - Cloud
+                         ; 30AMA              ; Business Automation Ecosystem & Expert Labs                  ; Business Automation Ecosystem & Expert Labs
+                         ; 30A5Q              ; watsonx.governance                                           ; watsonx.governance
+                         ; 30QGT              ; IaaS Third Party                                             ; IaaS Third Party
+                         ; 30AQS              ; Platform Core                                                ; Platform Core
+                         ; 30ATD              ; Integration Partnerships                                     ; Integration Partnerships
+                         ; 30AKY              ; Process Mining                                               ; Process Mining
+                         ; 30A8O              ; Data Lineage by Manta                                        ; Data Lineage by Manta
+                         ; 30AS5              ; watsonx Orchestrate                                          ; watsonx Orchestrate
+                         ; 30AP5              ; IBM Z and LinuxONE Subscription - (BP & Annuity Use Only)    ; IBM Z and LinuxONE Subscription - (BP & Annuity Use Only)
+                         ; 30G38              ; 6941-15K Point of Sale - Storage Expert Care - Premium       ; 6941-15K Point of Sale - Storage Expert Care - Premium
+                         ; 30AJI              ; Network Automation Top (AUO)                                 ; Network Automation Top (AUO)
+                         ; 30A20              ; Rapid Network Automation                                     ; Rapid Network Automation
+                         ; 30CG8              ; Storage Scale SW (TPS)                                       ; Storage Scale SW (TPS)
+                         ; 30CG9              ; Cloud Object Storage SW (TPS)                                ; Cloud Object Storage SW (TPS)
+                         ; 30C8V              ; Storage Top SW (TPS)(AUO)                                    ; Storage Top SW (TPS)(AUO)
+                         ; 30C0Y              ; Storage DS8K SW (TPS)                                        ; Storage DS8K SW (TPS)
+                         ; 15CAI              ; Hybrid Cloud Services                                        ; Hybrid Cloud Services
+                         ; 15STT              ; Storage                                                      ; Storage
+                         ; 15SCT              ; Security Software                                            ; Security Software
+                         ; 15MFT              ; Z TPS                                                        ; Z TPS
+                         ; 15IGO              ; IT Automation & App Modernization                            ; IT Automation & App Modernization
+                         ; 15ANP              ; Data and AI                                                  ; Data and AI
+                         ; 15IGO              ; Automation                                                   ; Automation
+                         ; 15MSC              ; Miscellaneous LOB                                            ; Miscellaneous LOB
+                         ; 15ITT              ; Sustainability Software                                      ; Sustainability Software
+                         ; 15WCG              ; WCE Watson Marketing and Commerce                            ; WCE Watson Marketing and Commerce
+                         ; 15CLS              ; Collaboration Solutions                                      ; Collaboration Solutions
+                         ; 15STT              ; Storage HW                                                   ; Storage HW
+                         ; 15PHW              ; Power                                                        ; Power
+                         ; 15ISS              ; Infrastructure Services Withdrawn                            ; Infrastructure Services Withdrawn
+                         ; 15WTH              ; Health Withdrawn                                             ; Health Withdrawn
+                         ; 15WCP              ; Weather                                                      ; Weather
+                         ; 15PHW              ; Power HW                                                     ; Power HW
+                         ; 15TMS              ; Talent Management Solutions                                  ; Talent Management Solutions
+                         ; 153QH              ; Public Cloud Platform                                        ; Public Cloud Platform
+                         ; 15JHO              ; IBM Software Top (AUO)                                       ; IBM Software Top (AUO)
+                         ; 15MHW              ; Z HW                                                         ; Z HW
+                         ; 15CI9              ; Public Cloud Platform - Infra Reported (IUO)                 ; Public Cloud Platform - Infra Reported (IUO)
+                         ; 15TSS              ; Technology Lifecycle Services                                ; Technology Lifecycle Services
+                         ; 15DGL              ; Acoustic Unit                                                ; Acoustic Unit
+                         ; 15EDG              ; Red Hat                                                      ; Red Hat
+                         ; 15S8X              ; Red Hat Marketplace                                          ; Red Hat Marketplace
+                         ; 15EDC              ; Education                                                    ; Education
+                         ; 15INP              ; Core Industry Platforms                                      ; Core Industry Platforms
+                         ; 156UX              ; Blockchain Solutions                                         ; Blockchain Solutions
+                         ; 15CPT              ; Business Transformation Services                             ; Business Transformation Services
+                         ; 15MFT              ; Mainframe SW                                                 ; Mainframe SW
+                         ; 15TSL              ; IBM Consulting Top Service Line (AUO)                        ; IBM Consulting Top Service Line (AUO)
+                         ; 15YJ0              ; Quantum                                                      ; Quantum
+                         ; 15SF3              ; Storage TPS                                                  ; Storage TPS
+                         ; 15Y7V              ; Power TPS                                                    ; Power TPS

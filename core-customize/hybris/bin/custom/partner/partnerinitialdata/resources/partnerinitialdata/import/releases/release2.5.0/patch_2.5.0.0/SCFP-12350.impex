@@ -1,0 +1,18 @@
+    $createQuoteService-Content-Type = Content-Type->application/json
+    $createQuoteService-UserAgent = User-Agent->insomnia/2023.5.8
+    $createQuoteService-additional-properties = $createQuoteService-Content-Type|$createQuoteService-UserAgent
+
+    $destination_target = cpqCreateQuoteService
+    $end_point = cpqCreateQuoteEndPoints
+    $url = https://dev.api.ibm.com/q2cdsw/bluedev/api/quote/v2
+    $consumed_oauth_credential = ibmQ2CHubDevCredential
+    $consumed_destination = sapCpqQuoteService
+
+    INSERT DestinationTarget; id[unique = true]   ; registrationStatus; destinationChannel(code)
+                            ; $destination_target ;                   ; SAPCPQQUOTESERVICE
+
+    INSERT Endpoint; id[unique = true]; version[unique = true]; name                    ; specUrl
+                   ; $end_point       ; 1                     ; cpqCreateQuoteEndPoints ; cpqCreateQuoteEndPoints
+
+    INSERT IbmConsumedDestination; id[unique = true]     ; customUri; endpoint(id, version); credential(id)             ; destinationTarget(id); additionalProperties(key, value)[map-delimiter = |]; active[default = true]; url
+                                 ; $consumed_destination ; $url     ; $end_point:1         ; $consumed_oauth_credential ; $destination_target  ; $createQuoteService-additional-properties          ;                       ; $url

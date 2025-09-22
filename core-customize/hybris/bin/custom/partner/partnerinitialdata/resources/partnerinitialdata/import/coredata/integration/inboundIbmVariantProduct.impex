@@ -1,0 +1,32 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; CpqInboundIbmVariantProduct; INBOUND
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code); root[default = false]; itemTypeMatch(code)
+                                   ; CpqInboundIbmVariantProduct	; IbmVariantProduct      	; IbmVariantProduct      	; true	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqInboundIbmVariantProduct	; CatalogVersion         	; CatalogVersion         	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqInboundIbmVariantProduct	; IbmDeploymentType      	; IbmDeploymentType      	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqInboundIbmVariantProduct	; Catalog                	; Catalog                	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqInboundIbmVariantProduct	; IbmVariantValueCategory	; IbmVariantValueCategory	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqInboundIbmVariantProduct	; ArticleApprovalStatus  	; ArticleApprovalStatus  	; 	; ALL_SUBTYPES           	;
+                                   ; CpqInboundIbmVariantProduct	; IbmProduct             	; IbmProduct             	; 	; ALL_SUB_AND_SUPER_TYPES	;
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; CpqInboundIbmVariantProduct:IbmVariantProduct      	; configuratorCode	; IbmVariantProduct:configuratorCode    	;                                                    	; 	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantProduct      	; approvalStatus  	; IbmVariantProduct:approvalStatus      	; CpqInboundIbmVariantProduct:ArticleApprovalStatus  	; 	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantProduct      	; supercategories 	; IbmVariantProduct:supercategories     	; CpqInboundIbmVariantProduct:IbmVariantValueCategory	; 	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantProduct      	; name            	; IbmVariantProduct:name                	;                                                    	; 	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantProduct      	; baseProduct     	; IbmVariantProduct:baseProduct         	; CpqInboundIbmVariantProduct:IbmProduct             	; 	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantProduct      	; catalogVersion  	; IbmVariantProduct:catalogVersion      	; CpqInboundIbmVariantProduct:CatalogVersion         	; true	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantProduct      	; partNumber      	; IbmVariantProduct:partNumber          	;                                                    	; true	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantProduct      	; deploymentType  	; IbmVariantProduct:deploymentType      	; CpqInboundIbmVariantProduct:IbmDeploymentType      	; true	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantProduct      	; code            	; IbmVariantProduct:code                	;                                                    	; true	;
+                                            ; CpqInboundIbmVariantProduct:CatalogVersion         	; version         	; CatalogVersion:version                	;                                                    	; true	;
+                                            ; CpqInboundIbmVariantProduct:CatalogVersion         	; catalog         	; CatalogVersion:catalog                	; CpqInboundIbmVariantProduct:Catalog                	; true	;
+                                            ; CpqInboundIbmVariantProduct:IbmDeploymentType      	; code            	; IbmDeploymentType:code                	;                                                    	; true	;
+                                            ; CpqInboundIbmVariantProduct:Catalog                	; id              	; Catalog:id                            	;                                                    	; true	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantValueCategory	; catalogVersion  	; IbmVariantValueCategory:catalogVersion	; CpqInboundIbmVariantProduct:CatalogVersion         	; true	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantValueCategory	; code            	; IbmVariantValueCategory:code          	;                                                    	; true	;
+                                            ; CpqInboundIbmVariantProduct:IbmVariantValueCategory	; deploymentType  	; IbmVariantValueCategory:deploymentType	; CpqInboundIbmVariantProduct:IbmDeploymentType      	; 	;
+                                            ; CpqInboundIbmVariantProduct:ArticleApprovalStatus  	; code            	; ArticleApprovalStatus:code            	;                                                    	; true	;
+                                            ; CpqInboundIbmVariantProduct:IbmProduct             	; catalogVersion  	; IbmProduct:catalogVersion             	; CpqInboundIbmVariantProduct:CatalogVersion         	; true	;
+                                            ; CpqInboundIbmVariantProduct:IbmProduct             	; code            	; IbmProduct:code                       	;                                                    	; true	;

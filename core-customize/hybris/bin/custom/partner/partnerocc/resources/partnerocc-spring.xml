@@ -1,0 +1,774 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config/>
+
+    <alias name="defaultPartnerAgreementValidator" alias="partnerAgreementValidator"/>
+    <bean id="defaultPartnerAgreementValidator"
+      class="de.hybris.platform.webservicescommons.validators.CompositeValidator">
+        <property name="validators">
+            <list merge="true">
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="programType"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerUserSignUpWsDTOValidator" alias="partnerUserSignUpWsDTOValidator"/>
+    <bean id="defaultPartnerUserSignUpWsDTOValidator"
+      class="de.hybris.platform.webservicescommons.validators.CompositeValidator">
+        <property name="validators">
+            <list merge="true">
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="uid"/>
+                </bean>
+                <bean class="de.hybris.platform.webservicescommons.validators.EmailValidator">
+                    <property name="fieldPath" value="uid"/>
+                </bean>
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="firstName"/>
+                </bean>
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="lastName"/>
+                </bean>
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="roles"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerOverrideHeaderValidator" alias="partnerOverrideHeaderValidator"/>
+    <bean id="defaultPartnerOverrideHeaderValidator"
+      class="com.ibm.commerce.partner.occ.v2.validator.impl.PartnerOverrideHeaderPriceWsDTOValidator">
+    </bean>
+
+    <alias name="defaultPartnerOverrideEntryValidator" alias="partnerOverrideEntryValidator"/>
+    <bean id="defaultPartnerOverrideEntryValidator"
+      class="com.ibm.commerce.partner.occ.v2.validator.impl.PartnerOverrideEntryPriceWsDTOValidator">
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerCartWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.order.CartWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="code,guid,editable,cpqQuoteID"/>
+                <entry key="DEFAULT"
+                  value="purchaseOrderNumber,entryGroups(DEFAULT),provisionForms,totalUnitCount,totalDiscounts(DEFAULT),totalTax(DEFAULT),deliveryAddress(DEFAULT),opportunity(DEFAULT),shipToUnit(PARTNERDEFAULT),soldThroughUnit(PARTNERDEFAULT),partnerQuestionsSelections(DEFAULT),billToUnit(PARTNERDEFAULT),agreementDetail(DEFAULT),ytyPercentage,totalBidExtendedPrice,totalMEPPrice,discount,errorMessage,quoteExpirationDate,fullPriceReceived,editable,priceStale,specialBidReason,specialBidReasons,specialBidBusinessJustification,totalFullPrice,specialBid,partnerCpqHeaderPricingDetail,vadView,ytyYears,collaboratorEmails,provisionFormError,partnerCpqHeaderPricingDetails,currency(DEFAULT),cpqQuoteID"/>
+                <entry key="FULL"
+                  value="opportunity(FULL),entryGroups(DEFAULT),provisionForms,shipToUnit(PARTNERFULL),soldThroughUnit(PARTNERFULL),billToUnit(PARTNERFULL),agreementDetail(FULL),modifiedtime,ytyPercentage,totalBidExtendedPrice,totalMEPPrice,discount,errorMessage,quoteExpirationDate,fullPriceReceived,editable,priceStale,specialBidReason,specialBidReasons,specialBidBusinessJustification,totalFullPrice,specialBid,partnerCpqHeaderPricingDetail,partnerQuestionsSelections(FULL),vadView,ytyYears,collaboratorEmails,provisionFormError,partnerCpqHeaderPricingDetails,currency(DEFAULT),cpqQuoteID"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerOrderEntryWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.order.OrderEntryWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="deliveryPointOfService,configurationInfos,statusSummaryList,cpqPricingDetails(DEFAULT),editable,code,calculated,ytyEditable,commerceRampUpData,configuratorPidId"/>
+                <entry key="DEFAULT"
+                  value="configId,cpqPricingDetails(DEFAULT),editable,code,calculated,ytyEditable,commerceRampUpData,configuratorPidId,entries(DEFAULT)"/>
+                <entry key="FULL"
+                  value="configurationInfos(FULL),entries(FULL),configId,cpqPricingDetails(DEFAULT),editable,code,calculated,ytyEditable,commerceRampUpData,configuratorPidId"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping"
+      id="partnerQuoteWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.quote.QuoteWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="state,updatedTime,cpqQuoteID"/>
+                <entry key="DEFAULT"
+                  value="expirationTime,provisionForms,cartId,opportunity(DEFAULT),shipToUnit(PARTNERDEFAULT),soldThroughUnit(PARTNERDEFAULT),billToUnit(PARTNERDEFAULT),agreementDetail(DEFAULT),quoteCreater(BASIC),quoteSubmitter(BASIC),quoteExpirationDate,ytyPercentage,totalBidExtendedPrice,totalMEPPrice,discount,specialBidReason,specialBidReasons,specialBidBusinessJustification,totalFullPrice,eccQuoteNumber,specialBid,partnerQuestionsSelections(FULL),vadView,unit(PARTNERDEFAULT),statusName,store,quoteAccessToSites,salesApplication,orders(FULL),cpqQuoteNumber,collaboratorEmails,provisionFormError,partnerCpqHeaderPricingDetails,currency(DEFAULT),cpqQuoteID"/>
+                <entry key="FULL"
+                  value="creationTime,provisionForms,opportunity(FULL),shipToUnit(PARTNERFULL),soldThroughUnit(PARTNERFULL),billToUnit(PARTNERFULL),agreementDetail(FULL),quoteCreater(BASIC),quoteSubmitter(BASIC),quoteExpirationDate,ytyPercentage,totalBidExtendedPrice,totalMEPPrice,discount,cpqQuoteStatus,fullPriceReceived,specialBidReason,specialBidReasons,specialBidBusinessJustification,totalFullPrice,eccQuoteNumber,specialBid,partnerQuestionsSelections(FULL),vadView,unit(PARTNERDEFAULT),statusName,store,cartId,quoteAccessToSites,salesApplication,orders(FULL),cpqQuoteNumber,collaboratorEmails,provisionFormError,partnerCpqHeaderPricingDetails,currency(DEFAULT),cpqQuoteID"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="displayTypeWsDTOWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.enums.dto.DisplayTypeWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="code,name"/>
+                <entry key="DEFAULT"
+                  value="code,name"/>
+                <entry key="FULL"
+                  value="code,name"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerB2BUnitWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="active,uid,name,parentOrgUnit(BASIC),currency(DEFAULT), type(FULL),ibmCustomerNumber,country(BASIC)"/>
+                <entry key="PARTNEREXISTS"
+                  value="uid"/>
+                <entry key="PARTNERBASIC"
+                  value="active,uid,name"/>
+                <entry key="PARTNERDEFAULT"
+                  value="active,uid,name,addresses(DEFAULT),currency(DEFAULT), reportingOrganization(PARTNERDEFAULT), parentOrgUnit(BASIC), type(FULL),ibmCustomerNumber,country(DEFAULT)"/>
+                <entry key="DEFAULT"
+                  value="active,uid,name,addresses(DEFAULT),currency(DEFAULT),approvers(DEFAULT),managers(DEFAULT),administrators(DEFAULT),customers(DEFAULT), approvalProcess(DEFAULT), parentOrgUnit(DEFAULT), costCenters(DEFAULT), type,ibmCustomerNumber,country(DEFAULT)"/>
+                <entry key="PARTNERFULL"
+                  value="active,uid,name,addresses(FULL),currency(DEFAULT), reportingOrganization(PARTNERFULL), parentOrgUnit(BASIC), type(FULL),ibmCustomerNumber,country(FULL)"/>
+                <entry key="FULL"
+                  value="active,uid,name,addresses(FULL),currency(DEFAULT),approvers(FULL),managers(FULL),administrators(FULL),customers(FULL), approvalProcess(FULL), parentOrgUnit(DEFAULT), costCenters(DEFAULT), type,ibmCustomerNumber,country(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="ibmB2BUnitWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmB2BUnitWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="active,uid,name,parentOrgUnit(BASIC),currency(DEFAULT), type(FULL),unit(BASIC),ibmCustomerNumber,country(BASIC)"/>
+                <entry key="PARTNERBASIC"
+                  value="uid,name"/>
+                <entry key="PARTNERDEFAULT"
+                  value="uid,name,addresses(DEFAULT), currency(DEFAULT),reportingOrganization(PARTNERDEFAULT), parentOrgUnit(BASIC), type(FULL),country(DEFAULT),ibmCustomerNumber"/>
+                <entry key="DEFAULT"
+                  value="active,uid,name,addresses(DEFAULT),currency(DEFAULT),approvers(DEFAULT),managers(DEFAULT),administrators(DEFAULT),customers(DEFAULT), approvalProcess(DEFAULT), parentOrgUnit(DEFAULT), costCenters(DEFAULT), type(FULL),unit(DEFAULT),ibmCustomerNumber,country(DEFAULT)"/>
+                <entry key="PARTNERFULL"
+                  value="uid,name,addresses(FULL),currency(DEFAULT), reportingOrganization(PARTNERFULL), parentOrgUnit(BASIC), type(FULL),country(FULL)"/>
+                <entry key="FULL"
+                  value="active,uid,name,addresses(FULL),currency(DEFAULT),approvers(FULL),managers(FULL),administrators(FULL),customers(FULL), approvalProcess(FULL), parentOrgUnit(DEFAULT), costCenters(DEFAULT), type(FULL),unit(FULL),ibmCustomerNumber,country(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping"
+      id="ibmPartnerDivestitureRetentionWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerDivestitureRetentionWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="retainedEndDate,sapDivsttrCode,entmtTypeDesc,entmtType"/>
+                <entry key="DEFAULT"
+                  value="retainedEndDate,sapDivsttrCode,entmtTypeDesc,entmtType"/>
+                <entry key="FULL"
+                  value="retainedEndDate,sapDivsttrCode,entmtTypeDesc,entmtType"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="ibmPartnerEndCustomerB2BUnitWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerEndCustomerB2BUnitWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="active,uid,name,parentOrgUnit(BASIC),currency(DEFAULT), type(FULL),goe,divestitureRetentions(BASIC),ibmCustomerNumber,ibmCustomerDCID,country(BASIC)"/>
+                <entry key="PARTNERBASIC"
+                  value="active,uid,name"/>
+                <entry key="PARTNERDEFAULT"
+                  value="active,uid,name,addresses(DEFAULT),currency(DEFAULT), parentOrgUnit(BASIC), type(FULL),ibmCustomerNumber,ibmCustomerDCID,country(FULL),goe,divestitureRetentions(DEFAULT)"/>
+                <entry key="DEFAULT"
+                  value="active,uid,name,addresses(DEFAULT),currency(DEFAULT),approvers(DEFAULT),managers(DEFAULT),administrators(DEFAULT),customers(DEFAULT), approvalProcess(DEFAULT), parentOrgUnit(BASIC), costCenters(DEFAULT), type(FULL),goe,divestitureRetentions(DEFAULT),ibmCustomerNumber,ibmCustomerDCID,country(DEFAULT)"/>
+                <entry key="PARTNERFULL"
+                  value="active,uid,name,addresses(FULL),currency(DEFAULT), parentOrgUnit(BASIC), type(FULL),ibmCustomerNumber,ibmCustomerDCID,country(FULL),goe,divestitureRetentions(FULL)"/>
+                <entry key="FULL"
+                  value="active,uid,name,addresses(FULL),currency(DEFAULT),approvers(FULL),managers(FULL),administrators(FULL),customers(FULL), approvalProcess(FULL), parentOrgUnit(BASIC), costCenters(DEFAULT), type(FULL),goe,divestitureRetentions(FULL),ibmCustomerNumber,ibmCustomerDCID,country(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.b2bwebservicescommons.dto.company.B2BUnitWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="active,uid,name,parentOrgUnit(BASIC)"/>
+                <entry key="PARTNERBASIC"
+                  value="uid,name"/>
+                <entry key="PARTNERDEFAULT"
+                  value="uid,name,addresses(DEFAULT), parentOrgUnit(BASIC),country(FULL)"/>
+                <entry key="DEFAULT"
+                  value="active,uid,name,addresses(DEFAULT),approvers(DEFAULT),managers(DEFAULT),administrators(DEFAULT),customers(DEFAULT), approvalProcess(DEFAULT), parentOrgUnit, costCenters(DEFAULT)"/>
+                <entry key="FULL"
+                  value="active,uid,name,addresses(FULL),approvers(FULL),managers(FULL),administrators(FULL),customers(FULL), approvalProcess(FULL), parentOrgUnit, costCenters(DEFAULT)"/>
+            </map>
+        </property>
+    </bean>
+
+
+    <bean parent="fieldSetLevelMapping" id="ibmAddToCartParamsWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.dto.order.IbmAddToCartParamsWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="opportunity(BASIC), shipToUnit(BASIC), billToUnit(BASIC), soldThroughUnit(BASIC), agreementDetail(BASIC)"/>
+                <entry key="DEFAULT"
+                  value="opportunity(DEFAULT), shipToUnit(DEFAULT), billToUnit(DEFAULT), soldThroughUnit(DEFAULT), agreementDetail(DEFAULT)"/>
+                <entry key="FULL"
+                  value="opportunity(FULL), shipToUnit(FULL), billToUnit(FULL), soldThroughUnit(FULL), agreementDetail(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerRegistrationWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.company.dto.PartnerRegistrationWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="firstName,lastName,email,defaultCountry(DEFAULT),defaultLocale(BASIC),siteId(DEFAULT)"/>
+                <entry key="DEFAULT"
+                  value="firstName,lastName,email,defaultCountry(DEFAULT),defaultLocale(BASIC),siteId(DEFAULT)"/>
+                <entry key="FULL"
+                  value="firstName,lastName,email,defaultCountry(DEFAULT),defaultLocale(BASIC),siteId(DEFAULT)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="userSignUpFieldMapper" parent="fieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.user.UserSignUpWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="uid,lastName,titleCode,firstName"/>
+                <entry key="DEFAULT"
+                  value="uid,lastName,titleCode,firstName"/>
+                <entry key="FULL"
+                  value="uid,lastName,titleCode,firstName"/>
+            </map>
+        </property>
+    </bean>
+
+    <!-- for partner program DCIBCON-2812-->
+    <bean parent="fieldSetLevelMapping" id="ibmPartnerAgreementDetailWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.company.endcustomer.dto.IbmPartnerAgreementDetailWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="programType,agreementNumber,agreementOption,agreementLevel,anniversaryMonth,defaultProgramType"/>
+                <entry key="DEFAULT"
+                  value="programType,agreementNumber,agreementOption,agreementLevel,anniversaryMonth,defaultProgramType"/>
+                <entry key="FULL"
+                  value="programType,agreementNumber,agreementOption,agreementLevel,anniversaryMonth,defaultProgramType"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerCategoryHierarchyWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.catalog.CategoryHierarchyWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="id,name,url,description"/>
+                <entry key="DEFAULT"
+                  value="id,name,url,description,subcategories(DEFAULT)"/>
+                <entry key="FULL"
+                  value="id,lastModified,name,url,description,subcategories(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerFacetValueWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.search.facetdata.FacetValueWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="selected,count,query,name"/>
+                <entry key="DEFAULT"
+                  value="selected,count,query(DEFAULT),name,childValues(DEFAULT)"/>
+                <entry key="FULL" value="selected,count,query(FULL),name,childValues(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="IbmPartnerOpportunityWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.deal.dto.IbmPartnerOpportunityWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="code"/>
+                <entry key="DEFAULT" value="code"/>
+                <entry key="FULL" value="code"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerEntryGroupWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.order.EntryGroupWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="entries(BASIC),entryGroupNumber"/>
+                <entry key="DEFAULT"
+                  value="entries(DEFAULT),entryGroups(BASIC),entryGroupNumber,label,erroneous,type,configurationId,name,description"/>
+                <entry key="FULL"
+                  value="entries(FULL),entryGroups(BASIC),entryGroupNumber,label,erroneous,type,configurationId,name,description"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="ibmB2BUnitDataMapper"
+      class="com.ibm.commerce.partner.occ.mapping.mappers.IbmB2BUnitDataMapper"
+      parent="abstractCustomMapper"/>
+
+    <bean id="ibmPartnerEndCustomerB2BUnitDataMapper"
+      class="com.ibm.commerce.partner.occ.mapping.mappers.IbmPartnerEndCustomerB2BUnitDataMapper"
+      parent="abstractCustomMapper"/>
+
+    <bean parent="fieldSetLevelMapping" id="ibmDeploymentTypeWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.product.data.IbmDeploymentTypeWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="code,name,tagCode"/>
+                <entry key="DEFAULT" value="code,name,tagCode"/>
+                <entry key="FULL" value="code,name,tagCode"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.product.ProductWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="purchasable,stock,name,baseProduct,availableForPickup,code,url,price,configuratorCode,partNumber,deploymentType(BASIC),type"/>
+                <entry key="DEFAULT"
+                  value="categories(FULL),firstVariantCode,firstVariantImage,volumePricesFlag,configuratorCode,partNumber,deploymentType(BASIC),type"/>
+                <entry key="FULL"
+                  value="firstVariantCode,firstVariantImage,configuratorCode,partNumber,sapMaterialCode,deploymentType(BASIC),type"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerUserWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.user.UserWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="active,approvers,roles,selected,orgUnit,email"/>
+                <entry key="DEFAULT"
+                  value="active,approvers(BASIC),roles,selected,orgUnit(BASIC),email,sites(PARTNERDEFAULT)"/>
+                <entry key="FULL"
+                  value="active,approvers(BASIC),roles,selected,orgUnit(BASIC),email,sites(PARTNERDEFAULT)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerVariantOptionWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.product.VariantOptionWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="category(FULL),variantOptionQualifiers,stock,priceData,code,url,configuratorCode,deploymentType,tagCode"/>
+                <entry key="DEFAULT"
+                  value="category(FULL),variantOptionQualifiers(DEFAULT),stock(DEFAULT),priceData(DEFAULT),code,url,configuratorCode,deploymentType,tagCode"/>
+                <entry key="FULL"
+                  value="category(FULL),configuratorCode,deploymentType,tagCode"/>
+            </map>
+        </property>
+    </bean>
+
+    <alias alias="fieldSetLevelHelper" name="defaultFieldSetLevelHelper"/>
+    <bean id="defaultFieldSetLevelHelper"
+      class="de.hybris.platform.webservicescommons.mapping.impl.DefaultFieldSetLevelHelper">
+    </bean>
+
+    <bean id="fieldSetBuilder"
+      class="de.hybris.platform.webservicescommons.mapping.impl.DefaultFieldSetBuilder">
+        <property name="defaultRecurrencyLevel" value="4"/>
+        <property name="defaultMaxFieldSetSize" value="50000"/>
+        <property name="fieldSetLevelHelper" ref="fieldSetLevelHelper"/>
+        <property name="subclassRegistry" ref="subclassRegistry"/>
+    </bean>
+
+    <bean id="dataMapper"
+      class="de.hybris.platform.webservicescommons.mapping.impl.DefaultDataMapper">
+        <property name="fieldSetBuilder" ref="fieldSetBuilder"/>
+    </bean>
+
+    <alias name="defaultCartModelToQuoteWsDTOPopulator" alias="cartModelToQuoteWsDTOPopulator"/>
+    <bean name="defaultCartModelToQuoteWsDTOPopulator"
+      class="de.hybris.platform.b2bocc.populators.DefaultCartModelToQuoteWsDTOPopulator">
+        <property name="cartConverter" ref="cartConverter"/>
+        <property name="dataMapper" ref="dataMapper"/>
+    </bean>
+
+    <alias name="defaultPartnerQuoteValidator" alias="partnerQuoteValidator"/>
+    <bean id="defaultPartnerQuoteValidator"
+      class="com.ibm.commerce.partner.occ.v2.validator.impl.PartnerQuoteMandateValidator">
+        <property name="timeService" ref="timeService"/>
+        <constructor-arg name="eventService" ref="eventService"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="defaultPartnerQuoteHelper" alias="partnerQuoteHelper"/>
+    <bean id="defaultPartnerQuoteHelper"
+      class="com.ibm.commerce.partner.occ.v2.helper.PartnerQuoteHelper">
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="partnerProcessService" ref="partnerProcessService"/>
+        <constructor-arg name="eventService" ref="eventService"/>
+        <constructor-arg name="cartService" ref="cartService"/>
+        <constructor-arg name="partnerSpecialBidReasonService"
+          ref="partnerSpecialBidReasonService"/>
+        <constructor-arg name="quoteFacade" ref="quoteFacade"/>
+        <constructor-arg name="commerceQuoteService" ref="commerceQuoteService"/>
+        <constructor-arg name="specialBidReasonFacade" ref="partnerSpecialBidFacade"/>
+        <constructor-arg name="questionsFacade" ref="partnerQuestionsFacade"/>
+    </bean>
+
+    <bean id="partnerQuoteSearchHelper"
+      class="com.ibm.commerce.partner.occ.v2.helper.PartnerQuoteSearchHelper">
+    </bean>
+    <bean id="commerceWebServicesCartFacade2"
+      class="com.ibm.commerce.partner.occ.core.cart.impl.PartnerCommerceWebServicesCartFacade"
+      parent="defaultCartFacade">
+        <property name="cartConverter" ref="extendedCartConverter"/>
+        <property name="commerceCartService" ref="commerceWebServicesCartService"/>
+    </bean>
+
+    <!-- Field mapping -->
+    <bean parent="fieldMapper" id="paginationWsDtoFieldMapper">
+        <property name="sourceClass"
+          value="de.hybris.platform.commerceservices.search.pagedata.PaginationData"/>
+        <property name="destClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.search.pagedata.PaginationWsDTO"/>
+        <property name="fieldMapping">
+            <map>
+                <entry key="totalNumberOfResults" value="totalResults"/>
+                <entry key="numberOfPages" value="totalPages"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerCountryWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.user.CountryWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="isocode,sapCode"/>
+                <entry key="DEFAULT" value="name,isocode,sapCode"/>
+                <entry key="FULL" value="name,isocode,sapCode"/>
+            </map>
+        </property>
+    </bean>
+    <bean parent="fieldSetLevelMapping" id="cpqPricingDetailsWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.order.entry.pricing.CpqPricingDetailsWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="rolledUpBidExtendedPrice,pricingStrategy,listPrice,netPrice,extendedListPrice,discountAmount,discountPercent,rolledUpListPrice,rolledUpExtendedListPrice,rolledUpNetPrice,pricingType,overrideBidUnitPrice,overrideDiscount,channelMargin,ytyPercentage,overrideYearToYearGrowth,overrideObsoletePrice,eccPriceAvailable"/>
+                <entry key="DEFAULT" value="BASIC"/>
+                <entry key="FULL" value="DEFAULT"/>
+            </map>
+        </property>
+    </bean>
+    <bean parent="fieldSetLevelMapping" id="partnerCartListWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="de.hybris.platform.commercewebservicescommons.dto.order.CartListWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="pagination"/>
+                <entry key="DEFAULT" value="pagination"/>
+                <entry key="FULL" value="pagination(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldMapper" id="ibmPartnerB2BUnitWsDtoFieldMapper">
+        <property name="sourceClass"
+          value="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitData"/>
+        <property name="destClass"
+          value="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitWsDTO"/>
+        <property name="fieldMapping">
+            <map>
+                <entry key="unit" value="parentOrgUnit"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerSpecialBidReasonWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="code,name,definition,description,selected,enabled"/>
+                <entry key="DEFAULT"
+                  value="code,name,definition,description,selected,enabled"/>
+                <entry key="FULL"
+                  value="code,name,definition,description,selected,enabled"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="specialBidReasonListFieldMapper" parent="fieldMapper">
+        <property name="sourceClass"
+          value="com.ibm.commerce.partner.specialbidreason.data.PartnerSpecialBidReasonListData"/>
+        <property name="destClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonListWsDTO"/>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="PartnerQuestionsWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.partnerquestions.PartnerQuestionsWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="code,answer,type(BASIC),name,visible,mandatory,questions(BASIC),strAnswer"/>
+                <entry key="DEFAULT"
+                  value="code,answer,type(DEFAULT),name,visible,mandatory,questions(DEFAULT),strAnswer"/>
+                <entry key="FULL"
+                  value="code,answer,type(FULL),name,visible,mandatory,questions(FULL),strAnswer"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="specialBidReasonListWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.specialbidreason.PartnerSpecialBidReasonListWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="specialBidReasons(BASIC)"/>
+                <entry key="DEFAULT" value="specialBidReasons(DEFAULT)"/>
+                <entry key="FULL" value="specialBidReasons(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="opportunitiesListWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunityListWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="opportunities"/>
+                <entry key="DEFAULT" value="opportunities(DEFAULT)"/>
+                <entry key="FULL" value="opportunities(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="opportunityListFieldMapper" parent="fieldMapper">
+        <property name="sourceClass"
+          value="com.ibm.commerce.partner.facades.opportunity.data.OpportunityDetailsListData"/>
+        <property name="destClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunityListWsDTO"/>
+    </bean>
+
+    <alias name="defaultOpportunitySearchRequestWsDTOValidator"
+      alias="opportunitySearchRequestWsDTOValidator"/>
+    <bean id="defaultOpportunitySearchRequestWsDTOValidator"
+      class="de.hybris.platform.webservicescommons.validators.CompositeValidator">
+        <property name="validators">
+            <list merge="true">
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="customerICN"/>
+                </bean>
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="resellerID"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="opportunitySearchValidator" alias="partnerOpportunityValidator"/>
+    <bean id="opportunitySearchValidator"
+      class="com.ibm.commerce.partner.occ.v2.validator.OpportunitySearchValidator">
+        <constructor-arg name="b2BUnitFacade" ref="partnerB2BUnitFacade"/>
+        <constructor-arg name="configurationService" ref="ibmCommonConfigurationService"/>
+    </bean>
+
+    <alias name="opportunityCodeValidator" alias="opportunityCodeValidator"/>
+    <bean id="opportunityCodeValidator"
+      class="com.ibm.commerce.partner.occ.v2.validator.OpportunityCodeValidator">
+        <constructor-arg name="opportunityService" ref="opportunityService"/>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerCpqHeaderPricingDetailWsdtoFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.order.pricing.PartnerCpqHeaderPricingDetailWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="overrideTotalPrice,overrideTotalDiscount,totalExtendedPrice,totalDiscount,ytyPercentage,totalBidExtendedPrice,totalMEPPrice,totalOptimalPrice,totalChannelMargin,totalBpExtendedPrice,transactionPriceLevel,pricingType"/>
+                <entry key="DEFAULT" value="overrideTotalPrice,overrideTotalDiscount,totalExtendedPrice,totalDiscount,ytyPercentage,totalBidExtendedPrice,totalMEPPrice,totalOptimalPrice,totalChannelMargin,totalBpExtendedPrice,transactionPriceLevel,pricingType"/>
+                <entry key="FULL" value="overrideTotalPrice,overrideTotalDiscount,totalExtendedPrice,totalDiscount,ytyPercentage,totalBidExtendedPrice,totalMEPPrice,totalOptimalPrice,totalChannelMargin,totalBpExtendedPrice,transactionPriceLevel,pricingType"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="OpportunitiesSearchListWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunitySearchListWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC" value="opportunities"/>
+                <entry key="DEFAULT" value="opportunities(DEFAULT)"/>
+                <entry key="FULL" value="opportunities(FULL)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="OpportunitySearchListFieldMapper" parent="fieldMapper">
+        <property name="sourceClass"
+          value="com.ibm.commerce.partner.facades.opportunity.data.OpportunitySearchDetailsListData"/>
+        <property name="destClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.opportunity.PartnerOpportunitySearchListWsDTO"/>
+    </bean>
+
+    <alias name="opportunitySearchCustomerNumberValidator" alias="partnerOpportunityCustomerNumberValidator"/>
+    <bean id="opportunitySearchCustomerNumberValidator"
+      class="de.hybris.platform.webservicescommons.validators.CompositeValidator">
+        <property name="validators">
+            <list merge="true">
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="customerNumber"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="OpportunityNumberSearchValidator" alias="partnerOpportunityNumberSearchValidator"/>
+    <bean id="OpportunityNumberSearchValidator"
+      class="de.hybris.platform.webservicescommons.validators.CompositeValidator">
+        <property name="validators">
+            <list merge="true">
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="opportunityNumber"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="opportunitySearchOwnerMailValidator" alias="partnerOpportunitySearchOwnerMailValidator"/>
+    <bean id="opportunitySearchOwnerMailValidator"
+      class="de.hybris.platform.webservicescommons.validators.CompositeValidator">
+        <property name="validators">
+            <list merge="true">
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="ownerMail"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="siteDetailsListFieldMapper" parent="fieldMapper">
+        <property name="sourceClass"
+          value="com.ibm.commerce.partner.company.data.IbmPartnerB2BUnitListData"/>
+        <property name="destClass"
+          value="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitListWsDTO"/>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="ibmPartnerSiteAvailabilityDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.company.dto.IbmPartnerB2BUnitListWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="DEFAULT" value="sites(PARTNEREXISTS)"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean parent="fieldSetLevelMapping" id="partnerQuoteSearchPageWsDTOFieldSetLevelMapping">
+        <property name="dtoClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.search.facetdata.PartnerQuoteSearchPageWsDTO"/>
+        <property name="levelMapping">
+            <map>
+                <entry key="BASIC"
+                  value="partnerQuotes,freeTextSearch,keywordRedirectUrl,pagination"/>
+                <entry key="DEFAULT"
+                  value="partnerQuotes,freeTextSearch,keywordRedirectUrl,pagination"/>
+                <entry key="FULL"
+                  value="partnerQuotes,freeTextSearch,keywordRedirectUrl,pagination"/>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="partnerQuoteSearchPageFieldMapper" parent="fieldMapper">
+        <property name="sourceClass"
+          value="com.ibm.commerce.partner.core.search.facetdata.PartnerQuoteSearchPageData"/>
+        <property name="destClass"
+          value="com.ibm.commerce.partnerwebservicescommons.dto.search.facetdata.PartnerQuoteSearchPageWsDTO"/>
+        <property name="fieldMapping">
+            <map>
+                <entry key="results" value="partnerQuotes"/>
+            </map>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerImportQuoteFileValidator" alias="partnerImportQuoteFileValidator"/>
+    <bean id="defaultPartnerImportQuoteFileValidator"
+      class="de.hybris.platform.webservicescommons.validators.CompositeValidator">
+        <property name="validators">
+            <list merge="true">
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="fileName"/>
+                </bean>
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="format"/>
+                </bean>
+                <bean
+                  class="de.hybris.platform.webservicescommons.validators.FieldNotEmptyValidator">
+                    <property name="fieldPath" value="fileSize"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
+
+    <alias name="defaultPartnerSolrIndexerHelper" alias="partnerSolrIndexerHelper"/>
+    <bean id="defaultPartnerSolrIndexerHelper"
+      class="com.ibm.commerce.partner.occ.v2.helper.PartnerSolrIndexerHelper">
+        <constructor-arg name="userService" ref="userService"/>
+        <constructor-arg name="modelService" ref="modelService"/>
+        <constructor-arg name="cronJobService" ref="cronJobService"/>
+        <constructor-arg name="flexibleSearchService" ref="flexibleSearchService"/>
+        <constructor-arg name="partnerSolrJobStatusConverter" ref="partnerSolrJobStatusConverter"/>
+        <constructor-arg name="solrJobTriggerWait" value="${solr.job.trigger.wait.idle}"/>
+    </bean>
+
+    <alias name="defaultPartnerSyncJobHelper" alias="partnerSyncJobHelper"/>
+    <bean id="defaultPartnerSyncJobHelper"
+      class="com.ibm.commerce.partner.occ.v2.helper.PartnerSyncJobHelper">
+        <constructor-arg name="flexibleSearchService" ref="flexibleSearchService"/>
+        <constructor-arg name="syncJobConverter" ref="syncJobConverter"/>
+    </bean>
+
+</beans>

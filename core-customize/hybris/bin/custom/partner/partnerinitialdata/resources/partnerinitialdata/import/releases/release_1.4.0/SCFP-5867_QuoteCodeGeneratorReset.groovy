@@ -1,0 +1,2 @@
+
+spring.getBean("quoteCodeGenerator").reset();

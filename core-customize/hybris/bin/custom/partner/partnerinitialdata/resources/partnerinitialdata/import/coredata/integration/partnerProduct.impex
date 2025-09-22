@@ -1,0 +1,2 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; InboundProduct     ; INBOUND

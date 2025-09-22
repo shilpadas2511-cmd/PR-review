@@ -1,0 +1,81 @@
+## ceid
+INSERT_UPDATE IbmB2BUnit; uid[unique = true]; type(code)[default = ='CCEID']
+                        ; 10ail85y
+                        ; 67ubu
+                        ; 1l3h5ulb
+                        ; 1bx90euk
+                        ; 18z7gkz4
+                        ; 18z7gkxd
+                        ; 6ub9u
+                        ; 18z7gjzt
+                        ; 18z7820t
+INSERT_UPDATE IbmPartnerB2BUnitType; code[unique = true]    ; name[lang = en]
+                                   ; RESELLER_TIER_1        ; TIER 1
+                                   ; RESELLER_TIER_2        ; TIER 2
+                                   ; RESELLER_TIER_1_TIER_2 ; TIER 1 AND TIER 2
+                                   ; RESELLER_TIER_1_TIER_2 ; TIER 1 AND TIER 2
+                                   ; CEID                   ; CEID
+                                   ; ENDCUSTOMER            ; End Customer
+
+UPDATE Country; isocode[unique = true]; sapCode;
+              ; FR                    ; FRA
+              ; US                    ; USA
+              ; JP                    ; JPN
+INSERT_UPDATE Region; isocode[unique = true]; name[lang = en]; country(sapCode)[default = 'USA'];
+                    ; MD                    ; Maryland
+                    ; FL                    ; Florida
+                    ; KS                    ; Kansas
+                    ; TX                    ; Texas
+                    ; VA                    ; Virginia
+                    ; CA                    ; California
+                    ; CO                    ; Colorado
+#Reseller SiteIds for Avnetus@ibm.com
+INSERT_UPDATE IbmPartnerB2BUnit; uid[unique = true]; id      ; locname[lang = en]     ; reportingOrganization(uid); country(sapCode); groups(uid); type(code);
+#; 0003034612        ; 145308  ; "AVANTIAS CONTENT INTELLIGENCE SOLUTIONS" ; 0007121464                ; FRA             ; 10ail85y   ; RESELLER_TIER_2
+#; 0007408382        ; 663253  ; "BELL DATA, Inc."                         ; 0007796517                ; JPN             ; 1bx90euk   ; RESELLER_TIER_2
+#                               ; 0007970368        ;         ; "Acuity Solutions"                                     ;    0007000379      ; USA             ; 67ubu      ; RESELLER_TIER_2
+# NO DISTRIBUTOR   ; 0007929043        ; 0046132 ; "Affiliated Computer Services Inc Integrated Document Solutions" ;                           ; USA             ; 1l3h5ulb   ; RESELLER_TIER_1_TIER_2
+                               ; 0007923208        ; 3357758 ; "FishNet Security"     ; 0007000695                ; USA             ; 67ubu      ; RESELLER_TIER_2
+                               ; 0007002767        ; 3463909 ; "Force 3 Inc"          ; 0007003910                ; USA             ; 18z7gkz4   ; RESELLER_TIER_2
+                               ; 0007168353        ; 5851073 ; "Prolifics Inc."       ; 0007000627                ; USA             ; 18z7gkxd   ; RESELLER_TIER_2
+                               ; 0003187807        ; 8095655 ; "Serco Services, Inc." ; 0007003910                ; USA             ; 6ub9u      ; RESELLER_TIER_2
+
+INSERT_UPDATE Address; owner(B2BUnit.uid)[unique = true]; streetname                ; streetnumber          ; town            ; region(isocode); postalcode   ; country(sapCode)
+                     ; 0003187807                       ; "12930 Worldgate Drive"   ; "c/o Meighan Altwies" ; "HERNDON"       ; VA             ; "20170-6011" ; USA
+#                     ; 0007929043                       ; "2828 N. Haskell"         ; ""                    ; "DALLAS"        ; TX             ; "75204-2909" ; USA
+                     ; 0007923208                       ; "6130 Sprint Parkway"     ; "Suite 400"           ; "OVERLAND PARK" ; KS             ; "66211-1155" ; USA
+                     ; 0007002767                       ; "2147 Priestbridge Drive" ; "Suite 7"             ; "CROFTON"       ; MD             ; "21114-2483" ; USA
+                     ; 0007168353                       ; "111 N Magnolia Ave"      ; "Suite 1550"          ; "Orlando"       ; FL             ; "32801-2336" ; USA
+
+
+
+#Distributors SiteIds for Avnetus@ibm.com
+INSERT_UPDATE IbmPartnerB2BUnit; uid[unique = true]; id         ; locname[lang = en]               ; reportingOrganization(uid); country(sapCode); groups(uid); type(code);
+                               ; 0007000695        ; 5930746    ; "Ingram Micro Inc"               ;                           ; USA             ; 18z7gjzt   ; DISTRIBUTOR
+                               ; 0007003910        ; 0007003910 ; "AVT Technology Solutions LLC"   ;                           ; USA             ; 18z7820t   ; DISTRIBUTOR
+                               ; 0007000627        ; 9209208    ; "Arrow Enterprise Computing Inc" ;                           ; USA             ; 18z7gjzt   ; DISTRIBUTOR
+
+
+INSERT_UPDATE Address; owner(B2BUnit.uid)[unique = true]; streetname               ; streetnumber; town         ; region(isocode); postalcode   ; country(sapCode)
+                     ; 0007000695                       ; "1600 E SAINT ANDREW PL" ; ""          ; "SANTA ANA"  ; CA             ; "92705-4926" ; USA
+                     ; 0007003910                       ; "2021 LAKESIDE BLVD"     ; ""          ; "RICHARDSON" ; TX             ; "75082-4301" ; USA
+                     ; 0007000627                       ; "PO BOX 6513"            ; ""          ; "ENGLEWOOD"  ; CO             ; "80155-6513" ; USA
+
+#UPDATE B2BCustomer[batchmode = true]; itemtype(code)[unique = true]; groups(uid)                                                      ; defaultB2BUnit(uid)
+#                                    ; B2BCustomer                  ; b2bcustomergroup,RES,0007923208,0007002767,0007168353,0003187807 ; 0003187807
+#                                    ; PartnerB2BCustomer           ; b2bcustomergroup,RES,0007923208,0007002767,0007168353,0003187807 ; 0003187807
+UPDATE B2BCustomer[batchmode = true]; uid[unique = true]; groups(uid)                                                      ; defaultB2BUnit(uid)
+#                                    ; tykieramanning@ibm.com ; b2bcustomergroup,RES,0007923208,0007002767,0007168353,0003187807 ; 0003187807
+#                                    ; anna.yoong@ibm.com     ; b2bcustomergroup,RES,0007923208,0007002767,0007168353,0003187807 ; 0003187807
+#                                    ; sam.mason@ibm.com      ; b2bcustomergroup,RES,0007923208,0007002767,0007168353,0003187807 ; 0003187807
+#                                    ; rlarose@us.ibm.com     ; b2bcustomergroup,RES,0007923208,0007002767,0007168353,0003187807 ; 0003187807
+                                    ; avnetus@ibm.com   ; b2bcustomergroup,RES,0007923208,0007002767,0007168353,0003187807 ; 0003187807
+
+
+UPDATE B2BCustomer[batchmode = true]; itemtype(code)[unique = true]; loginDisabled;
+                                    ; PartnerB2BCustomer           ; false
+
+
+
+UPDATE QuoteState; code[unique = true]; name[lang = en];
+                 ; IN_REVIEW          ; DRAFT

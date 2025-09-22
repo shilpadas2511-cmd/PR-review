@@ -1,0 +1,7 @@
+$defaultPassword=12341234
+
+INSERT_UPDATE UserGroup;uid[unique=true];locname[lang=en];
+;salesadmingroup;Sales Admin;
+
+INSERT_UPDATE Employee;name;password[default=$defaultPassword];uid[unique=true];groups(uid)[mode=append]
+;salesrep1;;salesrep1@test.com;salesadmingroup;

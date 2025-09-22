@@ -1,0 +1,12 @@
+
+INSERT DestinationTarget; id[unique = true]; registrationStatus; destinationChannel(code)
+                               ; approvalCommentsService   ;                   ; SAPCPQQUOTESERVICE
+
+INSERT Endpoint; id[unique = true]      ; version[unique = true]; name                   ; specUrl
+                      ; cpqApprovalCommentsService; 1                     ; cpqApprovalCommentsService ; cpqApprovalCommentsService
+
+INSERT PartnerQuoteOAuthCredential; id[unique = true]    ; clientId                         ; clientSecret;    acubicApi
+                                         ; approvalCommentsCredential ; ''                              ; '';''
+
+INSERT IbmConsumedDestination; id[unique = true]      ; customUri                                                                 ; endpoint(id, version)           ; credential(id)                          ; destinationTarget(id); active[default = true]; url
+                                    ; cpqApprovalCommentsService; https://dev.api.ibm.com/q2cdsw/bluedev/api/quote/v2/{cpqExternalQuoteId}/approvals         ; cpqApprovalCommentsService:1       ; approvalCommentsCredential              ; approvalCommentsService                         ;;https://dev.api.ibm.com/q2cdsw/bluedev/api/quote/v2/

@@ -1,0 +1,33 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; CpqIbmPartToPidRelationshipInbound; INBOUND
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code); root[default = false]; itemTypeMatch(code)
+                                   ; CpqIbmPartToPidRelationshipInbound	; IbmVariantProduct 	; IbmVariantProduct 	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqIbmPartToPidRelationshipInbound	; IbmRevenueStream  	; IbmRevenueStream  	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqIbmPartToPidRelationshipInbound	; IbmDeploymentType 	; IbmDeploymentType 	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqIbmPartToPidRelationshipInbound	; CatalogVersion    	; CatalogVersion    	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqIbmPartToPidRelationshipInbound	; Catalog           	; Catalog           	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqIbmPartToPidRelationshipInbound	; SellerAudienceMask	; SellerAudienceMask	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqIbmPartToPidRelationshipInbound	; IbmPartProduct    	; IbmPartProduct    	; true	; ALL_SUB_AND_SUPER_TYPES	;
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmVariantProduct 	; partNumber         	; IbmVariantProduct:partNumber      	;                                                      	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmVariantProduct 	; deploymentType     	; IbmVariantProduct:deploymentType  	; CpqIbmPartToPidRelationshipInbound:IbmDeploymentType 	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmVariantProduct 	; description        	; IbmVariantProduct:description     	;                                                      	; 	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmVariantProduct 	; catalogVersion     	; IbmVariantProduct:catalogVersion  	; CpqIbmPartToPidRelationshipInbound:CatalogVersion    	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmVariantProduct 	; code               	; IbmVariantProduct:code            	;                                                      	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmRevenueStream  	; code               	; IbmRevenueStream:code             	;                                                      	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmDeploymentType 	; code               	; IbmDeploymentType:code            	;                                                      	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:CatalogVersion    	; catalog            	; CatalogVersion:catalog            	; CpqIbmPartToPidRelationshipInbound:Catalog           	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:CatalogVersion    	; version            	; CatalogVersion:version            	;                                                      	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:Catalog           	; id                 	; Catalog:id                        	;                                                      	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:SellerAudienceMask	; code               	; SellerAudienceMask:code           	;                                                      	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmPartProduct    	; description        	; IbmPartProduct:description        	;                                                      	; 	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmPartProduct    	; pidProducts        	; IbmPartProduct:pidProducts        	; CpqIbmPartToPidRelationshipInbound:IbmVariantProduct 	; 	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmPartProduct    	; deploymentType     	; IbmPartProduct:deploymentType     	; CpqIbmPartToPidRelationshipInbound:IbmDeploymentType 	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmPartProduct    	; code               	; IbmPartProduct:code               	;                                                      	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmPartProduct    	; catalogVersion     	; IbmPartProduct:catalogVersion     	; CpqIbmPartToPidRelationshipInbound:CatalogVersion    	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmPartProduct    	; sapMaterialCode    	; IbmPartProduct:sapMaterialCode    	;                                                      	; 	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmPartProduct    	; sellerAudienceMasks	; IbmPartProduct:sellerAudienceMasks	; CpqIbmPartToPidRelationshipInbound:SellerAudienceMask	; 	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmPartProduct    	; partNumber         	; IbmPartProduct:partNumber         	;                                                      	; true	;
+                                            ; CpqIbmPartToPidRelationshipInbound:IbmPartProduct    	; revenueStream      	; IbmPartProduct:revenueStream      	; CpqIbmPartToPidRelationshipInbound:IbmRevenueStream  	; 	;

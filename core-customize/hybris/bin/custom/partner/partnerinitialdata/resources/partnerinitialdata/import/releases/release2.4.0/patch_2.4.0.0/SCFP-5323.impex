@@ -1,0 +1,6 @@
+INSERT_UPDATE IbmDeploymentType; code[unique = true]; name[lang = en]
+                               ; SaaS               ; Software as a service
+                               ; Bespoke-MultiPid   ; Software as a service-MultiPid
+                               ; BeSpoke            ; Software as a service
+
+

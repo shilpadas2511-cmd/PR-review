@@ -1,0 +1,11 @@
+#Ant properties
+#Tue Dec 12 23:13:19 UTC 2023
+version.api=2211
+vendor=hybris
+group.id=de.hybris.platform
+name=partnerfacades
+description=partnerfacades
+builddate=20231212 2312
+releasedate=20231212 2312
+version=2211.16
+module.name=platform-module

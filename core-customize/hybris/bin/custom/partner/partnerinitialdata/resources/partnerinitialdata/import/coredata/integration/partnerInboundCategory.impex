@@ -1,0 +1,22 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; CpqInboundCategory; INBOUND
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code); root[default = false]; itemTypeMatch(code)
+                                   ; CpqInboundCategory	; Catalog       	; Catalog       	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqInboundCategory	; CatalogVersion	; CatalogVersion	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CpqInboundCategory	; Principal     	; Principal     	; 	; ALL_SUBTYPES           	;
+                                   ; CpqInboundCategory	; IbmCategory   	; IbmCategory   	; true	; ALL_SUB_AND_SUPER_TYPES	;
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; CpqInboundCategory:Catalog       	; id               	; Catalog:id                   	;                                  	; true	;
+                                            ; CpqInboundCategory:CatalogVersion	; version          	; CatalogVersion:version       	;                                  	; true	;
+                                            ; CpqInboundCategory:CatalogVersion	; catalog          	; CatalogVersion:catalog       	; CpqInboundCategory:Catalog       	; true	;
+                                            ; CpqInboundCategory:Principal     	; uid              	; Principal:uid                	;                                  	; true	;
+                                            ; CpqInboundCategory:IbmCategory   	; name             	; IbmCategory:name             	;                                  	; 	;
+                                            ; CpqInboundCategory:IbmCategory   	; code             	; IbmCategory:code             	;                                  	; true	;
+                                            ; CpqInboundCategory:IbmCategory   	; allowedPrincipals	; IbmCategory:allowedPrincipals	; CpqInboundCategory:Principal     	; 	;
+                                            ; CpqInboundCategory:IbmCategory   	; catalogVersion   	; IbmCategory:catalogVersion   	; CpqInboundCategory:CatalogVersion	; true	;
+                                            ; CpqInboundCategory:IbmCategory   	; order            	; IbmCategory:order            	;                                  	; 	;
+                                            ; CpqInboundCategory:IbmCategory   	; categories       	; IbmCategory:categories       	; CpqInboundCategory:IbmCategory   	; 	;
+                                            ; CpqInboundCategory:IbmCategory   	; allSubcategories 	; IbmCategory:allSubcategories 	; CpqInboundCategory:IbmCategory   	; 	;
+                                            ; CpqInboundCategory:IbmCategory   	; cpqId            	; IbmCategory:cpqId            	;                                  	; true	;

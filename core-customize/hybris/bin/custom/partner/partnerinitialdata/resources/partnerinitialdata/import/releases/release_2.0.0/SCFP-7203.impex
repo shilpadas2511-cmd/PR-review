@@ -1,0 +1,2 @@
+UPDATE IbmConsumedDestination; id[unique = true]        ; url ;
+                             ; opportunitySearchService ; https://dev.api.ibm.com:1443/q2chub/bluetest/repositories/5508/versions/1/json ;

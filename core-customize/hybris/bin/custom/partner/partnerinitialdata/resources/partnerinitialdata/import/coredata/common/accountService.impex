@@ -1,0 +1,14 @@
+INSERT DestinationTarget; id[unique = true]; registrationStatus; destinationChannel(code)
+                               ; accountService   ;                   ; ACCOUNTSERVICE
+
+#password, client id, client secret and appclientsecret needs to be update
+INSERT IbmPartnerConsumedCertificateCredential; id[unique = true]        ; password ; clientId                         ; clientSecret                     ; appClientId  ; appClientSecret
+                                                     ; accountServiceCredential ; 		   ;  								  ;  								 ; sap-commerce ; 
+
+INSERT Endpoint; id[unique = true]               ; version[unique = true]; name                            ; specUrl
+                      ; accountServiceResellerSiteId    ; 1                     ; accountServiceResellerSiteId    ; accountServiceResellerSiteId
+                      ; accountServiceDistributorSiteId ; 1                     ; accountServiceDistributorSiteId ; accountServiceDistributorSiteId
+
+INSERT IbmConsumedDestination; id[unique = true]               ; url                                                              ; customUri                                                                               ; endpoint(id, version)             ; credential(id)           ; destinationTarget(id)[default = accountService]; additionalProperties(key, value)[map-delimiter = |]; active[default = true]
+                                    ; accountServiceResellerSiteId    ; https://dev.api.ibm.com:1443/q2cdsw/bluedev/dsw/account/reseller ;                                                                                         ; accountServiceResellerSiteId:1    ; accountServiceCredential ;                                                ;
+                                    ; accountServiceDistributorSiteId ; https://dummyvalue.com/                                          ; https://dev.api.ibm.com:1443/q2cdsw/bluedev/dsw/account/distributor/{distributorNumber} ; accountServiceDistributorSiteId:1 ; accountServiceCredential ;                                                ;

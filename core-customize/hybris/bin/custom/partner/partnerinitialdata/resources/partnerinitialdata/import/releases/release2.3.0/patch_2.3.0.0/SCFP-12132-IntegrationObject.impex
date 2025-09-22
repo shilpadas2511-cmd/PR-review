@@ -1,0 +1,6 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; CPQOutboundQuote; INBOUND
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; CPQOutboundQuote:PartnerCPQQuotePrice           	; usdTotalBidCommitPrice           	; PartnerCPQQuotePrice:usdTotalBidCommitPrice            	;                                                 	; 	;
+                                            ; CPQOutboundQuote:PartnerCPQQuotePrice           	; usdTotalExtendedPrice            	; PartnerCPQQuotePrice:usdTotalExtendedPrice             	;                                                 	; 	;

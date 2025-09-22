@@ -1,0 +1,6 @@
+INSERT DestinationTarget; id[unique = true]               ; registrationStatus; destinationChannel(code)
+                               ; ibmIdSsoLoginServiceDestination ;                   ; IBMIDSSOLOGIN
+INSERT Endpoint; id[unique = true]                                  ; version[unique = true]; name                                               ; specUrl
+                      ; ibmIdSsoLoginServiceUserDetailsConsumedDestination ; 1                     ; ibmIdSsoLoginServiceUserDetailsConsumedDestination ; ibmIdSsoLoginServiceUserDetailsConsumedDestination
+INSERT IbmConsumedDestination; id[unique = true]                                  ; url                                                             ; endpoint(id, version)                                ; credential(id); destinationTarget(id)[default = ibmIdSsoLoginServiceDestination]; additionalProperties(key, value)[map-delimiter = |]; active[default = true]
+                                    ; ibmIdSsoLoginServiceUserDetailsConsumedDestination ; https://login.ibm.com/oidc/endpoint/default/userinfo ; ibmIdSsoLoginServiceUserDetailsConsumedDestination:1 ;               ;                                                                 ;

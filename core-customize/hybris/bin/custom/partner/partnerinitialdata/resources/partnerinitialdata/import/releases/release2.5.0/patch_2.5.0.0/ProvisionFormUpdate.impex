@@ -1,0 +1,13 @@
+
+$Content-Type = Content-Type->application/json
+INSERT_UPDATE  DestinationTarget; id[unique = true]  ; registrationStatus; destinationChannel(code)
+                                ; provisionFormService ;                   ; PROVISIONFORMSERVICE
+
+INSERT_UPDATE  Endpoint; id[unique = true] ; version[unique = true]; name              ; specUrl
+                       ; provisionForm ; 1                     ; provisionForm ; provisionForm
+
+
+INSERT_UPDATE  IbmConsumedDestination; id[unique = true]        ; customUri                                                                               ; endpoint(id, version); credential(id)              ; destinationTarget(id); active[default = true];additionalProperties(key, value)[map-delimiter = |];url;
+                                     ; provisionFormCreateCartService ;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/cart ; provisionForm:1  ; PartnerProvisionFormCredential ; provisionFormService;;$Content-Type;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/cart;
+                                     ; provisionFormFetchUserService;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/{formId} ; provisionForm:1  ; PartnerProvisionFormCredential ; provisionFormService;;$Content-Type;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms;
+                                     ; provisionFormPatchService;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/cart/{cartId} ; provisionForm:1  ; PartnerProvisionFormCredential ; provisionFormService;;$Content-Type;https://provisioning-forms-service.preprod.dswcsapcpq.cis.ibm.net/api/v1/forms/cart;

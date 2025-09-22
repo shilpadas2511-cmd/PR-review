@@ -1,0 +1,22 @@
+INSERT Currency; isocode[unique = true]; symbol; name[lang = en]; active[default = true]
+               ; KRW                   ; ₩     ; Won
+               ; ZAR                   ; R     ; Rand
+               ; BRL                   ; R$    ; Brazilian Real
+               ; AUD                   ; $     ; Australian Dollar
+               ; CHF                   ; ₣     ; Swiss Franc
+               ; NOK                   ; kr    ; Norwegian Krone
+               ; INR                   ; ₹     ; Indian Rupee
+               ; IDR                   ; Rp    ; Rupiah
+               ; SEK                   ; kr    ; Swedish Krona
+               ; NZD                   ; $     ; New Zealand Dollar
+               ; CAD                   ; $     ; Canadian Dollar
+               ; DKK                   ; kr    ; Danish Krone
+               ; CNY                   ; ¥     ; Yuan Renminbi
+               ; SGD                   ; $     ; Singapore Dollar
+               ; CYP                   ; £     ; Cyprus Pound
+
+UPDATE Currency; isocode[unique = true]; symbol; name[lang = en]; active[default = true]
+               ; EUR                   ; €     ; Euro
+               ; GBP                   ; £     ; Pound Sterling
+               ; JPY                   ; ¥     ; Yen
+               ; USD                   ; $     ; US Dollar

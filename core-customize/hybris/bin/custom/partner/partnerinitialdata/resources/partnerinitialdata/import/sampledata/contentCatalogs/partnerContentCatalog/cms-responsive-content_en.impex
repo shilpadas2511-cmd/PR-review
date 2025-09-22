@@ -1,0 +1,9 @@
+# -----------------------------------------------------------------------
+# ImpEx for Importing CMS Content
+# Macros / Replacement Parameter definitions
+$contentCatalog=partnerContentCatalog
+$contentCV=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalog]),CatalogVersion.version[default=Staged])[default=$contentCatalog:Staged]
+$siteResource=jar:com.ibm.commerce.initialdata.setup.InitialDataSystemSetup&/partnerinitialdata/import/sampledata/contentCatalogs/$contentCatalog
+$lang=en
+
+

@@ -1,0 +1,21 @@
+INSERT_UPDATE PartnerQuestions; code[unique = true]; name[lang = en]                      ; active; visible; defaultAnswer; answerType (code); questionType(code); subQuestions(code)
+                              ; IBM_SBQ_QKEY_7_44  ; IBM_SBQ_QKEY_7_44                    ; true  ; false  ; false        ; BOOLEAN          ; SPECIALBID
+                              ; IBM_STQ_QKEY_3     ; IBM_STQ_QKEY_3                       ; true  ; false  ; false        ; BOOLEAN          ; SPECIALBID        ; IBM_STQ_QKEY_3_1
+                              ; IBM_STQ_QKEY_3_1   ; "Sales Play List"                    ; true  ; false  ; false        ; STRING           ; SPECIALBID
+                              ; IBM_STQ_QKEY_6     ; IBM_STQ_QKEY_6                       ; true  ; false  ; false        ; BOOLEAN          ; SPECIALBID        ; IBM_STQ_QKEY_6_1
+                              ; IBM_STQ_QKEY_6_1   ; "Enter Prior bid / Agreement Number" ; true  ; false  ; false        ; STRING           ; SPECIALBID
+                              ; IBM_STQ_QKEY_8     ; IBM_STQ_QKEY_8                       ; true  ; false  ; false        ; BOOLEAN          ; SPECIALBID
+
+
+INSERT_UPDATE PartnerSpecialBidReasonToQuestionMapping; reason(code)[unique = true]                              ; question(code)[unique = true]; overrideDefaultValueBy; overrideMandatoryBy; overrideVisibleBy
+                                                      ; "Additional SaaS volume purchase"                        ; IBM_SBQ_QKEY_7_44            ; true                  ; true               ; false
+                                                      ; "Bid Iteration (previously approved)"                    ; IBM_SBQ_QKEY_7_44            ; true                  ; true               ; false
+                                                      ; "Credit/Rebill logic (Total Entitled Extended < $1M)"    ; IBM_SBQ_QKEY_7_44            ; false                 ; true               ; false
+                                                      ; "Credit/Rebill logic (Total Entitled Extended < $1M)"    ; IBM_STQ_QKEY_6               ; false                 ; true               ; false
+                                                      ; "Credit/Rebill logic (Total Entitled Extended < $1M)"    ; IBM_STQ_QKEY_6_1             ; false                 ; true               ; false
+                                                      ; "Existing Contract"                                      ; IBM_STQ_QKEY_8               ; true                  ; true               ; false
+                                                      ; "Mid Path Payer Change"                                  ; IBM_SBQ_QKEY_7_44            ; true                  ; true               ; false
+                                                      ; "Multiple Quotes for same opportunity"                   ; IBM_SBQ_QKEY_7_44            ; true                  ; true               ; false
+                                                      ; "Saas / Subscription Renewal"                            ; IBM_SBQ_QKEY_7_44            ; true                  ; true               ; false
+                                                      ; "Sales Play"                                             ; IBM_STQ_QKEY_3               ; true                  ; true               ; false
+                                                      ; "Sales Play"                                             ; IBM_STQ_QKEY_3_1             ; false                 ; true               ; true

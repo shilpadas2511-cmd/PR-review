@@ -1,0 +1,6 @@
+# impex for creating new SamlUserGroup
+
+INSERT_UPDATE SamlUserGroup; samlUserGroup[unique = true]; userType(code); userGroups(uid)
+                           ; ou=ibmgroups                ; Employee      ; admingroup,partnersupportdeskgroup,ecareusergroup,partnerquotecontentmanagergroup,partnerquoteadmingroup
+                           ; o=ibm.com                   ; Employee      ; admingroup,partnersupportdeskgroup,ecareusergroup,partnerquotecontentmanagergroup,partnerquoteadmingroup
+                           ; ou=memberlist               ; Employee      ; admingroup,partnersupportdeskgroup,ecareusergroup,partnerquotecontentmanagergroup,partnerquoteadmingroup

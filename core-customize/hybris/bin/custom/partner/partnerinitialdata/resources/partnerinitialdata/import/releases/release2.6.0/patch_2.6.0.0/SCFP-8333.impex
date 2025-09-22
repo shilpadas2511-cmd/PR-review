@@ -1,0 +1,2 @@
+UPDATE QuoteState; code[unique = true]         ; name[lang = en]
+                 ; ERROR_CPI_TO_CPQ_QUOTE_SYNC ; Submission Error

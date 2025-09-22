@@ -1,0 +1,152 @@
+$productCatalog = testProductCatalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Online'])[unique = true, default = $productCatalog:Online]
+$approvalStatus = approvalStatus(code)[default = 'approved']
+$supercategories = supercategories(code, $catalogVersion)
+
+$lang = en
+$defaultPassword=123456
+
+#% setAccessibility(true)   
+#% impex.definitions.put("$currentDatePlus1", java.time.LocalDate.now().plusDays(2).format(java.time.format.DateTimeFormatter.ofPattern("dd.MM.yyyy")))
+  
+
+# Required for Quote comments
+INSERT_UPDATE Domain ; code[unique=true] ; name        
+                     ; quoteDomain       ; Quote Domain
+
+INSERT_UPDATE Component ; code[unique=true] ; name            ; domain(code)
+                        ; quoteComponent    ; Quote Component ; quoteDomain 
+
+INSERT_UPDATE CommentType ; code[unique=true] ; name                ; domain(code) ; metaType(code)
+                          ; quoteComment      ; Quote Comment       ; quoteDomain  ;               
+                          ; quoteEntryComment ; Quote Entry Comment ; quoteDomain  ;               
+
+#test cart to create quote
+
+INSERT_UPDATE IbmPartnerPidCart ; user(uid)       ; code[unique=true]                     ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                                ; avnetus@ibm.com ; PIDCART_5725L10Perpetual_000000006000 ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 1123fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerPidCartEntry ; &pidCartEntry    ; product(code) ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)[unique=true]              ;  
+                                     ; D0YVULL_PidEntry ; D0YVULL       ; 1        ; 0           ;                              ; PIDCART_5725L10Perpetual_000000006000 ;  
+                                     
+INSERT_UPDATE CPQOrderEntryProductInfo ; cpqCharacteristicName[unique=true] ; cpqCharacteristicAssignedValues ; configuratorType(code) ; productInfoStatus(code) ; orderEntry(&pidCartEntry) ;  
+                                       ; LicenseType                        ; Perpetual product               ; CPQCONFIGURATOR        ; NONE                    ; D0YVULL_PidEntry          ;  
+
+UPDATE IbmPartnerPidCart ; code[unique=true]                     ; entries(&pidCartEntry) ;  
+                         ; PIDCART_5725L10Perpetual_000000006000 ; D0YVULL_PidEntry       ;  
+                                                                 
+INSERT_UPDATE IbmPartnerCart ; user(uid)       ; code[unique=true] ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                             ; avnetus@ibm.com ; 000000006000      ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 2223fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerCartEntry ; &partnerCartEntry                 ; product(code)    ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)[unique=true] ; childEntries(&pidCartEntry) ;  
+                                  ; 5725L10Perpetual_PartnerCartEntry ; 5725L10Perpetual ; 1        ; 0           ;                              ; 000000006000             ; D0YVULL_PidEntry            ;  
+                                                   
+UPDATE IbmPartnerCart ; code[unique=true] ; unit(uid)               ; soldThroughUnit(uid) ; billToUnit(uid) ; agreementDetail(unit(uid)) ; opportunity(code) ;  
+                      ; 000000006000      ; testEndCustomerB2BUnit1 ; 0007923208           ; 0007000695      ; testEndCustomerB2BUnit1    ; testOpp4567       ;  
+
+UPDATE IbmPartnerCart ; code[unique=true] ; entries(&partnerCartEntry)        
+                      ; 000000006000      ; 5725L10Perpetual_PartnerCartEntry ;  
+
+#test quote cart      
+
+INSERT_UPDATE IbmPartnerPidCart ; user(uid)       ; code[unique=true]                     ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                                ; avnetus@ibm.com ; PIDCART_5725L10Perpetual_000000007000 ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 1124fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerPidCartEntry ; &pidCartEntry1    ; product(code) ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)[unique = true]            ;  
+                                     ; D0YVULL_PidEntry1 ; D0YVULL       ; 1        ; 0           ;                              ; PIDCART_5725L10Perpetual_000000007000 ;  
+                                     
+INSERT_UPDATE CPQOrderEntryProductInfo ; cpqCharacteristicName[unique=true] ; cpqCharacteristicAssignedValues ; configuratorType(code) ; productInfoStatus(code) ; orderEntry(&pidCartEntry1) ;  
+                                       ; LicenseType                        ; Perpetual product               ; CPQCONFIGURATOR        ; NONE                    ; D0YVULL_PidEntry1          ;  
+
+UPDATE IbmPartnerPidCart ; code[unique=true]                     ; entries(&pidCartEntry1) ;  
+                         ; PIDCART_5725L10Perpetual_000000007000 ; D0YVULL_PidEntry1       ;  
+                                       
+INSERT_UPDATE IbmPartnerCart ; user(uid)       ; code[unique=true] ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                             ; avnetus@ibm.com ; 000000007000      ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 2224fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerCartEntry ; &partnerCartEntry1                 ; product(code)    ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)[unique=true] ; childEntries(&pidCartEntry1) ;  
+                                  ; 5725L10Perpetual_PartnerCartEntry1 ; 5725L10Perpetual ; 1        ; 0           ;                              ; 000000007000             ; D0YVULL_PidEntry1            ;  
+                                                  
+UPDATE IbmPartnerCart ; code[unique=true] ; unit(uid)               ; soldThroughUnit(uid) ; billToUnit(uid) ; agreementDetail(unit(uid)) ; opportunity(code) ;  
+                      ; 000000007000      ; testEndCustomerB2BUnit1 ; 0007923208           ; 0007000695      ; testEndCustomerB2BUnit1    ; testOpp4567       ;  
+
+UPDATE IbmPartnerCart ; code[unique=true] ; entries(&partnerCartEntry1)        ;  
+                      ; 000000007000      ; 5725L10Perpetual_PartnerCartEntry1 ;  
+
+#Price                        
+INSERT_UPDATE PartnerCpqPricingDetail ; &partnerCartCpqPricingDetail             ; pricingType ; totalExtendedPrice ; itemId[unique=true] ; orderEntry(&partnerCartEntry1)     ;  
+                                      ; price_5725L10Perpetual_PartnerCartEntry1 ; FULL        ; 20                 ; cartPrice           ; 5725L10Perpetual_PartnerCartEntry1 ;  
+
+UPDATE IbmPartnerCartEntry ; order(code)[unique=true] ; cpqPricingDetails(&partnerCartCpqPricingDetail) ;  
+                           ; 000000007000             ; price_5725L10Perpetual_PartnerCartEntry1        ;  
+                                                      
+UPDATE IbmPartnerCart ; code[unique=true] ; calculated ; quoteExpirationDate[dateformat=dd.MM.yyyy] ; fullPriceReceived ;  
+                      ; 000000007000      ; true       ; $currentDatePlus1                          ; true              ;  
+                                              
+#test quote  for requote,getquotes API         
+INSERT_UPDATE IbmPartnerPidQuote ; user(uid)       ; code[unique=true]                      ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                                 ; avnetus@ibm.com ; PIDQUOTE_5725L10Perpetual_000000001001 ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 1123fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerPidQuoteEntry ; &pidQuoteEntry    ; product(code) ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)[unique=true]               ;  
+                                      ; D0YVULL_PidQEntry ; D0YVULL       ; 1        ; 0           ;                              ; PIDQUOTE_5725L10Perpetual_000000001001 ;  
+                                      
+INSERT_UPDATE CPQOrderEntryProductInfo ; cpqCharacteristicName[unique=true] ; cpqCharacteristicAssignedValues ; configuratorType(code) ; productInfoStatus(code) ; orderEntry(&pidQuoteEntry) ;  
+                                       ; LicenseType                        ; Perpetual product               ; CPQCONFIGURATOR        ; NONE                    ; D0YVULL_PidQEntry          ;  
+
+UPDATE IbmPartnerPidQuote ; code[unique=true]                      ; entries(&pidQuoteEntry) ;  
+                          ; PIDQUOTE_5725L10Perpetual_000000001001 ; D0YVULL_PidQEntry       ;  
+                                                          
+INSERT_UPDATE IbmPartnerQuote ; user(uid)       ; code[unique=true] ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                              ; avnetus@ibm.com ; CQ000000000001    ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 2222fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerQuoteEntry ; &partnerQuoteEntry                 ; product(code)    ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)[unique=true] ; childEntries(&pidQuoteEntry) ;  
+                                   ; 5725L10Perpetual_PartnerQuoteEntry ; 5725L10Perpetual ; 1        ; 0           ;                              ; CQ000000000001           ; D0YVULL_PidQEntry            ;  
+                                   
+UPDATE IbmPartnerQuote ; code[unique=true] ; unit(uid)               ; soldThroughUnit(uid) ; billToUnit(uid) ; agreementDetail(unit(uid)) ; opportunity(code) ;  
+                       ; CQ000000000001    ; testEndCustomerB2BUnit1 ; 0007923208           ; 0007000695      ; testEndCustomerB2BUnit1    ; testOpp4567       ;  
+
+UPDATE IbmPartnerQuote ; code[unique=true] ; cpqExternalQuoteId ; state(code)   ; cpqQuoteStatus(code) ; eccQuoteStatus(code) ; priceUid       ; submitter(uid)  ;  
+                       ; CQ000000000001    ; CQ000000000001     ; BUYER_ORDERED ; SUBMITTED            ; READY_TO_ORDER       ; CQ000000000001 ; avnetus@ibm.com ;  
+
+UPDATE IbmPartnerQuote ; code[unique=true] ; entries(&partnerQuoteEntry)        
+                       ; CQ000000000001    ; 5725L10Perpetual_PartnerQuoteEntry ;  
+                       
+#test quote  for update/replace/comments/entrycomments/actions(submit,cancel,edit) quote API         
+INSERT_UPDATE IbmPartnerPidQuote ; user(uid)       ; code[unique=true]                      ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                                 ; avnetus@ibm.com ; PIDQUOTE_5725L10Perpetual_000000002001 ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 1133fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerPidQuoteEntry ; &pidQuoteEntry1    ; product(code) ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)[unique=true]               ;  
+                                      ; D0YVULL_PidQEntry1 ; D0YVULL       ; 1        ; 0           ;                              ; PIDQUOTE_5725L10Perpetual_000000002001 ;  
+                                      
+INSERT_UPDATE CPQOrderEntryProductInfo ; cpqCharacteristicName[unique=true] ; cpqCharacteristicAssignedValues ; configuratorType(code) ; productInfoStatus(code) ; orderEntry(&pidQuoteEntry1) ;  
+                                       ; LicenseType                        ; Perpetual product               ; CPQCONFIGURATOR        ; NONE                    ; D0YVULL_PidQEntry1          ;  
+
+UPDATE IbmPartnerPidQuote ; code[unique=true]                      ; entries(&pidQuoteEntry1) ;  
+                          ; PIDQUOTE_5725L10Perpetual_000000002001 ; D0YVULL_PidQEntry1       ;  
+                                                                               
+INSERT_UPDATE IbmPartnerQuote ; user(uid)       ; code[unique=true] ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                              ; avnetus@ibm.com ; CQ000000000002    ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 2223fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerQuoteEntry ; &partnerQuoteEntry1                 ; product(code)    ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)[unique=true] ; childEntries(&pidQuoteEntry1) ;  
+                                   ; 5725L10Perpetual_PartnerQuoteEntry1 ; 5725L10Perpetual ; 1        ; 0           ;                              ; CQ000000000002           ; D0YVULL_PidQEntry1            ;  
+#Price                        
+INSERT_UPDATE PartnerCpqPricingDetail ; &partnerCpqPricingDetail                  ; pricingType ; totalExtendedPrice ; itemId[unique=true] ; orderEntry(&partnerQuoteEntry1)     ;  
+                                      ; price_5725L10Perpetual_PartnerQuoteEntry1 ; FULL        ; 20                 ; price1              ; 5725L10Perpetual_PartnerQuoteEntry1 ;  
+
+UPDATE IbmPartnerQuoteEntry ; order(code)[unique=true] ; cpqPricingDetails(&partnerCpqPricingDetail) ;  
+                            ; CQ000000000002           ; price_5725L10Perpetual_PartnerQuoteEntry1   ;  
+                                 
+UPDATE IbmPartnerQuote ; code[unique=true] ; unit(uid)               ; soldThroughUnit(uid) ; billToUnit(uid) ; agreementDetail(unit(uid)) ; opportunity(code) ;  
+                       ; CQ000000000002    ; testEndCustomerB2BUnit1 ; 0007923208           ; 0007000695      ; testEndCustomerB2BUnit1    ; testOpp4567       ;  
+
+UPDATE IbmPartnerQuote ; code[unique=true] ; cpqExternalQuoteId ; state(code) ; cpqQuoteStatus(code) ; eccQuoteStatus(code) ; priceUid       ; submitter(uid)  ;  
+                       ; CQ000000000002    ; CQ000000000002     ; BUYER_DRAFT ;                      ;                      ; CQ000000000002 ; avnetus@ibm.com ;  
+
+UPDATE IbmPartnerQuote ; code[unique=true] ; entries(&partnerQuoteEntry1)        
+                       ; CQ000000000002    ; 5725L10Perpetual_PartnerQuoteEntry1 ;  
+                       
+UPDATE IbmPartnerQuote ; code[unique=true] ; cartReference(code) ; calculated ;  
+                       ; CQ000000000002    ; 000000007000        ; true       ;  
+#assign quote to cart  
+UPDATE IbmPartnerCart ; code[unique=true] ; quoteReference(code) ;  
+                      ; 000000007000      ; CQ000000000002       ;  

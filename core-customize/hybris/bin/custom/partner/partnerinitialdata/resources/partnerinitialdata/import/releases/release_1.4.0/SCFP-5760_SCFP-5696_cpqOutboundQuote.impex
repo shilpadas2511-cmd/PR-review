@@ -1,0 +1,17 @@
+INSERT_UPDATE IntegrationObject; code[unique = true]; integrationType(code)
+                               ; CPQOutboundQuote; INBOUND
+
+INSERT_UPDATE IntegrationObjectItem; integrationObject(code)[unique = true]; code[unique = true]; type(code); root[default = false]; itemTypeMatch(code)
+                                   ; CPQOutboundQuote	; PartnerCpqQuestions        	; PartnerCpqQuestions        	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CPQOutboundQuote	; PartnerQuestions           	; PartnerQuestions           	; 	; ALL_SUB_AND_SUPER_TYPES	;
+                                   ; CPQOutboundQuote   ; SAPCPQOutboundQuote           ; SAPCPQOutboundQuote            ; true ; ;
+                                   ; CPQOutboundQuote   ; SAPCPQOutboundQuoteCustomer   ; SAPCPQOutboundQuoteCustomer    ; ; ;
+
+INSERT_UPDATE IntegrationObjectItemAttribute; integrationObjectItem(integrationObject(code), code)[unique = true]; attributeName[unique = true]; attributeDescriptor(enclosingType(code), qualifier); returnIntegrationObjectItem(integrationObject(code), code); unique[default = false]; autoCreate[default = false]
+                                            ; CPQOutboundQuote:PartnerCpqQuestions        	; question                         	; PartnerCpqQuestions:question                           	; CPQOutboundQuote:PartnerQuestions           	; true	;
+                                            ; CPQOutboundQuote:PartnerCpqQuestions        	; value                            	; PartnerCpqQuestions:value                              	;                                             	; 	;
+                                            ; CPQOutboundQuote:PartnerCpqQuestions        	; code                             	; PartnerCpqQuestions:code                               	;                                             	; 	;
+                                            ; CPQOutboundQuote:PartnerQuestions           	; code                             	; PartnerQuestions:code                                  	;                                             	; true	;
+                                            ; CPQOutboundQuote:SAPCPQOutboundQuote        	; goeQuestions                     	; SAPCPQOutboundQuote:goeQuestions                       	; CPQOutboundQuote:PartnerCpqQuestions        	; 	;
+                                            ; CPQOutboundQuote:SAPCPQOutboundQuote        	; bretIndicator                     ; SAPCPQOutboundQuote:bretIndicator                         ;                                             	;  ;
+                                            ; CPQOutboundQuote:SAPCPQOutboundQuoteCustomer	; goeCustomer                       ; SAPCPQOutboundQuoteCustomer:goeCustomer                   ;                                             	;  ;

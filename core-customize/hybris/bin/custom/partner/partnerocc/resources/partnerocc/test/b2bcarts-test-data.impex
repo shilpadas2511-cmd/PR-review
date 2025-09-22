@@ -1,0 +1,43 @@
+$productCatalog = testProductCatalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Online'])[unique = true, default = $productCatalog:Online]
+$approvalStatus = approvalStatus(code)[default = 'approved']
+$supercategories = supercategories(code, $catalogVersion)
+
+$lang = en
+
+#test cart  for addCartDetails API               
+INSERT_UPDATE IbmPartnerCart ; user(uid)       ; code[unique=true] ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                             ; avnetus@ibm.com ; 000000003000      ; USD               ; 26.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 9923fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+#test cart for addCartEntries  API               
+INSERT_UPDATE IbmPartnerCart ; user(uid)       ; code[unique=true] ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                             ; avnetus@ibm.com ; 000000004000      ; USD               ; 27.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 8823fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+UPDATE IbmPartnerCart ; code[unique=true] ; unit(uid)              ; soldThroughUnit(uid) ; billToUnit(uid) ; agreementDetail(unit(uid)) ; opportunity(code) ;  
+                      ; 000000004000      ; testEndCustomerB2BUnit ; 0007000695           ; 0007923208      ; testEndCustomerB2BUnit     ; testOpp1234       ;  
+
+#test cart for updateCartEntries  API
+
+INSERT_UPDATE IbmPartnerPidCart ; user(uid)       ; code[unique=true]                     ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                                ; avnetus@ibm.com ; PIDCART_5725L10Perpetual_000000005000 ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 7723fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerPidCartEntry ; &pidCartEntry    ; product(code)[unique=true] ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)                           ;  
+                                     ; D0YVULL_PidEntry ; D0YVULL                    ; 1        ; 0           ;                              ; PIDCART_5725L10Perpetual_000000005000 ;  
+                                     
+INSERT_UPDATE CPQOrderEntryProductInfo ; cpqCharacteristicName[unique=true] ; cpqCharacteristicAssignedValues ; configuratorType(code) ; productInfoStatus(code) ; orderEntry(&pidCartEntry) ;  
+                                       ; LicenseType                        ; Perpetual product               ; CPQCONFIGURATOR        ; NONE                    ; D0YVULL_PidEntry          ;  
+                      
+INSERT_UPDATE IbmPartnerCart ; user(uid)       ; code[unique=true] ; currency(isocode) ; date[dateformat=dd.MM.yyyy HH:mm:ss] ; net   ; calculated ; site(uid) ; store(uid) ; guid                                 ;  
+                             ; avnetus@ibm.com ; 000000005000      ; USD               ; 28.06.2024 00:00:00                  ; false ; false      ; testSite  ; partner    ; 6623fb7e-2861-4eee-a587-0c85130e5b75 ;  
+
+INSERT_UPDATE IbmPartnerCartEntry ; &partnerCartEntry                 ; product(code)[unique=true] ; quantity ; entryNumber ; unit(code)[default = pieces] ; order(code)  ;  
+                                  ; 5725L10Perpetual_PartnerCartEntry ; 5725L10Perpetual           ; 1        ; 0           ;                              ; 000000005000 ;  
+
+UPDATE IbmPartnerCartEntry ; &partnerCartEntry                 ; product(code)[unique=true] ; childEntries( &pidCartEntry)             ;  
+                           ; 5725L10Perpetual_PartnerCartEntry ; 5725L10Perpetual           ; D0YVULL_PidEntry ;  
+                                                    
+UPDATE IbmPartnerCart ; code[unique=true] ; unit(uid)               ; soldThroughUnit(uid) ; billToUnit(uid) ; agreementDetail(unit(uid)) ; opportunity(code) ;  
+                      ; 000000005000      ; testEndCustomerB2BUnit1 ; 0007923208           ; 0007000695      ; testEndCustomerB2BUnit1    ; testOpp4567       ;  
+                                                                    
+UPDATE IbmPartnerCart ; code[unique=true] ; saveTime                          ;  
+                      ; 000000005000      ; 28.06.2024 00:00:00               ;  

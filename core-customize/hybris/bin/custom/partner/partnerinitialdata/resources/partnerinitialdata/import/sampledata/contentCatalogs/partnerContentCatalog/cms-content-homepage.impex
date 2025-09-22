@@ -1,0 +1,21 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$productCatalog = partnerProductCatalog
+$productCV = catalogVersion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$medias = medias(code, $contentCV);
+$mediaContainer = media(qualifier, $contentCV);
+$product = product(code, $productCV)
+$category = category(code, $productCV)
+
+
+## entries of the above navigation nodes ##
+INSERT_UPDATE CMSNavigationEntry; uid[unique = true]               ; $contentCV[unique = true]; name                                         ; navigationNode(&nodeRef)    ; item(CMSLinkComponent.uid, CMSLinkComponent.$contentCV);
+                                ; HomeNavNodeEntry                 ;                          ; Home Navigation Node Entry                   ; HomeNavNode                 ; HomeLink                                               ;
+
+INSERT_UPDATE CMSNavigationNode; uid[unique = true]          ; $contentCV[unique = true]; name                            ; parent(uid, $contentCV); links(&linkRef); &nodeRef
+                               ; HomeNavNode                 ;                          ; Home Main Category              ; PartnerMainNavNode     ;                ; HomeNavNode
+
+## links of the above navigation nodes ##
+INSERT_UPDATE PartnerCMSLinkComponent; $contentCV[unique = true]; uid[unique = true]; name                        ; url     ; &linkRef                 ; &componentRef            ; target(code)[default = 'sameWindow']
+                                     ;                          ; HomeLink                 ; Home Link                   ; /home/homepage ; HomeLink                 ; HomeLink                 ;
+

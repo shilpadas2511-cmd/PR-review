@@ -1,0 +1,3324 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved. -->
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="items.xsd">
+
+    <collectiontypes>
+        <collectiontype code="IbmPartnerCartEntryCollection"
+          elementtype="IbmPartnerCartEntry" type="list"/>
+        <collectiontype code="IbmPartnerPidCartEntryCollection"
+          elementtype="IbmPartnerPidCartEntry" type="list"/>
+        <collectiontype code="IbmPartnerQuoteEntryCollection"
+          elementtype="IbmPartnerQuoteEntry" type="list"/>
+        <collectiontype
+          code="IbmPartnerPidQuoteEntryCollection"
+          elementtype="IbmPartnerPidQuoteEntry" type="list"/>
+        <collectiontype
+          code="CPQIbmPartnerOrderEntryProductInfoCollection"
+          elementtype="CPQIbmPartnerOrderEntryProductInfo" type="list"/>
+        <collectiontype code="IbmPartnerOrderCollaboratorList"
+          elementtype="java.lang.String" autocreate="true" generate="true" type="set"/>
+        <collectiontype code="CpqPartnerRampUpSummaryCollection"
+          elementtype="CpqPartnerRampUpSummary" type="list"/>
+        <collectiontype code="PartnerRampUpSummaryCollection"
+          elementtype="PartnerRampUpSummary" type="list"/>
+        <collectiontype code="SAPCPQRampUpSummaryCollection"
+          elementtype="SAPCPQRampUpSummary" type="list"/>
+        <collectiontype code="SAPCPQProvisionFormsCollection"
+          elementtype="SAPCPQProvisionForms" type="list"/>
+        <collectiontype code="PartnerSpecialBidReasonSet" elementtype="PartnerSpecialBidReason"
+          type="set"/>
+    </collectiontypes>
+    <enumtypes>
+        <enumtype code="IbmPartnerB2BUnitType" dynamic="true">
+            <description>This indicates the type of the IbmPartnerB2BUnit</description>
+            <value code="DISTRIBUTOR"/>
+            <value code="RESELLER"/>
+            <value code="ENDCUSTOMER"/>
+            <value code="RESELLER_TIER_1"/>
+            <value code="RESELLER_TIER_2"/>
+            <value code="RESELLER_TIER_1_TIER_2"/>
+            <value code="CEID"/>
+            <value code="DEFAULT"/>
+        </enumtype>
+
+        <enumtype code="QuoteAction" autocreate="false"
+          generate="false" dynamic="true">
+            <description>It indicates the Quote Action.</description>
+            <value code="LISTVIEW"/>
+        </enumtype>
+
+        <enumtype code="CpqPricingTypeEnum">
+            <description>It represent the CPQ Pricing type.</description>
+            <value code="ENTITLED"/>
+            <value code="FULL"/>
+        </enumtype>
+
+        <enumtype code="GroupType" autocreate="false" dynamic="true">
+            <description>This represent the type of the Catalog.</description>
+            <value code="CATEGORY"/>
+            <value code="PID"/>
+            <value code="YTY"/>
+            <value code="CONFIG_ID"/>
+        </enumtype>
+
+        <enumtype code="cpqQuoteStatusType" dynamic="true">
+            <description>This indicates the type of the CPQ Quote Status</description>
+            <value code="AWAITING_APPROVAL"/>
+            <value code="AWAITING_INTERNAL_APPROVAL"/>
+            <value code="AWAITING_SPEC_BID_APPR"/>
+            <value code="SPEC_BID_RETURN_FOR_ADDI_INFO"/>
+            <value code="SPEC_BID_RETURN_FOR_CHG"/>
+            <value code="SPEC_BID_APPROVED"/>
+            <value code="SPEC_BID_REJECTED"/>
+            <value code="QUOTE_ON_HOLD"/>
+            <value code="SUBMITTED"/>
+            <value code="EXPIRED"/>
+            <value code="REJECTED"/>
+        </enumtype>
+
+        <enumtype code="eccQuoteStatusType" dynamic="true">
+            <description>This indicates the type of the ECC Quote Status</description>
+            <value code="READY_TO_ORDER"/>
+            <value code="REJECTED"/>
+            <value code="ORDER_REJECTED"/>
+            <value code="NOT_READY_TO_ORDER_AND_NOT_ORDER_REJECTED"/>
+        </enumtype>
+
+        <enumtype code="QuoteState" autocreate="false" generate="false" dynamic="true">
+            <description>This is the Quote State.</description>
+            <value code="IN_REVIEW"/>
+            <value code="NOT_APPROVED"/>
+            <value code="READY_TO_ORDER"/>
+            <value code="CLONE_BUYER_CREATED"/>
+            <value code="CLONE_BUYER_FAILED"/>
+            <value code="CLONE_BUYER_DRAFT"/>
+            <value code="CLONE_BUYER_SUCCESS"/>
+            <value code="IMPORT_FILE_UPLOAD_INITIATED"/>
+            <value code="IMPORT_FILE_UPLOAD_SUCCESS"/>
+            <value code="IMPORT_FILE_UPLOAD_ERROR"/>
+            <value code="IMPORT_FILE_CREATION_DRAFT"/>
+            <value code="IMPORT_FILE_CREATION_ERROR"/>
+            <value code="VALIDATE_COMPLETED"/>
+            <value code="VALIDATE_FAILED"/>
+            <value code="VALIDATION_ERROR"/>
+            <value code="SUBMIT_IN_PROGRESS"/>
+            <value code="SUBMIT_FAILED"/>
+            <value code="SUBMIT_ERROR"/>
+            <value code="ERROR_CPI_TO_CPQ_QUOTE_SYNC"/>
+        </enumtype>
+      
+        <enumtype code="DestinationChannel" autocreate="false" generate="false">
+            <description>Destination Channel.</description>
+            <value code="PRICINGSERVICE"/>
+            <value code="ACCOUNTSERVICE"/>
+            <value code="IBMIDSSOLOGIN"/>
+            <value code="OPPORTUNITYSEARCHSERVICE"/>
+            <value code="SAPCPQQUOTESERVICE"/>
+            <value code="PRMSERVICE"/>
+            <value code="PROVISIONFORMSERVICE"/>
+        </enumtype>
+
+        <enumtype code="OrderStatus" autocreate="false" generate="false"
+          dynamic="true">
+            <description>Order Status.</description>
+            <value code="DRAFT"/>
+            <value code="IN_REVIEW"/>
+            <value code="EXPIRED"/>
+            <value code="NOT_APPROVED"/>
+            <value code="READY_TO_ORDER"/>
+        </enumtype>
+
+        <enumtype code="SalesApplication" generate="false" autocreate="false"
+          dynamic="true">
+            <description>
+                This enumeration defines the application which created the sale.
+            </description>
+            <value code="PRM_COMMERCE_WEB"/>
+            <value code="PARTNER_COMMERCE"/>
+            <value code="CPQ_WEB"/>
+        </enumtype>
+        <enumtype code="PartnerQuoteQuesitonsEnum" dynamic="true">
+            <description>This indicates the type of the partner questions</description>
+            <value code="GOE"/>
+            <value code="SPECIALBID"/>
+        </enumtype>
+        <enumtype code="PartnerStatus" dynamic="true">
+            <description>Quote Status</description>
+            <value code="DEFAULT"/>
+            <value code="CLONE_INITIATED"/>
+            <value code="CLONE_FAILED"/>
+        </enumtype>
+        <enumtype code="PartnerQuoteChannelEnum" dynamic="true">
+            <description>This indicates the type of the partner channels</description>
+            <value code="H"/>
+            <value code="J"/>
+            <value code="I"/>
+        </enumtype>
+
+        <enumtype code="ExportStatus" autocreate="false" generate="false" dynamic="true">
+            <value code="EXPORTED_WITH_SELLER_COLLAB_ERROR"/>
+        </enumtype>
+
+        <enumtype code="PartnerAnswerTypeEnum" dynamic="true">
+            <description>This indicates the type of the partner answers</description>
+            <value code="BOOLEAN"/>
+            <value code="STRING"/>
+        </enumtype>
+
+        <enumtype code="PartProductType" dynamic="true">
+            <description>Part Product Type</description>
+            <value code="SLA"/>
+            <value code="OVERAGE"/>
+        </enumtype>
+
+    </enumtypes>
+
+    <maptypes>
+        <maptype code="partnerSiteIdMap" argumenttype="B2BUnit"
+          returntype="java.lang.String"/>
+
+        <maptype code="ytyDiscountMap" argumenttype="java.lang.String"
+          returntype="java.lang.Double"/>
+    </maptypes>
+
+    <relations>
+        <relation code="PartnerB2BUnit2PartnerAgreementDetail"
+          localized="false">
+            <description>Relation between the PartnerB2BUnit and PartnerAgreementDetail
+            </description>
+            <sourceElement type="IbmPartnerEndCustomerB2BUnit"
+              qualifier="unit" cardinality="one">
+                <description>Ship to unit for cart or quote</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="IbmPartnerAgreementDetail"
+              qualifier="agreementDetails" cardinality="many">
+                <description>Ibm Partner Agreement Detail.</description>
+            </targetElement>
+        </relation>
+        <relation code="EndCustomerB2BUnit2PartnerAgreementDetail"
+          localized="false">
+            <description>Relation between the PartnerB2BUnit and PartnerAgreementDetail
+            </description>
+            <sourceElement type="IbmPartnerEndCustomerB2BUnit"
+              qualifier="unit" cardinality="one">
+                <description>End Customer B2BUnit.</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="IbmPartnerDivestitureRetention"
+              qualifier="divestitureRetentions" cardinality="many">
+                <description>List of Divestiture Retention.</description>
+            </targetElement>
+        </relation>
+        <relation code="Submitter2Quotes" generate="true"
+          localized="false" autocreate="true">
+            <description>It is the relation between user who submits the quote and quote.
+            </description>
+            <sourceElement type="User" cardinality="one"
+              qualifier="submitter">
+                <description>User who submits the quote.</description>
+            </sourceElement>
+            <targetElement type="IbmPartnerQuote"
+              cardinality="many" qualifier="submittedQuotes">
+                <description>List of Quotes for the user.</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+        <relation code="Creator2Quotes" generate="true"
+          localized="false" autocreate="true">
+            <description>It is the relation between user who creates the quote and quote.
+            </description>
+            <sourceElement type="User" cardinality="one"
+              qualifier="creator">
+                <description>User who creates the quote.</description>
+            </sourceElement>
+            <targetElement type="IbmPartnerQuote"
+              cardinality="many" qualifier="createdQuotes">
+                <description>List of Quotes for the user.</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation
+          code="PartnerStoreFrontCustomer2PartnerResellerSite" generate="true"
+          localized="false" autocreate="true">
+            <description>It is the relation between the resellers who access the storefront and
+                reseller B2BUnits.
+            </description>
+            <sourceElement type="PartnerStoreFrontCustomerProcess"
+              cardinality="one" qualifier="parentProcess">
+                <description>Store front Customer Process.</description>
+            </sourceElement>
+            <targetElement
+              type="PartnerResellerSiteBusinessProcess" cardinality="many"
+              qualifier="subProcesses">
+                <description>List of Reseller site Business process.</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="IbmPartnerCart2PartnerCpqHeaderPricingDetail" localized="false">
+            <description>It is the relation between the cart and the pricing details
+            </description>
+            <sourceElement type="IbmPartnerCart" cardinality="one" qualifier="ibmPartnerCart">
+                <description>business partner cart</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="PartnerCpqHeaderPricingDetail" cardinality="many"
+              qualifier="pricingDetails">
+                <description>pricing details received from pricing service</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="AbstractOrder2PartnerQuestionsSelection"
+          localized="false">
+            <description>Relation between the cart/quote and PartnerQuestionsSelection</description>
+            <sourceElement type="AbstractOrder"
+              qualifier="order" cardinality="one">
+                <description>cart or quote</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="PartnerQuestionsSelection"
+              qualifier="partnerQuestionsSelections" cardinality="many">
+                <description>PartnerQuestions Selection Detail.</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+        <relation code="SAPCPQOutboundQuote2PartnerCpqQuestions"
+          localized="false">
+            <description>Relation between the CPQquote and PartnerCPQGOEQuestions</description>
+            <sourceElement type="SAPCPQOutboundQuote"
+              qualifier="cpqOutboundQuote" cardinality="one">
+                <description>cart or quote</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="PartnerCpqQuestions"
+              qualifier="goeQuestions" cardinality="many">
+                <description>PartnerCPQGOEQuestions Selection Detail.</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="SAPCPQOutboundQuote2PartnerCpqSpecialBidQuestions"
+          localized="false">
+            <description>Relation between the CPQquote and PartnerCPQSpecialBidQuestions
+            </description>
+            <sourceElement type="SAPCPQOutboundQuote"
+              qualifier="cpqOutboundQuote" cardinality="one">
+                <description>cart or quote</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="PartnerCpqSpecialBidQuestions"
+              qualifier="specialBidQuestions" cardinality="many">
+                <description>PartnerCPQSpecialBidQuestions Selection Detail.</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="IbmPartnerQuote2PartnerCpqHeaderPricingDetail" localized="false">
+            <description>It is the relation between the quote and the pricing details
+            </description>
+            <sourceElement type="IbmPartnerQuote" cardinality="one" qualifier="ibmPartnerQuote">
+                <description>business partner quote</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="PartnerCpqHeaderPricingDetail" cardinality="many"
+              qualifier="pricingDetailsQuote">
+                <description>pricing details received from pricing service</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="CpqIbmPartnerQuoteEntry2CpqIbmPartnerQuoteEntry" localized="false">
+            <description>It is the relation between the quoteEntry and the ChildEntries
+            </description>
+            <sourceElement type="CpqIbmPartnerQuoteEntry" cardinality="one" qualifier="entry">
+                <description>Cpq Ibm Partner Quote Entry</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="CpqIbmPartnerQuoteEntry" cardinality="many"
+              qualifier="childEntries">
+                <description>Cpq Ibm Partner Quote Child Entry</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+        <relation code="CpqIbmPartnerQuote2CpqIbmPartnerCpqQuestions" localized="false">
+            <description>It is the relation between the quote and the goe Questions
+            </description>
+            <sourceElement type="CpqIbmPartnerQuote" cardinality="one" qualifier="quote">
+                <description>Cpq Ibm Partner Quote</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="CpqIbmPartnerCpqQuestions" cardinality="many"
+              qualifier="goeQuestions">
+                <description>Cpq Ibm Partner Cpq Questions</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+        <relation code="CpqIbmPartnerQuote2CpqIbmPartnerSplBidQuestions" localized="false">
+            <description>It is the relation between the quote and the Special Bid Questions
+            </description>
+            <sourceElement type="CpqIbmPartnerQuote" cardinality="one" qualifier="quote">
+                <description>Cpq Ibm Partner Quote</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="CpqIbmPartnerCpqQuestions" cardinality="many" collectiontype="set"
+              qualifier="specialBidQuestions">
+                <description>Cpq Ibm Partner Cpq Questions</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+        <relation code="CpqIbmPartnerQuote2CpqIbmPartnerSpecialBidReason" localized="false">
+            <description>It is the relation between the quote and the special bid reasons
+            </description>
+            <sourceElement type="CpqIbmPartnerQuote" cardinality="one" qualifier="quote">
+                <description>Cpq Ibm Partner Quote</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="CpqIbmPartnerSpecialBidReason" cardinality="many"
+              collectiontype="set"
+              qualifier="specialBidReasons">
+                <description>Cpq Ibm Partner Special Bid Reason</description>
+            </targetElement>
+        </relation>
+        <relation code="CpqIbmPartnerQuote2CpqIbmPartnerQuoteEntry" localized="false">
+            <description>It is the relation between the quote and the entries
+            </description>
+            <sourceElement type="CpqIbmPartnerQuote" cardinality="one" qualifier="quote">
+                <description>Cpq Ibm Partner Quote</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="CpqIbmPartnerQuoteEntry" cardinality="many"
+              qualifier="entries">
+                <description>Cpq Ibm Partner Quote Entry</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="PartnerProvisionForms2PartnerProvisionForm" localized="false">
+            <description>It is the relation between the PartnerProvisionForms and
+                PartnerProvisionForm
+            </description>
+            <sourceElement type="PartnerProvisionForms" cardinality="one"
+              qualifier="partnerProvisionForms">
+                <description>Partner Provision Forms for quote/cart</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="PartnerProvisionForm" cardinality="many" collectiontype="set"
+              qualifier="partnerProvisionForm">
+                <description>Partner Provision Form for quote/cart</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="CpqPartnerProvisionForms2CpqPartnerProvisionForm" localized="false">
+            <description>It is the relation between the cpq PartnerProvisionForms and cpq
+                PartnerProvisionForm
+            </description>
+            <sourceElement type="CpqPartnerProvisionForms" cardinality="one"
+              qualifier="cpqPartnerProvisionForms">
+                <description>Partner Provision Forms for quote/cart</description>
+                <modifiers unique="true"/>
+            </sourceElement>
+            <targetElement type="CpqPartnerProvisionForm" cardinality="many" collectiontype="set"
+              qualifier="cpqPartnerProvisionForm">
+                <description>Partner Provision Form for quote/cart</description>
+                <modifiers partof="true"/>
+            </targetElement>
+        </relation>
+
+        <relation code="IbmB2BUnit2SalesOrganisation" generate="true" localized="false"
+          autocreate="true">
+            <deployment table="IbmB2BUnit2SalesOrgRel" typecode="20144"/>
+            <sourceElement type="IbmB2BUnit" qualifier="ibmB2BUnits" cardinality="many"
+              collectiontype="set">
+                <description>IbmB2BUnits</description>
+            </sourceElement>
+            <targetElement type="PartnerSalesOrganisation" qualifier="partnerSalesOrganisations"
+              cardinality="many" collectiontype="set">
+                <description>Sales Organisations</description>
+            </targetElement>
+        </relation>
+
+        <relation code="PartnerQuestion2SubQuestions" localized="false">
+            <sourceElement type="PartnerQuestions" qualifier="question" cardinality="one">
+                <description>Parent Question</description>
+            </sourceElement>
+            <targetElement type="PartnerQuestions" qualifier="subQuestions"
+              cardinality="many" collectiontype="set">
+                <description>Sub Questions</description>
+            </targetElement>
+        </relation>
+
+    </relations>
+
+    <itemtypes>
+        <itemtype code="IbmB2BUnit" extends="B2BUnit">
+            <description>B2BUnit of B2BCustomer.</description>
+            <attributes>
+                <attribute qualifier="type" type="IbmPartnerB2BUnitType">
+                    <description>It represents B2BUnit is of which user type.</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="currency" type="Currency">
+                    <description>It represents which country currency for the B2BUnit.</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+        <itemtype code="IbmPartnerB2BUnit" extends="IbmB2BUnit">
+            <description>It represents the Site Ids of the Partners</description>
+            <attributes>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerEndCustomerB2BUnit"
+          extends="IbmB2BUnit">
+            <description>It represents the B2BUnit of the Customers</description>
+            <attributes>
+                <attribute qualifier="goe" type="java.lang.Boolean">
+                    <description>GOE Status of the customer</description>
+                    <persistence type="property"/>
+                    <defaultvalue>Boolean.FALSE</defaultvalue>
+                </attribute>
+                <attribute qualifier="ibmCustomerDCID"
+                  type="java.lang.String">
+                    <description>Ibm Customer DCID.</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerB2BCustomer" extends="B2BCustomer">
+            <description>It represents Partner B2B Customer</description>
+            <attributes>
+                <attribute qualifier="defaultCountry" type="Country">
+                    <persistence type="property"/>
+                    <description>Default Country of the Customer.</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerAgreementDetail">
+            <description>PartnerAgreementDetail model is used to store Partner Agreement details
+            </description>
+            <deployment table="IbmPartnerAgreementDetail"
+              typecode="20102"/>
+            <attributes>
+                <attribute qualifier="programType" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers optional="false" initial="true" unique="true"/>
+                    <description>Program Type of the Partner Agreement.</description>
+                </attribute>
+                <attribute qualifier="agreementNumber"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true"/>
+                    <description>Unique Agreement Number.</description>
+                </attribute>
+                <attribute qualifier="agreementOption"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true"/>
+                    <description>Agreement Option.</description>
+                </attribute>
+                <attribute qualifier="agreementLevel"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true"/>
+                    <description>Agreement Level.</description>
+                </attribute>
+                <attribute qualifier="anniversaryMonth"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Anniversary Month.</description>
+                </attribute>
+                <attribute qualifier="defaultProgramType" type="boolean">
+                    <persistence type="property"/>
+                    <modifiers optional="true" unique="true"/>
+                    <description>is Default Program Type</description>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="IbmPartnerAgreementDetailIdx">
+                    <key attribute="programType"/>
+                </index>
+            </indexes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerOpportunity">
+            <description>This represents about the partner Opportunity details to store.
+            </description>
+            <deployment table="IbmPartnerOpportunity" typecode="20103"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <defaultvalue></defaultvalue>
+                    <persistence type="property"/>
+                    <modifiers optional="false" initial="true" unique="true"/>
+                    <description>Opportunity Code.</description>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="IbmPartnerOpportunityIdx">
+                    <key attribute="code"/>
+                </index>
+            </indexes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerDivestitureRetention">
+            <description>Divestment Retention</description>
+            <deployment table="IbmPartnerDivestitureRetention"
+              typecode="20104"/>
+            <attributes>
+                <attribute qualifier="retainedEndDate"
+                  type="java.util.Date">
+                    <persistence type="property"/>
+                    <modifiers optional="false" initial="true" unique="true"/>
+                    <description>End Date of Retention.</description>
+                </attribute>
+                <attribute qualifier="sapDivsttrCode"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true"/>
+                    <description>Sap Divsttr Code.</description>
+                </attribute>
+                <attribute qualifier="entmtTypeDesc"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true"/>
+                    <description>Entmt Type Description.</description>
+                </attribute>
+                <attribute qualifier="entmtType" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true"/>
+                    <description>Entmt Type.</description>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="IbmPartnerDivestitureRetentionIdx">
+                    <key attribute="retainedEndDate"/>
+                    <key attribute="sapDivsttrCode"/>
+                </index>
+            </indexes>
+        </itemtype>
+
+        <itemtype code="PartnerSalesOrganisation">
+            <description>Sales organisation of B2B Unit</description>
+            <deployment table="PartnerSalesOrganisation" typecode="20143"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <modifiers unique="true" initial="true" optional="false"/>
+                    <description>It represents code of sales organisation</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="PartnerSalesOrgIdx">
+                    <key attribute="code"/>
+                </index>
+            </indexes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerCart" extends="Cart">
+            <description>It is IBM cart for partner site to hold IBM cart details</description>
+            <attributes>
+                <attribute redeclare="true" qualifier="entries"
+                  type="IbmPartnerCartEntryCollection"/>
+                <attribute qualifier="opportunity"
+                  type="IbmPartnerOpportunity">
+                    <description>OpportunityId of the customer</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="soldThroughUnit" type="B2BUnit">
+                    <description>SoldThrough B2B Unit (VAR)
+                    </description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="billToUnit" type="B2BUnit">
+                    <description>Distributor B2B Unit (VAD)
+                    </description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="agreementDetail"
+                  type="IbmPartnerAgreementDetail">
+                    <description>Partner Agreement Detail in cart</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="ytyPercentage"
+                  type="java.lang.Double">
+                    <description>YTY percentage</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalBidExtendedPrice"
+                  type="java.lang.Double">
+                    <description>Total Bid Extended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalMEPPrice"
+                  type="java.lang.Double">
+                    <description>Total Bid Extended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="priceUid" type="java.lang.String">
+                    <description>Unique Code for Pricing Call</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalEntitledPrice"
+                  type="java.lang.Double">
+                    <description>Total Entitled Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalFullPrice"
+                  type="java.lang.Double">
+                    <description>Total Full Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalOptimalPrice"
+                  type="java.lang.Double">
+                    <description>Total Optimal Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalChannelMargin"
+                  type="java.lang.Double">
+                    <description>Total Channel Margin</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalBpExtendedPrice"
+                  type="java.lang.Double">
+                    <description>Total BpExtended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+
+                <attribute qualifier="errorMesaage"
+                  type="java.lang.String">
+                    <description>Error Mesaage Business Process Failure</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="transactionPriceLevel"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Transaction Price Level.</description>
+                </attribute>
+                <attribute qualifier="fullPriceReceived"
+                  type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Flag to show if the full price are updated on cart</description>
+                </attribute>
+                <attribute qualifier="salesApplication" type="SalesApplication">
+                    <description>The sales application for which the order was placed.</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="priceStale"
+                  type="java.lang.Boolean">
+                    <persistence type="dynamic"
+                      attributeHandler="partnerCartDynamicAttributeHandler"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Flag to check if the full price are stale or not</description>
+                </attribute>
+                <attribute qualifier="specialBidReason" type="PartnerSpecialBidReason">
+                    <description>Deprecated. specialBidReasons Should be used.The special bid reason
+                        information saved in cart.
+                    </description>
+                    <persistence type="property"/>
+                    <model>
+                        <getter name="specialBidReason" default="true" deprecated="true"
+                          deprecatedSince="SAAS"/>
+                        <setter name="specialBidReason" default="true" deprecated="true"
+                          deprecatedSince="SAAS"/>
+                    </model>
+                </attribute>
+                <attribute qualifier="specialBidBusinessJustification" type="java.lang.String">
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.JSON</value>
+                        </columntype>
+                    </persistence>
+                    <description>special bid Justification</description>
+                    <modifiers read="true" write="true" search="true" optional="true"/>
+                </attribute>
+                <attribute qualifier="isPriceOverridden"
+                  type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Flag to show if prices are overridden on cart</description>
+                </attribute>
+                <attribute qualifier="specialBid"
+                  type="boolean">
+                    <persistence type="dynamic"
+                      attributeHandler="partnerSpecialBidCartDynamicAttributeHandler"/>
+                    <modifiers write="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Flag to show if the cart is having special bid price</description>
+                </attribute>
+                <attribute type="java.lang.String"
+                  qualifier="cpqDistributionChannel">
+                    <description>Distribution Channel</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute type="PartnerProvisionForms"
+                  qualifier="provisionForms">
+                    <description>Provision forms</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="collaboratorEmails"
+                  type="IbmPartnerOrderCollaboratorList">
+                    <description>List of the IBM Seller Collaborators</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute type="java.lang.String"
+                  qualifier="cpqExternalQuoteId">
+                    <description>Unique identifier of Quote in the Integrated System</description>
+                    <modifiers read="true" write="true" search="true"
+                      optional="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="specialBidReasons" type="PartnerSpecialBidReasonSet">
+                    <modifiers read="true" write="true" search="true"
+                      optional="true"/>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerPidCart" extends="IbmPartnerCart">
+            <description>It represents to create Ibm Partner Pid Cart.</description>
+            <attributes>
+                <attribute redeclare="true" qualifier="visible"
+                  type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Pid Cart Visible status.</description>
+                </attribute>
+                <attribute redeclare="true" qualifier="entries"
+                  type="IbmPartnerPidCartEntryCollection">
+                    <description>List of PID Cart Entries.</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerCartEntry" extends="CartEntry">
+            <description>It represnts to create Ibm Partner Cart Entry.</description>
+            <attributes>
+                <attribute redeclare="true" qualifier="order"
+                  type="IbmPartnerCart">
+                    <modifiers write="false" initial="true" unique="true"/>
+                    <description>Ibm Partner Cart</description>
+                </attribute>
+                <attribute qualifier="partOfDealReg"
+                  type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Part of Deal Reg.</description>
+                </attribute>
+                <attribute qualifier="isPriceOverridden"
+                  type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Flag to show if prices are overridden on entry</description>
+                </attribute>
+                <attribute qualifier="errorDetails" type="ErrorDetails">
+                    <modifiers read="true" write="true" optional="true" partof="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="entryStatus" type="PartnerStatus">
+                    <description>It represents Quote Status Update.</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="commerceRampUp" type="PartnerCommerceRampUp">
+                    <description>It represents commerce ramp up data.</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerPidCartEntry"
+          extends="IbmPartnerCartEntry">
+            <description>It represents to create Ibm Partner Pid Cart Entry.</description>
+            <attributes>
+                <attribute redeclare="true" qualifier="order"
+                  type="IbmPartnerPidCart">
+                    <modifiers write="false" initial="true" unique="true"/>
+                    <description>Partner PID cart.</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerQuote" extends="Quote">
+            <description>It is IBM Quote for partner site to hold IBM Quote details</description>
+            <attributes>
+                <attribute redeclare="true" qualifier="entries"
+                  type="IbmPartnerQuoteEntryCollection"/>
+                <attribute qualifier="opportunity"
+                  type="IbmPartnerOpportunity">
+                    <description>Opportunity Id</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="soldThroughUnit" type="B2BUnit">
+                    <description>SoldThrough B2B Unit (VAR)
+                    </description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="billToUnit" type="B2BUnit">
+                    <description>Distributor B2B Unit (VAD)
+                    </description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="agreementDetail"
+                  type="IbmPartnerAgreementDetail">
+                    <description>Partner Agreement Detail in cart</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="errorMessage"
+                  type="java.lang.String">
+                    <description>Error Message details</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="eccQuoteStatus"
+                  type="eccQuoteStatusType">
+                    <description>ECC Quote status</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="cpqQuoteStatus"
+                  type="cpqQuoteStatusType">
+                    <description>CPQ Quote status</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="ytyPercentage"
+                  type="java.lang.Double">
+                    <description>YTY percentage</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalBidExtendedPrice"
+                  type="java.lang.Double">
+                    <description>Total Bid Extended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalMEPPrice"
+                  type="java.lang.Double">
+                    <description>Total Bid Extended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="priceUid" type="java.lang.String">
+                    <description>Unique Code for Pricing Call</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalEntitledPrice"
+                  type="java.lang.Double">
+                    <description>Total Entitled Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalFullPrice"
+                  type="java.lang.Double">
+                    <description>Total Full Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalOptimalPrice"
+                  type="java.lang.Double">
+                    <description>Total Optimal Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalChannelMargin"
+                  type="java.lang.Double">
+                    <description>Total Channel Margin</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalBpExtendedPrice"
+                  type="java.lang.Double">
+                    <description>Total BpExtended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="submittedDate" type="java.util.Date">
+                    <description>Quote submitted date and time</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="transactionPriceLevel"
+                  type="java.lang.String">
+                    <description>Transaction Price Level</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="fullPriceReceived"
+                  type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Flag to show if the full price are updated on cart</description>
+                </attribute>
+                <attribute qualifier="salesApplication" type="SalesApplication">
+                    <description>The sales application for which the order was placed.</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="specialBidReason" type="PartnerSpecialBidReason">
+                    <description>The special bid reason information saved in catr.</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="specialBidBusinessJustification" type="java.lang.String">
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.JSON</value>
+                        </columntype>
+                    </persistence>
+                    <description>special bid Justification</description>
+                    <modifiers read="true" write="true" search="true" optional="true"/>
+                </attribute>
+                <attribute qualifier="eccQuoteNumber" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>CPQ send the ecc quote number.</description>
+                </attribute>
+                <attribute qualifier="specialBidQuote"
+                  type="boolean">
+                    <persistence type="dynamic"
+                      attributeHandler="partnerSpecialBidQuoteDynamicAttributeHandler"/>
+                    <modifiers write="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Flag to show if the quote is having special bid price</description>
+                </attribute>
+                <attribute qualifier="strEccQuoteStatus"
+                  type="java.lang.String">
+                    <description>ECC Quote status</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="strCpqQuoteStatus"
+                  type="java.lang.String">
+                    <description>CPQ Quote status</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="quoteIndexActive"
+                  type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers optional="false" initial="true"/>
+                    <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+                    <description>Flag use to remove duplicate quote on the solr</description>
+                </attribute>
+                <attribute type="PartnerProvisionForms"
+                  qualifier="provisionForms">
+                    <description>Provision forms</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="collaboratorEmails"
+                  type="IbmPartnerOrderCollaboratorList">
+                    <description>List of the IBM Seller Collaborators</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="specialBidReasons" type="PartnerSpecialBidReasonSet">
+                    <modifiers read="true" write="true" search="true"
+                      optional="true"/>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="ipqCodeStorSoldThrghIdx">
+                    <key attribute="code"/>
+                    <key attribute="store"/>
+                    <key attribute="soldThroughUnit"/>
+                </index>
+                <index name="ipqCodeStorBillToIdx">
+                    <key attribute="code"/>
+                    <key attribute="store"/>
+                    <key attribute="billToUnit"/>
+                </index>
+            </indexes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerPidQuote" extends="IbmPartnerQuote">
+            <description>It represents the Partner Pid Quote.</description>
+            <attributes>
+                <attribute redeclare="true" qualifier="entries"
+                  type="IbmPartnerPidQuoteEntryCollection">
+                    <description>List of Pid Quote Entry.</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerSellerAudienceUserGroup"
+          extends="UserGroup">
+            <description>To create the user group for Partner Seller Audience User group.
+            </description>
+            <attributes>
+                <attribute qualifier="sellerAudienceType"
+                  type="SellerAudienceMask">
+                    <description>Seller Audience Type for IbmPartnerUserGroup</description>
+                    <modifiers optional="false" initial="true"/>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerQuoteEntry" extends="QuoteEntry">
+            <description>This model is to save the partner quote entries.</description>
+            <attributes>
+                <attribute redeclare="true" qualifier="order"
+                  type="IbmPartnerQuote">
+                    <modifiers write="false" initial="true" unique="true"/>
+                    <description>Ibm Partner Quote.</description>
+                </attribute>
+                <attribute qualifier="partOfDealReg"
+                  type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>Part of Deal Reg.</description>
+                </attribute>
+                <attribute qualifier="errorDetails" type="ErrorDetails">
+                    <modifiers read="true" write="true" optional="true" partof="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="entryStatus" type="PartnerStatus">
+                    <description>It represents Quote Status Update.</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="commerceRampUp" type="PartnerCommerceRampUp">
+                    <description>It represents commerce ramp up data.</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerPidQuoteEntry"
+          extends="IbmPartnerQuoteEntry">
+            <description>This model is to save the pid quote entries.</description>
+            <attributes>
+                <attribute redeclare="true" qualifier="order"
+                  type="IbmPartnerPidQuote">
+                    <modifiers write="false" initial="true" unique="true"/>
+                    <description>Partner PID Quote.</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerCmsLinkComponent"
+          extends="CMSLinkComponent" autocreate="true" generate="true">
+            <description>This represents the partner cms link component creations.</description>
+            <attributes>
+                <attribute qualifier="iconName" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Icon Name</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerCategoryFeatureComponent"
+          extends="CategoryFeatureComponent" autocreate="true" generate="true">
+            <description>This represents the partner category feature component creations.
+            </description>
+            <attributes>
+                <attribute qualifier="urlLink" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>URL Link.</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PriceLookUpProcess" extends="BusinessProcess">
+            <description>This is to trigger the pricing business process.</description>
+            <attributes>
+                <attribute qualifier="order" type="AbstractOrder">
+                    <persistence type="property"/>
+                    <description>Order</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="ProvisionFormProcess" extends="BusinessProcess">
+            <description>This is to trigger the provisioning business process.</description>
+            <attributes>
+                <attribute qualifier="order" type="AbstractOrder">
+                    <persistence type="property"/>
+                    <description>Order</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerCpqPricingDetail"
+          extends="CpqPricingDetail">
+            <description>This is to hold the CPQ Pricing details.</description>
+            <attributes>
+                <attribute qualifier="rolledUpBidExtendedPrice"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>RolledUp Bid Extended Price.</description>
+                </attribute>
+                <attribute qualifier="pricingStrategy"
+                  type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Pricing Strategy.</description>
+                </attribute>
+                <attribute qualifier="eccRequest" type="java.lang.String">
+                    <description>Acc Request.</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="eccOverrideFields"
+                  type="java.lang.String">
+                    <description>Ecc Override Fields.</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="totalExtendedPrice"
+                  type="java.lang.Double">
+                    <description>Total Extended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="extendedUnitPrice" type="java.lang.Double">
+                    <description>Extended Unit Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="overrideBidUnitPrice" type="java.lang.Double">
+                    <description>Override Bid Extended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="optimalDiscount" type="java.lang.Double">
+                    <description>Optimal Line Item Discount</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="overrideDiscount" type="java.lang.Double">
+                    <description>Override Line Item Discount</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="channelMargin" type="java.lang.Double">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="overrideYearToYearGrowth" type="java.lang.Double">
+                    <description>YTY Override Fields</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="ytyPercentage" type="java.lang.Double">
+                    <description>YTY Override Fields</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="ytyPercentageDefault" type="java.lang.Double">
+                    <description>Intial YTY Value</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="overrideObsoletePrice" type="java.lang.Double">
+                    <description>Obsolete price Override Fields</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="eccPriceAvailable"
+                  type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+                    <description>Prices available in ECC.</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerCpqHeaderPricingDetail">
+            <description>This represents prices details received from pricing service and saved
+            </description>
+            <deployment table="PartnerCpqHeaderPricingDetail" typecode="10102"/>
+            <attributes>
+                <attribute qualifier="overrideTotalDiscount" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Override Discount</description>
+                </attribute>
+                <attribute qualifier="overrideTotalPrice" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Override Price</description>
+                </attribute>
+                <attribute qualifier="initialTotalExtendedPrice" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Initial Total ExtendedPrice</description>
+                </attribute>
+                <attribute qualifier="pricingType" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true"/>
+                </attribute>
+                <attribute qualifier="ytyYears" type="ytyDiscountMap">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalExtendedPrice" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Total ExtendedPrice</description>
+                </attribute>
+                <attribute qualifier="totalDiscount" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Total Discount</description>
+                </attribute>
+                <attribute qualifier="ytyPercentage" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Yty Percentage</description>
+                </attribute>
+                <attribute qualifier="totalBidExtendedPrice" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Total Bid Extended Price</description>
+                </attribute>
+                <attribute qualifier="totalMEPPrice" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Total MEP Price</description>
+                </attribute>
+                <attribute qualifier="totalOptimalPrice" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Total Optimal Price</description>
+                </attribute>
+                <attribute qualifier="totalChannelMargin" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Total Channel Margin</description>
+                </attribute>
+                <attribute qualifier="totalBpExtendedPrice" type="java.lang.Double">
+                    <persistence type="property"/>
+                    <description>Total Bp Extended Price</description>
+                </attribute>
+                <attribute qualifier="transactionPriceLevel" type="java.lang.String">
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                    <description>Transaction Price Level</description>
+                </attribute>
+                <attribute qualifier="totalUSDExtendedPrice"
+                  type="java.lang.Double">
+                    <description>Total USD Extended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="TotalUSDBidExtendedPrice"
+                  type="java.lang.Double">
+                    <description>Total USD BidExtended Price</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+
+        <itemtype code="IbmConsumedDestination" autocreate="true"
+          generate="true" extends="ConsumedDestination">
+            <description>This is to save the certification details of external APIs.</description>
+            <attributes>
+                <attribute qualifier="customUri" type="java.lang.String">
+                    <description>URI supporting http://example.com/{path1}/path2 scheme. URL will
+                        generated using
+                        UriComponentsBuilder.fromUriString("http://example.com/{path1}/path2").build()
+                        .expand("valueForPath1") .encode()
+                    </description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerConsumedCertificateCredential"
+          autocreate="true" generate="true"
+          extends="ConsumedCertificateCredential">
+            <description>This is to save the certification details of external APIs.</description>
+            <attributes>
+                <attribute qualifier="file" type="Media">
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="password" type="java.lang.String">
+                    <modifiers encrypted="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="clientId" type="java.lang.String">
+                    <modifiers encrypted="true"/>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="clientSecret"
+                  type="java.lang.String">
+                    <modifiers encrypted="true"/>
+                    <description>Client Secret.</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="appClientId" type="java.lang.String">
+                    <modifiers encrypted="true"/>
+                    <description>App Client Id.</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="appClientSecret"
+                  type="java.lang.String">
+                    <modifiers encrypted="true"/>
+                    <description>App Client Secret.</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype
+          code="IbmPartnerOpportunityConsumedOAuthCredential"
+          autocreate="true" generate="true" extends="ConsumedOAuthCredential">
+            <description>This is to save the header and details of opportunity service API
+            </description>
+            <attributes>
+                <attribute qualifier="userId" type="java.lang.String">
+                    <modifiers encrypted="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="password" type="java.lang.String">
+                    <modifiers encrypted="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="clientApplicationId" type="java.lang.String">
+                    <modifiers encrypted="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="authBearerToken" type="java.lang.String">
+                    <description>Auth Opportunity Bearer Token.</description>
+                    <modifiers encrypted="true"/>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="expirationTS" type="java.lang.Long">
+                    <modifiers encrypted="true"/>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype
+          code="IbmPartnerPricingServiceConsumedOAuthCredential"
+          autocreate="true" generate="true" extends="ConsumedOAuthCredential">
+            <description>This is to save the header and authentication details of pricing service
+                API
+            </description>
+            <attributes>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerDealRegConsumedOAuthCredential"
+          autocreate="true" generate="true" extends="ConsumedOAuthCredential">
+            <description>This is to save the header and authentication details of deal reg API
+            </description>
+            <attributes>
+                <attribute qualifier="acubicApi" type="java.lang.String">
+                    <description>Acubic API.</description>
+                    <modifiers encrypted="true"/>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+            </attributes>
+        </itemtype>
+        <itemtype code="PartnerQuoteOAuthCredential"
+          autocreate="true" generate="true" extends="ConsumedOAuthCredential">
+            <description>This is to add Acubic attribute in authentication details of approval
+                comment CPQ API
+            </description>
+            <attributes>
+                <attribute qualifier="acubicApi" type="java.lang.String">
+                    <description>Acubic API.</description>
+                    <modifiers encrypted="true"/>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+            </attributes>
+        </itemtype>
+        <itemtype
+          code="PartnerQuoteProvisionFormConsumedOAuthCredential"
+          autocreate="true" generate="true" extends="ConsumedOAuthCredential">
+            <description>This is to save the header and details of provision form API
+            </description>
+            <attributes>
+                <attribute qualifier="userId" type="java.lang.String">
+                    <modifiers encrypted="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="authJWTToken" type="java.lang.String">
+                    <description>Auth Provision Service Bearer Token.</description>
+                    <modifiers encrypted="true"/>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="expirationTS" type="java.lang.Long">
+                    <modifiers encrypted="true"/>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+        <itemtype code="PartnerStoreFrontCustomerProcess"
+          extends="StoreFrontCustomerProcess">
+            <description>Partner Store Front Customer Process.</description>
+            <attributes>
+            </attributes>
+        </itemtype>
+        <itemtype code="PartnerResellerSiteBusinessProcess"
+          extends="BusinessProcess">
+            <description>This is created to execute the reseller account API</description>
+            <attributes>
+                <attribute qualifier="unit" type="B2BUnit">
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerSpecialBidReason">
+            <description>This represents Special Bid Reason Information</description>
+            <deployment table="PartnerSpecialBidReason" typecode="20115"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers initial="true" optional="false" unique="true"/>
+                    <description>special bid reason code</description>
+                </attribute>
+                <attribute qualifier="name" type="localized:java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers optional="false"/>
+                    <description>special bid reason name</description>
+                </attribute>
+                <attribute qualifier="active" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <modifiers optional="false"/>
+                    <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                    <description>special bid reason info is active or not</description>
+                </attribute>
+                <attribute qualifier="priority" type="java.lang.Integer">
+                    <persistence type="property"/>
+                    <modifiers optional="false"/>
+                    <description>special bid reason infohaving priority</description>
+                </attribute>
+                <attribute qualifier="definition" type="localized:java.lang.String">
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(500)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(500)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(500)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(500)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(500)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(500)</value>
+                        </columntype>
+                    </persistence>
+                    <modifiers optional="false" unique="false" initial="true"/>
+                    <description>special bid reason definition</description>
+                </attribute>
+                <attribute qualifier="description" type="localized:java.lang.String">
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(1500)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(1500)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(1500)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(1500)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(1500)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(1500)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(1500)</value>
+                        </columntype>
+                    </persistence>
+                    <modifiers optional="false" unique="false"/>
+                    <description>special bid reason description</description>
+                </attribute>
+            </attributes>
+            <indexes>
+                <index name="ptSpBdRIdx">
+                    <key attribute="code"/>
+                    <key attribute="active"/>
+                </index>
+                <index name="ptSpBdRCdeIdx">
+                    <key attribute="code"/>
+                </index>
+            </indexes>
+        </itemtype>
+        <itemtype code="SAPCPQOutboundQuote" autocreate="false">
+            <description>This is to add custom attributes to SAPCPQOutboundQuote</description>
+            <attributes>
+                <attribute qualifier="expirationDate" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Quote expiration Date</description>
+                </attribute>
+                <attribute qualifier="currency" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Quote Currency</description>
+                </attribute>
+                <attribute qualifier="opportunityId" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>opportunity Id</description>
+                </attribute>
+                <attribute qualifier="programType" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Program Type</description>
+                </attribute>
+                <attribute qualifier="justification" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Justification</description>
+                </attribute>
+                <attribute qualifier="fulfillmentSource" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Fulfillment Source</description>
+                </attribute>
+                <attribute qualifier="transactionPriceLevelCode" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Transaction Price Level Code</description>
+                </attribute>
+                <attribute qualifier="specialBidReason" type="PartnerCpqSpecialBidReason">
+                    <persistence type="property"/>
+                    <description>special Bid Reason</description>
+                </attribute>
+                <attribute qualifier="agreementDetails" type="PartnerCPQAgreementDetails">
+                    <persistence type="property"/>
+                    <description>Agreement Details</description>
+                </attribute>
+                <attribute qualifier="quotePrice" type="PartnerCPQQuotePrice">
+                    <persistence type="property"/>
+                    <description>Quote Price</description>
+                </attribute>
+                <attribute qualifier="bretIndicator" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>Boolean.FALSE</defaultvalue>
+                    <description>Bret Indicator to show goe customer has override the prices
+                    </description>
+                </attribute>
+                <attribute qualifier="provisionFormDetails" type="SAPCPQProvisionFormsInformation">
+                    <persistence type="property"/>
+                    <description>Provision Form Details.
+                    </description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="SAPCPQOutboundQuoteCustomer" autocreate="false">
+            <description>This is to add custom attributes to SAPCPQOutboundQuoteCustomer
+            </description>
+            <attributes>
+                <attribute qualifier="name" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Name</description>
+                </attribute>
+                <attribute qualifier="goeCustomer" type="java.lang.Boolean">
+                    <persistence type="property"/>
+                    <defaultvalue>Boolean.FALSE</defaultvalue>
+                    <description>goe Customer</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="SAPCPQOutboundQuoteItem" autocreate="false">
+            <description>This is to add custom attributes to SAPCPQOutboundQuoteItem</description>
+            <attributes>
+                <attribute qualifier="transactionType" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Transaction Type</description>
+                </attribute>
+                <attribute qualifier="endDate" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>End Date</description>
+                </attribute>
+                <attribute qualifier="startDate" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Start Date</description>
+                </attribute>
+                <attribute qualifier="startDateChange" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Start Date Change</description>
+                </attribute>
+                <attribute qualifier="endDateChange" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>End Date Change</description>
+                </attribute>
+                <attribute qualifier="backDateChange" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Back Date Change</description>
+                </attribute>
+                <attribute qualifier="cpqPrice" type="PartnerCpqPrice">
+                    <persistence type="property"/>
+                    <description>CPQ Price</description>
+                </attribute>
+                <attribute qualifier="requestedStartDate" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Requested start date</description>
+                </attribute>
+                <attribute qualifier="billingFrequency" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Billing Frequency</description>
+                </attribute>
+                <attribute qualifier="renewalType" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Renewal type</description>
+                </attribute>
+                <attribute qualifier="contractTerm" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Contract term</description>
+                </attribute>
+                <attribute qualifier="requestedStartDateRequired" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Requested start date required</description>
+                </attribute>
+                <attribute qualifier="commerceRampUp" type="SAPCPQCommerceRampUp">
+                    <persistence type="property"/>
+                    <description>Commerce ramp up data</description>
+                </attribute>
+                <attribute qualifier="totalTerm" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Total term</description>
+                </attribute>
+                <attribute qualifier="isStandAlone" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Based on CPQ Characteristic Assigned Values</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerCpqSpecialBidReason">
+            <description>This represents Special Bid Reason Information for SAPCPQOutboundQuote
+            </description>
+            <deployment table="SpecialBidReason" typecode="20119"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <modifiers unique="true"/>
+                    <persistence type="property"/>
+                    <description>Special Bid Reason Code</description>
+                </attribute>
+                <attribute qualifier="name" type="java.lang.String">
+                    <modifiers unique="true"/>
+                    <persistence type="property"/>
+                    <description>Special Bid Reason Name</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerCPQAgreementDetails">
+            <description>This represents Agreement Details Information for SAPCPQOutboundQuote
+            </description>
+            <deployment table="CPQAgreementDetails" typecode="20116"/>
+            <attributes>
+                <attribute qualifier="agreementNumber" type="java.lang.String">
+                    <modifiers unique="true"/>
+                    <persistence type="property"/>
+                    <description>Agreement Number</description>
+                </attribute>
+                <attribute qualifier="agreementOption" type="java.lang.String">
+                    <modifiers unique="true"/>
+                    <persistence type="property"/>
+                    <description>Agreement Option</description>
+                </attribute>
+                <attribute qualifier="programType" type="java.lang.String">
+                    <modifiers unique="true"/>
+                    <persistence type="property"/>
+                    <description>Agreement Program Type</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerCPQQuotePrice">
+            <description>This represents Quote Price Information for SAPCPQOutboundQuote
+            </description>
+            <deployment table="CPQQuotePrice" typecode="20117"/>
+            <attributes>
+                <attribute qualifier="quote" type="IbmPartnerQuote">
+                    <modifiers unique="true"/>
+                    <persistence type="property"/>
+                    <description>Quote</description>
+                </attribute>
+                <attribute qualifier="bidTotalCommitPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>bid Total Commit Price</description>
+                </attribute>
+                <attribute qualifier="bpTotalCommitPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>bp Total Commit Price</description>
+                </attribute>
+                <attribute qualifier="channelMargin" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Channel Margin</description>
+                </attribute>
+                <attribute qualifier="discount" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>discount</description>
+                </attribute>
+                <attribute qualifier="netPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>net Price</description>
+                </attribute>
+                <attribute qualifier="optimalPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>optimal Price</description>
+                </attribute>
+                <attribute qualifier="optimalPriceDiscount" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>optimal Price Discount</description>
+                </attribute>
+                <attribute qualifier="totalMepPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>total Mep Price</description>
+                </attribute>
+                <attribute qualifier="ytyPercentage" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>yty Percentage</description>
+                </attribute>
+                <attribute qualifier="ytyPercentageDefault" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>yty Percentage Default</description>
+                </attribute>
+                <attribute qualifier="usdTotalExtendedPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>USD total extended price</description>
+                </attribute>
+                <attribute qualifier="usdTotalBidCommitPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>USD total bid commit price</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="PartnerCpqPrice">
+            <description>This represents Quote Line Item Price Information for
+                SAPCPQOutboundQuoteItem
+            </description>
+            <deployment table="CpqPrice" typecode="20118"/>
+            <attributes>
+                <attribute qualifier="entry" type="IbmPartnerQuoteEntry">
+                    <modifiers unique="true"/>
+                    <persistence type="property"/>
+                    <description>Quote Entry</description>
+                </attribute>
+                <attribute qualifier="pricingType" type="java.lang.String">
+                    <modifiers unique="true"/>
+                    <persistence type="property"/>
+                    <description>Pricing Type</description>
+                </attribute>
+                <attribute qualifier="bidTotalCommitPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>bid Total Commit Price</description>
+                </attribute>
+                <attribute qualifier="bpTotalCommitPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>bp Total Commit Price</description>
+                </attribute>
+                <attribute qualifier="bidUnitPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>bid Unit Price</description>
+                </attribute>
+                <attribute qualifier="bpUnitPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>bp Unit Price</description>
+                </attribute>
+                <attribute qualifier="channelMargin" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>channel Margin</description>
+                </attribute>
+                <attribute qualifier="committedTermPriceChangeFrequency" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>committed TermPrice Change Frequency</description>
+                </attribute>
+                <attribute qualifier="committedTermPriceChangeUplift" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>committed TermPrice ChangeUp lift</description>
+                </attribute>
+                <attribute qualifier="dealRegGrp" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>dealReg Grp</description>
+                </attribute>
+                <attribute qualifier="discount" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>discount</description>
+                </attribute>
+                <attribute qualifier="drEligible" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>dr Eligible</description>
+                </attribute>
+                <attribute qualifier="drGrpId" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>drGrp Id</description>
+                </attribute>
+                <attribute qualifier="drMsg" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>drMsg</description>
+                </attribute>
+                <attribute qualifier="eccOverrided" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>ecc Overrided</description>
+                </attribute>
+                <attribute qualifier="eccRequest" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>ecc Request</description>
+                </attribute>
+                <attribute qualifier="endDate" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>end Date</description>
+                </attribute>
+                <attribute qualifier="extendedPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>extended Price</description>
+                </attribute>
+                <attribute qualifier="extendedUnitPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>extendedUnit Price</description>
+                </attribute>
+                <attribute qualifier="optimalPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>optimal Price</description>
+                </attribute>
+                <attribute qualifier="optimalPriceDiscount" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>optimalPrice Discount</description>
+                </attribute>
+                <attribute qualifier="renewalTermPriceChangeFrequency" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>renewal TermPrice Change Frequency</description>
+                </attribute>
+                <attribute qualifier="renewalTermPriceChangeUplift" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>renewal TermPrice ChangeUp lift</description>
+                </attribute>
+                <attribute qualifier="unitPrice" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>unitPrice</description>
+                </attribute>
+                <attribute qualifier="ytyPercentage" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>ytyPercentage</description>
+                </attribute>
+                <attribute qualifier="ytyPercentageDefault" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>ytyPercentageDefault</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="SAPCPQProvisionForms">
+            <description>This represents Provisional Form Details Information for
+                SAPCPQOutboundQuote
+            </description>
+            <deployment table="CPQProvisionForms" typecode="20131"/>
+            <attributes>
+                <attribute qualifier="id" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Form id</description>
+                </attribute>
+                <attribute qualifier="url" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Form url</description>
+                </attribute>
+                <attribute qualifier="productSetCode" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Product set code</description>
+                    <modifiers unique="true" optional="false"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="SAPCPQProvisionFormsInformation">
+            <description>This represents Provisional Form Details Information for
+                SAPCPQOutboundQuote
+            </description>
+            <deployment table="SAPCPQProvisionFormsInformation" typecode="20141"/>
+            <attributes>
+                <attribute qualifier="id" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                    <description>Form Cart id</description>
+                </attribute>
+                <attribute qualifier="forms" type="SAPCPQProvisionFormsCollection">
+                    <persistence type="property"/>
+                    <description>Collection of provision form's</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="SAPCPQCommerceRampUp">
+            <description>This Represents Commerce Ramp Up Data for SAPCPQOutboundQuote
+            </description>
+            <deployment table="SAPCPQCommerceRampUp" typecode="20139"/>
+            <attributes>
+                <attribute qualifier="id" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>CPQ commerce ramp up code</description>
+                    <modifiers unique="true" optional="false"/>
+                </attribute>
+                <attribute qualifier="rampUpPeriod" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Ramp up period</description>
+                </attribute>
+                <attribute qualifier="rampUpSummary"
+                  type="SAPCPQRampUpSummaryCollection">
+                    <description>It represents the list of ramp up summary</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="SAPCPQRampUpSummary">
+            <description>This Represents Ramp Up Summary for SAPCPQOutboundQuote
+            </description>
+            <deployment table="SAPCPQRampUpSummary" typecode="20136"/>
+            <attributes>
+                <attribute qualifier="id" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>SAP CPQ ramp up summary</description>
+                    <modifiers unique="true" optional="false"/>
+                </attribute>
+                <attribute qualifier="rampUpPeriodDuration" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Ramp up period duration</description>
+                </attribute>
+                <attribute qualifier="rampUpQuantity" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Ramp up quantity</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="ErrorDetails" autocreate="true" generate="true">
+            <deployment table="ErrorDetails" typecode="20220"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String" generate="true">
+                    <modifiers read="true" write="true" optional="false" unique="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="description" type="java.lang.String">
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(5000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(5000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(5000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(5000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(5000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(5000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(5000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="IbmPartnerQuoteStatus">
+            <description>This is to update status of quote</description>
+            <deployment table="IbmPartnerQuoteStatus" typecode="20222"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers unique="true"/>
+                    <description>code</description>
+                </attribute>
+                <attribute qualifier="cpqQuoteStatus" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>Cpq Quote Status</description>
+                </attribute>
+                <attribute qualifier="eccQuoteStatus" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>ecc Quote Status</description>
+                </attribute>
+                <attribute qualifier="cpqExternalQuoteId" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>cpq External Quote Id</description>
+                </attribute>
+                <attribute qualifier="eccQuoteNumber" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>ecc Quote Number</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+
+        <itemtype code="CpqIbmPartnerAddress">
+            <description>It represents the Address of the Customers</description>
+            <deployment table="CpqIbmPartnerAddress" typecode="20502"/>
+            <attributes>
+                <attribute qualifier="country" type="java.lang.String">
+                    <description>It represents the Country</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="postalCode" type="java.lang.String">
+                    <description>It represents the postal Code</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="region" type="java.lang.String">
+                    <description>It represents the region</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="town" type="java.lang.String">
+                    <description>It represents the town</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="streetNumber" type="java.lang.String">
+                    <description>It represents the street Number</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="streetName" type="java.lang.String">
+                    <description>It represents the street Name</description>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="id" type="java.lang.String">
+                    <description>It represents the Id for Address</description>
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                </attribute>
+                <attribute qualifier="firstName" type="java.lang.String">
+                    <description>It represents the first Name</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="lastName" type="java.lang.String">
+                    <description>It represents the Last Name</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CpqIbmPartnerCompanyUnit">
+            <description>It represents the B2BUnit of the Customers</description>
+            <deployment table="CpqIbmPartnerCompanyUnit" typecode="20509"/>
+            <attributes>
+                <attribute qualifier="uid" type="java.lang.String">
+                    <description>It represents uid for B2bUnit</description>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="name" type="java.lang.String">
+                    <description>It represents the name of B2bUnit</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="type" type="IbmPartnerB2BUnitType">
+                    <description>It represents the type of B2bUnit</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="address" type="CpqIbmPartnerAddress">
+                    <description>It represents the address of B2bUnit</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="country" type="java.lang.String">
+                    <description>It represents the country of B2bUnit</description>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="currency" type="java.lang.String">
+                    <description>It represents the currency of B2bUnit</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CpqIbmPartnerUnit" extends="CpqIbmPartnerCompanyUnit">
+            <description>It represents the B2BUnit of the Customers</description>
+            <attributes>
+                <attribute qualifier="id" type="java.lang.String">
+                    <description>It represents the company of Unit</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="reportingOrganization" type="CpqIbmPartnerUnit">
+                    <description>It represents the reportingOrganization of Unit</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="parent" type="CpqIbmPartnerCompanyUnit">
+                    <description>It represents the parent of Unit</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+
+        <itemtype code="CpqIbmPartnerEndCustomerUnit" extends="CpqIbmPartnerUnit">
+            <description>It represents the Site Ids of the Partners</description>
+            <attributes>
+                <attribute qualifier="ibmCustomerDCID" type="java.lang.String">
+                    <description>It represents the ibmCustomerDCID of Unit</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="goe" type="java.lang.boolean">
+                    <description>It represents the goe of Unit</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CpqIbmPartnerHeaderPricingDetails">
+            <description>It represents the Header Pricing of Quote</description>
+            <deployment table="CpqIbmPartnerHeaderPricingDetails" typecode="20503"/>
+            <attributes>
+                <attribute qualifier="totalExtendedPrice" type="java.lang.Double">
+                    <description>It represents the totalExtendedPrice of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalBidExtendedPrice" type="java.lang.Double">
+                    <description>It represents the totalBidExtendedPrice of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalBpExtendedPrice" type="java.lang.Double">
+                    <description>It represents the totalBpExtendedPrice of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalChannelMargin" type="java.lang.Double">
+                    <description>It represents the totalChannelMargin of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalYTY" type="java.lang.Double">
+                    <description>It represents the totalYTY of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalDiscount" type="java.lang.Double">
+                    <description>It represents the totalDiscount of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalMEPPrice" type="java.lang.Double">
+                    <description>It represents the totalMEPPrice of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="totalOptimalPrice" type="java.lang.Double">
+                    <description>It represents the totalOptimalPrice of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="transactionPriceLevel" type="java.lang.String">
+                    <description>It represents the transactionPriceLevel of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="currency" type="java.lang.String">
+                    <description>It represents the currency of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CpqIbmPartnerEntryPricingDetails">
+            <description>It represents the Entry Pricing of Quote</description>
+            <deployment table="CpqIbmPartnerEntryPricingDetails" typecode="20506"/>
+            <attributes>
+                <attribute qualifier="rolledUpBidExtendedPrice" type="java.lang.Double">
+                    <description>rolledUpBidExtendedPrice</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="pricingStrategy" type="java.lang.String">
+                    <description>pricingStrategy</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="eccRequest" type="java.lang.String">
+                    <description>ecc Request.</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="eccOverrideFields" type="java.lang.String">
+                    <description>Ecc Override Fields.</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="hsqldb">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="mysql">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="oracle">
+                            <value>VARCHAR2(3000)</value>
+                        </columntype>
+                        <columntype database="sqlserver">
+                            <value>VARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="sap">
+                            <value>NVARCHAR(3000)</value>
+                        </columntype>
+                        <columntype database="postgresql">
+                            <value>varchar(3000)</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="totalExtendedPrice" type="java.lang.Double">
+                    <description>total Extended Price.</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="extendedUnitPrice" type="java.lang.Double">
+                    <description>Extended Unit Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="channelMargin" type="java.lang.Double">
+                    <description>Channel Margin</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="extendedListPrice" type="java.lang.Double">
+                    <description>Extended List Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="listPrice" type="java.lang.Double">
+                    <description>List Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="rolledUpListPrice" type="java.lang.Double">
+                    <description>RolledUp List Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="discountAmount" type="java.lang.Double">
+                    <description>Discount Amount</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="rolledUpExtendedListPrice" type="java.lang.Double">
+                    <description>Rolled up Extended List Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="discountPercent" type="java.lang.Double">
+                    <description>Discount Percent</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="rolledUpNetPrice" type="java.lang.Double">
+                    <description>Rolled Up Net Price</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="ytyPercentage" type="java.lang.Double">
+                    <description>YTY percentage</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CPQIbmPartnerOrderEntryProductInfo">
+            <description>It represents the Order Entry product Infos</description>
+            <deployment table="CPQIbmPartnerOrderEntryProductInfo" typecode="20505"/>
+            <attributes>
+                <attribute qualifier="name" type="java.lang.String">
+                    <description>It represents the Name product Infos</description>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="values" type="java.lang.String">
+                    <description>It represents the value of product Infos</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.LONG_STRING</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CpqPartnerRampUpSummary">
+            <description>It represents the Ramp up Summary for orderEntry</description>
+            <deployment table="CpqPartnerRampUpSummary" typecode="20135"/>
+            <attributes>
+                <attribute qualifier="rampUpPeriodDuration" type="java.lang.String">
+                    <description>It represents the duration for rampUp summary</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.LONG_STRING</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="rampUpQuantity" type="java.lang.String">
+                    <description>It represents the quantity for ramp up summary</description>
+                    <persistence type="property">
+                        <columntype>
+                            <value>HYBRIS.LONG_STRING</value>
+                        </columntype>
+                    </persistence>
+                </attribute>
+                <attribute qualifier="id" type="java.lang.String">
+                    <description>It represents the Id for CpqPartnerRampUpSummary</description>
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CpqPartnerCommerceRampUp">
+            <description>It represents the Order Entry ramp up data</description>
+            <deployment table="CpqPartnerCommerceRampUp" typecode="20140"/>
+            <attributes>
+                <attribute qualifier="rampUpPeriod" type="java.lang.String">
+                    <description>It represents the duration for ramp up data</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="cpqPartnerRampUpSummary"
+                  type="CpqPartnerRampUpSummaryCollection">
+                    <description>It represents the list of ramp up summary</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="id" type="java.lang.String">
+                    <description>It represents the Id for CpqPartnerRampUpSummary</description>
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CpqIbmPartnerQuoteEntry">
+            <description>It represents the Ibm Partner Quote Entry</description>
+            <deployment table="CpqIbmPartnerQuoteEntry" typecode="20504"/>
+            <attributes>
+                <attribute qualifier="entryNumber" type="java.lang.String">
+                    <description>It represents the entryNumber of Partner Quote Entry</description>
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                </attribute>
+                <attribute qualifier="product" type="java.lang.String">
+                    <description>It represents the product of Partner Quote Entry</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="quantity" type="java.lang.String">
+                    <description>It represents the quantity of Partner Quote Entry</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="configurationId" type="java.lang.String">
+                    <description>It represents the configuration Id of Partner Quote Entry
+                    </description>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="partnerCpqPricingDetails"
+                  type="CpqIbmPartnerEntryPricingDetails">
+                    <description>It represents the partner Cpq Pricing Details of Partner Quote
+                        Entry
+                    </description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="productInfos"
+                  type="CPQIbmPartnerOrderEntryProductInfoCollection">
+                    <description>It represents the product Infos of Partner Quote Entry
+                    </description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="commerceRampUp" type="CpqPartnerCommerceRampUp">
+                    <persistence type="property"/>
+                    <description>commerceRampUp</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CpqIbmPartnerCpqQuestions">
+            <description>Cpq Partner Questions</description>
+            <deployment table="PartnerCpqQuestions" typecode="20507"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <modifiers unique="true" optional="false" initial="true"/>
+                    <persistence type="property"/>
+                    <description>partner question code</description>
+                </attribute>
+                <attribute qualifier="value" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>partner answer</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+        <itemtype code="CpqIbmPartnerUser">
+            <description>Cpq Partner User</description>
+            <deployment table="CpqIbmPartnerUser" typecode="20508"/>
+            <attributes>
+                <attribute qualifier="email" type="java.lang.String">
+                    <modifiers unique="true" optional="false" initial="true"/>
+                    <persistence type="property"/>
+                    <description>Email Id of USer</description>
+                </attribute>
+                <attribute qualifier="name" type="java.lang.String">
+                    <persistence type="property"/>
+                    <description>name of the user</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+        <itemtype code="CpqIbmPartnerSpecialBidReason">
+            <description>This represents Special Bid Reason Information</description>
+            <deployment table="CpqIbmPartnerSpecialBidReason" typecode="20501"/>
+            <attributes>
+                <attribute qualifier="code" type="java.lang.String">
+                    <persistence type="property"/>
+                    <modifiers initial="true" optional="false" unique="true"/>
+                    <description>special bid reason code</description>
+                </attribute>
+                <attribute qualifier="name" type="localized:java.lang.String">
+                    <persistence type="property"/>
+                    <description>special bid reason name</description>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+
+        <itemtype code="CpqIbmPartnerQuote">
+            <description>This is to update status of quote</description>
+            <deployment table="CpqIbmPartnerQuote" typecode="20500"/>
+            <attributes>
+                <attribute type="java.lang.String" qualifier="cpqQuoteNumber">
+                    <description>CPQ quote Number</description>
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                </attribute>
+                <attribute type="java.lang.String" qualifier="eccQuoteNumber">
+                    <description>ECC Quote Number</description>
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                </attribute>
+                <attribute qualifier="cpqQuoteExternalId" type="java.lang.String">
+                    <description>CPQ quote External Id</description>
+                    <persistence type="property"/>
+                    <modifiers unique="true" optional="false" initial="true"/>
+                </attribute>
+                <attribute qualifier="code" type="java.lang.String">
+                    <description>This is sap commerce quote code</description>
+                    <persistence type="property"/>
+                    <modifiers unique="true"/>
+                </attribute>
+                <attribute qualifier="name" type="java.lang.String">
+                    <description>quote Name</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="reseller" type="CpqIbmPartnerUnit">
+                    <description>Reseller Of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="distributor" type="CpqIbmPartnerUnit">
+                    <description>Distributor of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="endCustomer" type="CpqIbmPartnerEndCustomerUnit">
+                    <description>End Customer of Quote</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="agreementDetail" type="IbmPartnerAgreementDetail">
+                    <description>Agreement Details</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="currency" type="java.lang.String">
+                    <description>Currency</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="date" type="java.util.Date">
+                    <description>Date</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="quoteExpirationDate" type="java.util.Date">
+                    <description>Quote Expiration Date</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="quoteCreator" type="CpqIbmPartnerUser">
+                    <description>Quote Creator</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="quoteSubmitter" type="CpqIbmPartnerUser">
+                    <description>Quote Submitter</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="salesApplication" type="SalesApplication">
+                    <description>Sales Application</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="submittedDate" type="java.util.Date">
+                    <description>Submitted Date</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="cpqPricingDetails" type="CpqIbmPartnerHeaderPricingDetails">
+                    <description>CPQ Pricing Details</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="specialBidReason" type="CpqIbmPartnerSpecialBidReason">
+                    <description>The special bid reason information</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="specialBidBusinessJustification" type="java.lang.String">
+                    <description>special bid Justification</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute type="java.lang.String"
+                  qualifier="cpqDistributionChannel">
+                    <description>Distribution Channel</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="eccQuoteStatus" type="java.lang.String">
+                    <description>ECC Quote Status</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="cpqQuoteStatus" type="java.lang.String">
+                    <description>CPQ Quote Status</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute type="CpqPartnerProvisionForms"
+                  qualifier="provisionForms">
+                    <description>Provision forms</description>
+                    <persistence type="property"/>
+                </attribute>
+                <attribute qualifier="collaboratorEmails"
+                  type="IbmPartnerOrderCollaboratorList">
+                    <description>List of the IBM Seller Collaborators</description>
+                    <persistence type="property"/>
+                </attribute>
+            </attributes>
+        </itemtype>
+
+
+        <typegroup name="PartnerEmployee">
+            <itemtype code="PartnerEmployee" extends="Employee" autocreate="true" generate="true">
+                <description>This model to save partner employee</description>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="PartnerQuestions">
+            <itemtype code="PartnerQuestions">
+                <description>This represents Partner questions Information</description>
+                <deployment table="PartnerQuestions" typecode="20120"/>
+                <attributes>
+                    <attribute qualifier="code" type="java.lang.String">
+                        <persistence type="property"/>
+                        <modifiers initial="true" optional="false" unique="true"/>
+                        <description>partner question code</description>
+                    </attribute>
+                    <attribute qualifier="name" type="localized:java.lang.String">
+                        <modifiers optional="false"/>
+                        <description>partner question</description>
+                        <persistence type="property">
+                            <columntype>
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="hsqldb">
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="mysql">
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="oracle">
+                                <value>VARCHAR2(3000)</value>
+                            </columntype>
+                            <columntype database="sqlserver">
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="sap">
+                                <value>NVARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="postgresql">
+                                <value>varchar(3000)</value>
+                            </columntype>
+                        </persistence>
+                    </attribute>
+                    <attribute qualifier="active" type="java.lang.Boolean">
+                        <persistence type="property"/>
+                        <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                        <description>partner question is active or not</description>
+                    </attribute>
+                    <attribute qualifier="priority" type="java.lang.Integer">
+                        <persistence type="property"/>
+                        <description>priority value</description>
+                        <defaultvalue>java.lang.Integer.valueOf(0)</defaultvalue>
+                    </attribute>
+                    <attribute qualifier="questionType" type="PartnerQuoteQuesitonsEnum">
+                        <description>It represents type of question.</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="description" type="java.lang.String">
+                        <persistence type="property"/>
+                        <description>partner question</description>
+                    </attribute>
+                    <attribute qualifier="answerType" type="PartnerAnswerTypeEnum">
+                        <description>It represents type of answer.</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="visible" type="java.lang.Boolean">
+                        <description>It represents type of answer.</description>
+                        <persistence type="property"/>
+                        <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                        <modifiers optional="false"/>
+                    </attribute>
+                    <attribute qualifier="mandatory" type="java.lang.Boolean">
+                        <description>It represents type of answer.</description>
+                        <persistence type="property"/>
+                        <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                        <modifiers optional="false"/>
+                    </attribute>
+                    <attribute qualifier="defaultAnswer" type="java.lang.Boolean">
+                        <description>It represents type of answer.</description>
+                        <persistence type="property"/>
+                        <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                        <modifiers optional="false"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="PartnerQuestionsSelection">
+            <itemtype code="PartnerQuestionsSelection">
+                <description>This represents Partner questions selection Information</description>
+                <deployment table="PartnerQuestionsSelection" typecode="20121"/>
+                <attributes>
+                    <attribute qualifier="question" type="PartnerQuestions">
+                        <persistence type="property"/>
+                        <modifiers initial="true" optional="false" unique="true"/>
+                        <description>partner question object</description>
+                    </attribute>
+                    <attribute qualifier="answer" type="java.lang.Boolean">
+                        <modifiers optional="true"/>
+                        <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                        <description>partner question answer</description>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="visible" type="java.lang.Boolean">
+                        <modifiers optional="true"/>
+                        <defaultvalue>java.lang.Boolean.TRUE</defaultvalue>
+                        <description>partner question answer</description>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="mandatory" type="java.lang.Boolean">
+                        <modifiers optional="true"/>
+                        <defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+                        <description>partner question answer</description>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="answerType" type="PartnerAnswerTypeEnum">
+                        <description>It represents type of answer.</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="strAnswer" type="java.lang.String">
+                        <persistence type="property"/>
+                        <description>String Answer</description>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="PartnerCpqQuestions">
+            <itemtype code="PartnerCpqQuestions" extends="PartnerQuestionsSelection">
+                <description>This represents Partner questions Information</description>
+                <attributes>
+                    <attribute qualifier="code" type="java.lang.String">
+                        <persistence type="property"/>
+                        <description>partner question code</description>
+                    </attribute>
+                    <attribute qualifier="value" type="java.lang.String">
+                        <persistence type="property"/>
+                        <description>partner answer</description>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="PartnerCpqSpecialBidQuestions">
+                <description>This represents Partner Special Bid Questions Information</description>
+                <deployment table="PtCpqSpclBidQues" typecode="20147"/>
+                <attributes>
+                    <attribute qualifier="questionKey" type="java.lang.String">
+                        <persistence type="property"/>
+                        <modifiers unique="true" optional="false" initial="true"/>
+                        <description>partner question code</description>
+                    </attribute>
+                    <attribute qualifier="answer" type="java.lang.String">
+                        <persistence type="property"/>
+                        <description>partner answer</description>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="CpqIbmPartnerOrder">
+                <description>This is to update status of quote</description>
+                <deployment table="CpqIbmPartnerOrder" typecode="20123"/>
+                <attributes>
+                    <attribute qualifier="orderId" type="java.lang.String">
+                        <description>code</description>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="cpqQuoteId" type="java.lang.String">
+                        <description>Cpq Quote id</description>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="cpqQuoteNumber" type="java.lang.String">
+                        <description>quote number</description>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="PartnerSpecialBidReasonToQuestionMapping">
+            <itemtype code="PartnerSpecialBidReasonToQuestionMapping">
+                <description>PartnerSpecialBidReason To Question Mapping</description>
+                <deployment table="PtSpclBidResnToQuestMap" typecode="20146"/>
+                <attributes>
+                    <attribute qualifier="reason" type="PartnerSpecialBidReason">
+                        <persistence type="property"/>
+                        <modifiers initial="true" optional="false" unique="true"/>
+                        <description>Partner Special Bid Reason</description>
+                    </attribute>
+                    <attribute qualifier="question" type="PartnerQuestions">
+                        <persistence type="property"/>
+                        <modifiers initial="true" optional="false" unique="true"/>
+                        <description>Partner Question</description>
+                    </attribute>
+                    <attribute qualifier="overrideVisibleBy" type="java.lang.Boolean">
+                        <description>Override Visible By</description>
+                        <persistence type="property"/>
+                        <defaultvalue>Boolean.FALSE</defaultvalue>
+                        <modifiers optional="false"/>
+                    </attribute>
+                    <attribute qualifier="overrideDefaultValue" type="java.lang.Boolean">
+                        <description>Override Default Value</description>
+                        <persistence type="property"/>
+                        <defaultvalue>Boolean.FALSE</defaultvalue>
+                        <modifiers optional="false"/>
+                    </attribute>
+                    <attribute qualifier="overrideDefaultValueBy" type="java.lang.Boolean">
+                        <description>Override Default Value By. Only applicable if question is of type Boolean.</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="overrideMandatoryBy" type="java.lang.Boolean">
+                        <description>Mandatory</description>
+                        <persistence type="property"/>
+                        <defaultvalue>Boolean.FALSE</defaultvalue>
+                        <modifiers optional="false"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="PartnerProvisionForm">
+            <itemtype code="PartnerProvisionForm">
+                <description>This PartnerProvisionForm for cart or quote</description>
+                <deployment table="PartnerProvisionForm" typecode="20126"/>
+                <attributes>
+                    <attribute type="java.lang.String" qualifier="code">
+                        <description>provision code</description>
+                        <persistence type="property"/>
+                        <modifiers unique="true" optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="url" type="java.lang.String">
+                        <description>provision url</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="productSetCode" type="PartnerProductSet">
+                        <description>product code</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="cartId" type="java.lang.String">
+                        <description>cart id</description>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+
+        <typegroup name="PartnerProvisionForms">
+            <itemtype code="PartnerProvisionForms">
+                <description>This PartnerProvisionForm for cart or quote</description>
+                <deployment table="PartnerProvisionForms" typecode="20127"/>
+                <attributes>
+                    <attribute type="java.lang.String" qualifier="code">
+                        <description>provision forms code</description>
+                        <persistence type="property"/>
+                        <modifiers unique="true" optional="false" initial="true"/>
+                    </attribute>
+                    <attribute type="java.lang.String" qualifier="allowedEditUsers">
+                        <description>allowedEditUser</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="errors" type="java.lang.String">
+                        <description>error mesaage</description>
+                        <persistence type="property">
+                            <columntype>
+                                <value>VARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="hsqldb">
+                                <value>VARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="mysql">
+                                <value>VARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="oracle">
+                                <value>VARCHAR2(5000)</value>
+                            </columntype>
+                            <columntype database="sqlserver">
+                                <value>VARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="sap">
+                                <value>NVARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="postgresql">
+                                <value>varchar(5000)</value>
+                            </columntype>
+                        </persistence>
+                    </attribute>
+
+                </attributes>
+            </itemtype>
+        </typegroup>
+        <typegroup name="CpqPartnerProvisionForm">
+            <itemtype code="CpqPartnerProvisionForm">
+                <description>provision form information for quote</description>
+                <deployment table="CpqPartnerProvisionForm" typecode="20128"/>
+                <attributes>
+                    <attribute qualifier="code" type="java.lang.String">
+                        <description>code</description>
+                        <modifiers unique="true" optional="false" initial="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="url" type="java.lang.String">
+                        <description>provision url</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="productSetCode" type="PartnerProductSet">
+                        <description>product set code</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="CpqPartnerProvisionForms">
+            <itemtype code="CpqPartnerProvisionForms">
+                <description>This PartnerProvisionForm for quote</description>
+                <deployment table="CpqPartnerProvisionForms" typecode="20129"/>
+                <attributes>
+                    <attribute type="java.lang.String" qualifier="code">
+                        <description>provision forms code</description>
+                        <persistence type="property"/>
+                        <modifiers unique="true" optional="false" initial="true"/>
+                    </attribute>
+                    <attribute type="java.lang.String" qualifier="allowedEditUsers">
+                        <description>allowedEditUser</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="errors" type="java.lang.String">
+                        <description>error mesaage</description>
+                        <persistence type="property">
+                            <columntype>
+                                <value>VARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="hsqldb">
+                                <value>VARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="mysql">
+                                <value>VARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="oracle">
+                                <value>VARCHAR2(5000)</value>
+                            </columntype>
+                            <columntype database="sqlserver">
+                                <value>VARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="sap">
+                                <value>NVARCHAR(5000)</value>
+                            </columntype>
+                            <columntype database="postgresql">
+                                <value>varchar(5000)</value>
+                            </columntype>
+                        </persistence>
+                    </attribute>
+
+                </attributes>
+            </itemtype>
+        </typegroup>
+
+        <typegroup name="PartnerCommerceRampUp">
+            <itemtype code="PartnerCommerceRampUp">
+                <description>This partner commerce ramp up for quote</description>
+                <deployment table="PartnerCommerceRampUp" typecode="20138"/>
+                <attributes>
+                    <attribute qualifier="code" type="java.lang.String">
+                        <persistence type="property"/>
+                        <description>Partner commerce ramp up code</description>
+                        <modifiers unique="true" optional="false"/>
+                    </attribute>
+                    <attribute type="java.lang.String" qualifier="rampUpPeriod">
+                        <description>ramp up period</description>
+                        <persistence type="property"/>
+                        <modifiers unique="false" optional="false" initial="true"/>
+                    </attribute>
+                    <attribute qualifier="partnerRampUpSummary"
+                      type="PartnerRampUpSummaryCollection">
+                        <description>It represents the list of partner ramp up summary</description>
+                        <persistence type="property"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+
+            <itemtype code="PartnerRampUpSummary">
+                <description>This partner commerce ramp up summery</description>
+                <deployment table="PartnerRampUpSummary" typecode="20133"/>
+                <attributes>
+                    <attribute qualifier="code" type="java.lang.String">
+                        <persistence type="property"/>
+                        <description>Partner commerce ramp up summary code</description>
+                        <modifiers unique="true" optional="false"/>
+                    </attribute>
+                    <attribute type="java.lang.String" qualifier="rampUpPeriodDuration">
+                        <description>ramp up period</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                    <attribute type="java.lang.String" qualifier="rampUpQuantity">
+                        <description>ramp up quantity</description>
+                        <persistence type="property"/>
+                        <modifiers optional="false" initial="true"/>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+        <typegroup name="IbmPartnerConsumedDestinationOAuthCredential">
+            <itemtype
+              code="IbmPartnerConsumedDestinationOAuthCredential"
+              autocreate="true" generate="true" extends="ConsumedOAuthCredential">
+                <description>This is to save the credential details of common service APIs
+                </description>
+                <attributes>
+                    <attribute qualifier="userId" type="java.lang.String">
+                        <modifiers encrypted="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="password" type="java.lang.String">
+                        <modifiers encrypted="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="clientApplicationId" type="java.lang.String">
+                        <modifiers encrypted="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="authBearerToken" type="java.lang.String">
+                        <description>Auth Opportunity Bearer Token.</description>
+                        <modifiers encrypted="true"/>
+                        <persistence type="property">
+                            <columntype>
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="hsqldb">
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="mysql">
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="oracle">
+                                <value>VARCHAR2(3000)</value>
+                            </columntype>
+                            <columntype database="sqlserver">
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="sap">
+                                <value>NVARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="postgresql">
+                                <value>varchar(3000)</value>
+                            </columntype>
+                        </persistence>
+                    </attribute>
+                    <attribute qualifier="expirationTS" type="java.lang.Long">
+                        <modifiers encrypted="true"/>
+                        <persistence type="property"/>
+                    </attribute>
+                    <attribute qualifier="acubicApi" type="java.lang.String">
+                        <description>Acubic API.</description>
+                        <modifiers encrypted="true"/>
+                        <persistence type="property">
+                            <columntype>
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="hsqldb">
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="mysql">
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="oracle">
+                                <value>VARCHAR2(3000)</value>
+                            </columntype>
+                            <columntype database="sqlserver">
+                                <value>VARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="sap">
+                                <value>NVARCHAR(3000)</value>
+                            </columntype>
+                            <columntype database="postgresql">
+                                <value>varchar(3000)</value>
+                            </columntype>
+                        </persistence>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+        <typegroup name="PartnerPIDAgreement">
+            <itemtype code="PartnerPIDAgreement">
+                <description>hold PID agreement details received from CPQ</description>
+                <deployment table="PartnerPIDAgreement" typecode="20142"/>
+                <attributes>
+                    <attribute qualifier="pid" type="java.lang.String">
+                        <persistence type="property"/>
+                        <modifiers unique="true" optional="false" initial="true"/>
+                        <description>PID</description>
+                    </attribute>
+                    <attribute qualifier="saFlag" type="boolean">
+                        <persistence type="property"/>
+                        <description>SA Flag</description>
+                    </attribute>
+                    <attribute qualifier="disablePID" type="boolean">
+                        <persistence type="property"/>
+                        <description>Disable PID</description>
+                    </attribute>
+                    <attribute qualifier="disableBM" type="boolean">
+                        <persistence type="property"/>
+                        <description>Disable BM</description>
+                    </attribute>
+                </attributes>
+            </itemtype>
+        </typegroup>
+    </itemtypes>
+</items>

@@ -1,0 +1,9 @@
+##IBMDeploymentType sample data
+$lang = en
+INSERT_UPDATE IbmDeploymentType; code[unique = true]; sapCode
+                               ; SaaS
+                               ; Appliances
+                               ; Monthly
+                               ; Subscription
+                               ; beeSpoke_SaaS_Configurator
+                               ; Perpetual          ; PL

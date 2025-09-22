@@ -1,0 +1,50 @@
+
+$productCatalog = testProductCatalog
+$catalogVersion = catalogversion(catalog(id[default = $productCatalog]), version[default = 'Online'])[unique = true, default = $productCatalog:Online]
+$approvalStatus = approvalStatus(code)[default = 'approved']
+$supercategories = supercategories(code, $catalogVersion)
+$lang = en
+
+INSERT_UPDATE Category ; code[unique = true] ; allowedPrincipals(uid)[default = 'customergroup'] ; $catalogVersion ;  
+                       ; rootcategory        ;                                                   ;                 ;  
+
+INSERT_UPDATE IbmCategory ; code[unique = true] ; name[lang = en]              ; description[lang = en]  ; $catalogVersion ; allowedPrincipals(uid)[default = 'customergroup'] ;  
+                          ; testCategory0       ; Test Hybrid Cloud Management ; Hybrid Cloud Management ;                 ;                                                   ;  
+
+UPDATE IbmCategory ; code[unique = true] ; $supercategories[default = 'rootcategory'] ; $catalogVersion
+                   ; testCategory0       
+                   
+INSERT_UPDATE IbmCategory ; code[unique = true] ; name[lang = en]            ; description[lang = en] ; $catalogVersion ; allowedPrincipals(uid)[default = 'customergroup'] ;  
+                          ; testCategory1       ; Test Hybrid Cloud Services ; Hybrid Cloud Services  ;                 ;                                                   ;  
+                          
+UPDATE IbmCategory ; code[unique = true] ; $supercategories ; $catalogVersion
+                   ; testCategory1       ; testCategory0    ;                ;  
+                        
+                        
+INSERT_UPDATE VariantCategory ; code[unique = true]               ; name[lang = $lang]           ; allowedPrincipals(uid)[default = 'customergroup'] ; $catalogVersion ;  
+                              ; partnerDeploymentTypeConfigurator ; Deployment Type Configurator ;                                                   ;                 ;  
+                              
+INSERT_UPDATE IbmDeploymentType ; code[unique = true] ; name[lang = $lang] ; sapCode
+                                ; Perpetual           ; Perpetual          ; PL     
+                                
+INSERT_UPDATE IbmVariantValueCategory ; code[unique = true] ; deploymentType(code) ; name[lang = $lang] ; sequence ; $supercategories[default = 'partnerDeploymentTypeConfigurator'] ; allowedPrincipals(uid)[default = 'customergroup'] ; $catalogVersion
+                                      ; Perpetual           ; Perpetual            ; Perpetual          ; 102      ;                                                                 ;                                                   ;                ;  
+
+INSERT_UPDATE IbmCategory ; code[unique = true] ; name[lang = en]              ; description[lang = en]       ; $catalogVersion ; allowedPrincipals(uid)[default = 'customergroup']
+                          ; 30A15               ; WebSphere Application Server ; WebSphere Application Server ;                 ;                                                  ;  
+# test base product                   
+INSERT_UPDATE IbmProduct ; code[unique = true] ; description[lang = en]                       ; $supercategories                        ; $catalogVersion ; variantType(code)[default = IbmVariantProduct] ; approvalStatus(code)[default = 'approved']
+                         ; 5725L10             ; WebSphere App Srvc Platform for Networks OEM ; 30A15,partnerDeploymentTypeConfigurator ;                 ;                                                ;                                           ;  
+# test pid product       
+INSERT_UPDATE IbmVariantProduct ; code[unique = true] ; partnumber ; name[lang = $lang]                           ; baseProduct(code, $catalogVersion) ; deploymentType(code) ; configuratorCode                                                  ; $supercategories ; $catalogVersion ; approvalStatus(code)[default = 'approved'] ; unit(code)[default = pieces]
+                                ; 5725L10Perpetual    ; 5725L10    ; WebSphere App Srvc Platform for Networks OEM ; 5725L10                            ; Perpetual            ; WebSphere_Application_Server_-_Perpetual_License_Configurator_cpq ; Perpetual        ;                 ;                                            ;                             ;  
+ # test part product               
+INSERT_UPDATE IbmPartProduct ; code[unique = true] ; deploymentType(code)[default = 'Perpetual'] ; approvalStatus(code)[default = 'approved'] ; sellerAudienceMasks(code) ; revenueStream(code) ; partNumber ; pidProducts(code, $catalogVersion) ; sapMaterialCode ; $supercategories[default = 'Perpetual'] ; $catalogVersion ; unit(code)[default = pieces] ;  
+                             ; D0YVULL             ; Perpetual                                   ; approved                                   ; RES                       ; LCMNTSPT            ; 5725L10    ; 5725L10Perpetual                   ; ZLIC            ;                                         ;                 ;                              ;  
+
+UPDATE IbmPartProduct ; code[unique = true] ; description[lang = en]                                                                                                                             ; $catalogVersion ;  
+                      ; D0YVULL             ; "IBM WebSphere Application Service Platform for Networks Embedded Server Edition Virtual Server OEM License + SW Subscription & Support 12 Months" ;                 ;  
+                      
+                        
+                         
+                      

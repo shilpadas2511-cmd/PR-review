@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<process xmlns="http://www.hybris.de/xsd/processdefinition"
+  start="fetchPartnerResellerDefaultDistributorAccountDetailsAction"
+  name="partner-reseller-unit-process"
+  processClass="com.ibm.commerce.partner.core.model.PartnerResellerSiteBusinessProcessModel">
+    <action id="fetchPartnerResellerDefaultDistributorAccountDetailsAction"
+      bean="fetchPartnerResellerDefaultDistributorAccountDetailsAction">
+        <transition name="OK" to="persistResellerDetailsAction"/>
+        <transition name="NOK" to="resellerSubprocessCompletionAction"/>
+    </action>
+    <action id="persistResellerDetailsAction" bean="persistResellerDetailsAction">
+        <transition name="OK" to="resellerSubprocessCompletionAction"/>
+        <transition name="NOK" to="error"/>
+    </action>
+    <action id="resellerSubprocessCompletionAction" bean="resellerSubprocessCompletionAction">
+        <transition name="OK" to="success"/>
+        <transition name="NOK" to="resellerNotCreated"/>
+    </action>
+    <end id="success" state="SUCCEEDED">Created B2BUnits Successfully.</end>
+    <end id="error" state="ERROR">Create B2BUnits failed.</end>
+    <end id="resellerNotCreated" state="ERROR">Reseller Creation Failed.</end>
+</process>

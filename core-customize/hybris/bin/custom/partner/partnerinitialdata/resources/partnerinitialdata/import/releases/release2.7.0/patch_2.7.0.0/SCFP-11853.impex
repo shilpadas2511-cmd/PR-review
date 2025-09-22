@@ -1,0 +1,13 @@
+$quoteSubmitService-Content-Type = Content-Type->application/json
+$quoteSubmitService-UserAgent = User-Agent->insomnia/2023.5.8
+$quoteSubmitService-additional-properties = $quoteSubmitService-Content-Type|$quoteSubmitService-UserAgent
+
+UPDATE GenericItem[processor = de.hybris.platform.commerceservices.impex.impl.ConfigPropertyImportProcessor]; pk[unique = true]
+$baseUrl = $config-ibm.quote.common.base.url
+
+
+INSERT_UPDATE Endpoint; id[unique = true]                     ; version[unique = true]; name                                  ; specUrl
+                      ; cpqQuoteRemoveSyncCollaboratorService ; 1                     ; cpqQuoteRemoveSyncCollaboratorService ; cpqQuoteRemoveSyncCollaboratorService
+
+INSERT_UPDATE IbmConsumedDestination; id[unique = true]                     ; customUri                                                       ; endpoint(id, version)                   ; credential(id)              ; destinationTarget(id) ; additionalProperties(key, value)[map-delimiter = |]; active[default = true]; url
+                                    ; cpqQuoteRemoveSyncCollaboratorService ; $baseUrl/api/quote/v2/{cpqExternalQuoteId}/collaborators/delete ; cpqQuoteRemoveSyncCollaboratorService:1 ; ibmQ2CQuoteCommonCredential ; cpqQuoteSubmitService ; $quoteSubmitService-additional-properties          ;                       ; $baseUrl/api/quote/v2/

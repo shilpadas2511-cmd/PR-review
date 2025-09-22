@@ -1,0 +1,6 @@
+$partnerBaseStore=partner
+$currencies=EUR,KRW,USD,ZAR,BRL,AUD,CHF,NOK,GBP,INR,IDR,JPY,SEK,NZD,CAD,DKK,CNY,SGD,CYP
+
+
+INSERT_UPDATE Basestore ;uid[unique=true]            ;currencies(isocode) ;defaultCurrency(isocode)
+                        ;$partnerBaseStore      ;$currencies         ;USD

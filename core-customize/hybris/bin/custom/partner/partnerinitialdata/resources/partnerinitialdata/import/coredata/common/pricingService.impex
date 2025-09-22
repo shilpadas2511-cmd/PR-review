@@ -1,0 +1,22 @@
+INSERT DestinationTarget; id[unique = true]; registrationStatus; destinationChannel(code)
+                               ; pricingService   ;                   ; PRICINGSERVICE
+
+$pricingService-Content-Type = Content-Type->application/json
+$pricingService-UserAgent = User-Agent->insomnia/2023.5.8
+$pricingService-additional-properties = $pricingService-Content-Type|$pricingService-UserAgent
+$pricingService-deal-reg-additional-properties = $pricingService-Content-Type|$pricingService-UserAgent
+
+INSERT Endpoint; id[unique = true]      ; version[unique = true]; name                   ; specUrl
+                      ; entitledPricingService ; 1                     ; entitledPricingService ; entitledPricingService
+                      ; fullPricingService     ; 1                     ; fullPricingService     ; fullPricingService
+                      ; dealRegPricingService  ; 1                     ; dealRegPricingService  ; dealRegPricingService
+
+INSERT IbmPartnerPricingServiceConsumedOAuthCredential; id[unique = true]        ; clientId                         ; clientSecret;
+                                                             ; pricingServiceCredential ; '' 						   	   ; ''
+INSERT IbmPartnerDealRegConsumedOAuthCredential; id[unique = true]               ; clientId                         ; clientSecret                     ; acubicApi
+                                                      ; pricingDealRegServiceCredential ; ''							   ; '' 							  ; ''
+
+INSERT IbmConsumedDestination; id[unique = true]      ; url                                                                                                                     ; endpoint(id, version)    ; credential(id)                  ; destinationTarget(id)[default = pricingService]; additionalProperties(key, value)[map-delimiter = |]; active[default = true]
+                                    ; entitledPricingService ; https://dev.api.ibm.com/q2cdsw/bluetest/dswcom/quote/pricing/v1/lookup                                                  ; entitledPricingService:1 ; pricingServiceCredential        ;                                                ; $pricingService-additional-properties
+                                    ; fullPricingService     ; https://dev.api.ibm.com/q2cdsw/bluetest/dswcom/quote/pricing/v1/lookup                                                  ; fullPricingService:1     ; pricingServiceCredential        ;                                                ; $pricingService-additional-properties
+                                    ; dealRegPricingService  ; https://dev.api.ibm.com:1443/q2cdsw/bluetest/dswcom/dsw/services/sales/deal-reg-eligibility-check-service/check/v2/part ; dealRegPricingService:1  ; pricingDealRegServiceCredential ;                                                ; $pricingService-deal-reg-additional-properties

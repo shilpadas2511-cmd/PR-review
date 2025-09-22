@@ -1,0 +1,13 @@
+@charset "utf-8";
+@import "./support/partnerbackofficewidget-variables.scss";
+
+.yw-labelstyle
+{
+	color: $partnerbackoffice-label-text-color;
+}
+
+.partnerbackoffice-container {
+	background: $partnerbackoffice-container-background;
+	font-family: $partnerbackoffice-container-font-family;
+	font-size: $partnerbackoffice-container-font-size;
+}

@@ -1,0 +1,20 @@
+# -----------------------------------------------------------------------
+# Copyright (c) 2019 SAP SE or an SAP affiliate company. All rights reserved.
+# -----------------------------------------------------------------------
+# ImpEx for SOLR Configuration
+
+# Macros / Replacement Parameter definitions
+$indexedType=partnerProductType
+$facetSearchConfigName=partnerIndex
+$contentCatalogName=partnerContentCatalog
+
+$solrIndexedType=solrIndexedType(identifier[default=$indexedType])[unique=true]
+$contentCatalogVersion=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$contentCatalogName]),CatalogVersion.version[default=Staged])[default=$contentCatalogName:Staged]
+$productCatalog=partnerProductCatalog
+$productCatalogVersion=catalogVersion(CatalogVersion.catalog(Catalog.id[default=$productCatalog]),CatalogVersion.version[default=Staged])[default=$productCatalog:Staged]
+
+# Language
+$lang=en
+
+UPDATE SolrIndexedProperty;name[unique=true]    ;$solrIndexedType;displayName[$lang]
+                          ;deploymentType  ;                ;Deployment Type

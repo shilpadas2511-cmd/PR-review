@@ -1,0 +1,15 @@
+$quoteSubmitService-Content-Type = Content-Type->application/json
+$quoteSubmitService-UserAgent = User-Agent->insomnia/2023.5.8
+$quoteSubmitService-additional-properties = $quoteSubmitService-Content-Type|$quoteSubmitService-UserAgent
+
+INSERT DestinationTarget; id[unique = true]     ; registrationStatus; destinationChannel(code)
+                        ; cpqQuoteSubmitService ;                   ; SAPCPQQUOTESERVICE
+
+INSERT Endpoint; id[unique = true]                     ; version[unique = true]; name                                  ; specUrl
+               ; cpqQuoteSubmitSyncCollaboratorService ; 1                     ; cpqQuoteSubmitSyncCollaboratorService ; cpqQuoteSubmitSyncCollaboratorService
+
+INSERT PartnerQuoteOAuthCredential; id[unique = true]                         ; clientId; clientSecret; acubicApi
+                                  ; cpqQuoteSubmitSyncCollaboratorsCredential ; ""      ; ""          ; ""
+
+INSERT IbmConsumedDestination; id[unique = true]                     ; customUri                                                                                ; endpoint(id, version)                   ; credential(id)                            ; destinationTarget(id) ; additionalProperties(key, value)[map-delimiter = |]; active[default = true]; url
+                             ; cpqQuoteSubmitSyncCollaboratorService ; "https://dev.api.ibm.com/q2cdsw/bluedev/api/quote/v2/{cpqExternalQuoteId}/collaborators" ; cpqQuoteSubmitSyncCollaboratorService:1 ; cpqQuoteSubmitSyncCollaboratorsCredential ; cpqQuoteSubmitService ; $quoteSubmitService-additional-properties          ;                       ; "https://dev.api.ibm.com/q2cdsw/bluedev/api/quote/v2/"

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) 2020 SAP SE or an SAP affiliate company. All rights reserved.
+-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.ibm.commerce.partner.occ.controllers"/>
+    <alias alias="userMatchingFilter" name="defaultPartnerUserMatchingFilter" />
+    <alias alias="partnerUserMatchingFilter" name="defaultPartnerUserMatchingFilter" />
+    <bean id="defaultPartnerUserMatchingFilter" class="com.ibm.commerce.partner.occ.v2.filter.PartnerUserMatchingFilter" primary="true">
+        <property name="regexp" value="^/[^/]+/(?:users|orgUsers)/([^/]+)" />
+        <property name="baseSiteService" ref="baseSiteService" />
+        <property name="userService" ref="userService" />
+        <property name="sessionService" ref="sessionService" />
+        <property name="userMatchingService" ref="wsUserMatchingService" />
+    </bean>
+
+    <alias name="defaultWsUserMatchingService" alias="wsUserMatchingService"/>
+    <bean id="defaultWsUserMatchingService" parent="defaultUserMatchingService">
+        <property name="matchingStrategies">
+            <list>
+                <ref bean="userUIDMatchingStrategy"/>
+                <ref bean="partnerUserPropertyMatchingStrategy"/>
+                <ref bean="customerIdMatchingStrategy"/>
+                <ref bean="externalCustomerIdMatchingStrategy"/>
+            </list>
+        </property>
+    </bean>
+</beans>

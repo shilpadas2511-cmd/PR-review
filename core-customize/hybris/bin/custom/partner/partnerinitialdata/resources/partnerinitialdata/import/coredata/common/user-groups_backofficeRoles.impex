@@ -1,0 +1,49 @@
+########################################################################
+
+# 1. PartnerQuote Content Manager Group creation
+# 2. PartnerQuote Admin group creation
+# 3. eCare -  View-only access to carts and quotes, Read-only Access to customer information.
+# 4. PSD -  Back-office customer search; access check for website.
+
+# Access rights parterquote content manager users
+
+INSERT_UPDATE UserGroup; UID[unique = true]                ; groups(uid)[mode = append]; locname[lang = en]             ; description                             ; backOfficeLoginDisabled
+                       ; partnerquotecontentmanagergroup ; cmsmanagergroup           ; PartnerQuote Content Manager ; Provides access to catalogs and content ; false
+
+# Access rights parterquote admin
+
+
+INSERT_UPDATE UserGroup; UID[unique = true]       ; groups(uid)[mode = append]      ; locname[lang = en]         ; description                                      ; backOfficeLoginDisabled
+                       ; partnerquoteadmingroup ; admingroup,backofficeadmingroup ; PartnerQuote Admin Group ; Provides access to all the items from Backoffice ; false
+
+
+INSERT_UPDATE UserGroup; UID[unique = true]; locname[lang = en]                    ; description                                                       ; backOfficeLoginDisabled
+                       ; ecareusergroup    ; Partner Quote eCare Backoffice Role ; Provides read only view access to Cart, Quote, Order and Customer ; false
+
+
+$START_USERRIGHTS
+Type     ; UID                       ; MemberOfGroups; Password; Target    ; read; change; create; remove; change_perm
+
+UserGroup; ecareusergroup            ;               ;         ;           ;     ;       ;       ;       ;
+         ;                           ;               ;         ; Cart      ; +   ; -     ; -     ; -
+         ;                           ;               ;         ; Quote     ; +   ; -     ; -     ; -
+         ;                           ;               ;         ; Order     ; +   ; -     ; -     ; -
+         ;                           ;               ;         ; Customer  ; +   ; -     ; -     ; -
+
+$END_USERRIGHTS
+
+INSERT_UPDATE UserGroup; UID[unique = true]      ; locname[lang = en]                   ; description                                 ; backOfficeLoginDisabled
+                       ; partnersupportdeskgroup ; Partner support desk Backoffice Role ; Provides read only view access to customers ; false
+
+
+$START_USERRIGHTS
+Type     ; UID                                ; MemberOfGroups; Password; Target         ; read; change; create; remove; change_perm
+
+UserGroup; partnersupportdeskgroup            ;               ;         ;                ;     ;       ;       ;       ;
+         ;                                    ;               ;         ; Customer       ; +   ; -     ; -     ; -
+         ;                                    ;               ;         ; Currency       ; +   ; -     ; -     ; -
+         ;                                    ;               ;         ; UserGroup      ; +   ; -     ; -     ; -
+         ;                                    ;               ;         ; B2BPermission  ; +   ; -     ; -     ; -
+$END_USERRIGHTS
+
+

@@ -1,0 +1,28 @@
+$contentCatalog = partnerContentCatalog
+$contentCV = catalogVersion(CatalogVersion.catalog(Catalog.id[default = $contentCatalog]), CatalogVersion.version[default = Staged])[default = $contentCatalog:Staged]
+$productCatalog = partnerProductCatalog
+$productCV = catalogVersion(catalog(id[default = $productCatalog]), version[default = 'Staged'])[unique = true, default = $productCatalog:Staged]
+$medias = medias(code, $contentCV);
+$mediaContainer = media(qualifier, $contentCV);
+$product = product(code, $productCV)
+$category = category(code, $productCV)
+$lang = en
+
+
+######### quote paragraph component#########
+INSERT_UPDATE ContentPage; $contentCV[unique = true]; uid[unique = true]; name     ; masterTemplate(uid, $contentCV); label; defaultPage[default = 'true']; approvalStatus(code)[default = 'approved']; homepage[default = 'true']
+                         ;                          ; quoteDetailsPage          ; Quote Details page ; QuoteEditPageTemplate           ; quoteDetailsPage
+
+INSERT_UPDATE ContentSlotForPage; $contentCV[unique = true]; uid[unique = true]; position[unique = true]; page(uid, $contentCV)[unique = true][default = 'quoteDetailsPage']; contentSlot(uid, $contentCV)[unique = true]
+                                ;                          ; Section1-quoteDetails ; Section1               ;                                                           ; Section1Slot-quoteDetails
+
+INSERT_UPDATE ContentSlot; $contentCV[unique = true]; uid[unique = true]    ; name                       ; active; cmsComponents(&componentRef)
+                         ;                          ; Section1Slot-quoteDetails ; Section1 Slot for quote page ; true  ; HeadlineQuoteDetailsParagraph
+## components in slot 1 ##
+INSERT_UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; name                                  ; &componentRef             ; ; ; ;
+                                   ;                          ; HeadlineQuoteDetailsParagraph ; Headline Section1 Paragraph Paragraph ; HeadlineQuoteDetailsParagraph ; ; ; ;
+
+UPDATE CMSParagraphComponent; $contentCV[unique = true]; uid[unique = true]        ; content[lang = $lang]
+                            ;                          ; HeadlineQuoteDetailsParagraph ; "<p style='margin-bottom: 20px;'><strong>Bid iteration (previously approved)</strong> - An iteration is a resubmission of a prior approved quote with the same configuration. Quantity or configuration changes will require a new quote.</p> <p style='margin-bottom: 20px;'>Description: eligible when a prior version of the quote was approved and has either expired or customer information has changed. Configuration changes resulting in alternate offerings or reduced pricing are not eligible for consideration.</p> <p style='margin-bottom: 20px;'><strong>Significant competitive environment (over $500K) </strong>- represents quote request which require pricing review to address highly competitive client opportunities </p> <p style='margin-bottom: 20px;'>Description: For details over $500K, IBM will consider competitive market factors when reviewing price request proposals. Justification should clearly articulate nature of competitive environment at the client.</p> <p style='margin-bottom: 20px;'><strong>Multiple quotes for single opportunity</strong> - Opportunities requiring multiple quotes to support large deal.</p> <p style='margin-bottom: 20px;'>Description: When a large deal requires multiple quotes due to inclusion of separate sites or complex configuration requirements. Business Partners must present the individual quotes as a single offer to the client in order for pricing to be valid.</p> <p style='margin-bottom: 20px;'><strong>Existing contract</strong> - Contractually obligated pricing when the client has signed a multi year.</p> <p style='margin-bottom: 20px;'>Description: This exception is required to adhere to prior contractual obligations with the client (example: ELA).</p>"
+
+###########################

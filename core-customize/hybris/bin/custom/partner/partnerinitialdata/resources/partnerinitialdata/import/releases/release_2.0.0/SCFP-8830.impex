@@ -1,0 +1,6 @@
+$Content-Type = Content-Type->application/json
+UPDATE IbmConsumedDestination;id[unique=true];additionalProperties(key, value)[map-delimiter = |]
+                             ;opportunitySearchService;$Content-Type
+                             ;opportunitySearchByNumberService;$Content-Type
+                             ;opportunitySearchByEmailService;$Content-Type
+                             ;opportunitySearchByCustomerNumberService;$Content-Type

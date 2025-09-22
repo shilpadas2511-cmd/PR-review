@@ -1,0 +1,26 @@
+INSERT DestinationTarget; id[unique = true]  ; registrationStatus; destinationChannel(code)
+                               ; opportunityService ;                   ; OPPORTUNITYSEARCHSERVICE
+
+INSERT Endpoint; id[unique = true] ; version[unique = true]; name              ; specUrl
+                      ; opportunitySearch ; 1                     ; opportunitySearch ; opportunitySearch
+
+
+INSERT IbmPartnerOpportunityConsumedOAuthCredential; id[unique = true]           ; clientId; clientSecret; userId; password; clientApplicationId; oAuthUrl
+                                                          ; OpportunitySearchCredential ; ' '     ; ' '         ; ' '   ; ' '     ; ' '                ; https://dev.api.ibm.com:1443/q2chub/bluetest/auth/user
+
+
+INSERT IbmConsumedDestination; id[unique = true]        ; url                                                                             ; endpoint(id, version); credential(id)              ; destinationTarget(id); active[default = true]
+                                    ; opportunitySearchService ; https://dev.api.ibm.com:1443/q2chub/bluetest/repositories/5508/versions/1/json ; opportunitySearch:1  ; OpportunitySearchCredential ; opportunityService
+
+
+INSERT IbmConsumedDestination; id[unique = true]                     ; url                                                                                                       ;   endpoint(id, version)                           ;   credential(id)                          ; destinationTarget(id)             ; active[default = true]
+                                    ; opportunitySearchByNumberService    ;   https://dev.api.ibm.com:1443/q2chub/bluetest/repositories/5501/versions/1/json	;   opportunitySearch:1                             ;   OpportunitySearchCredential             ; opportunityService
+                                    ; opportunitySearchByCustomerNumberService    	;   https://dev.api.ibm.com:1443/q2chub/bluetest/repositories/5508/versions/1/json                        	;   opportunitySearch:1                             ;   OpportunitySearchCredential             ; opportunityService
+                                    ; opportunitySearchByEmailService    	;   https://dev.api.ibm.com:1443/q2chub/bluetest/repositories/5502/versions/1/json	;   opportunitySearch:1                             ;   OpportunitySearchCredential             ; opportunityService
+
+$Content-Type = Content-Type->application/json
+UPDATE IbmConsumedDestination;id[unique=true];additionalProperties(key, value)[map-delimiter = |]
+                             ;opportunitySearchService;$Content-Type
+                             ;opportunitySearchByNumberService;$Content-Type
+                             ;opportunitySearchByEmailService;$Content-Type
+                             ;opportunitySearchByCustomerNumberService;$Content-Type
