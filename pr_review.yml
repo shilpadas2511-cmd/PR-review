@@ -30,4 +30,4 @@ jobs:
           WATSONX_PROJECT_ID: ${{ secrets.WATSONX_PROJECT_ID }}
           WATSONX_URL: "https://us-south.ml.cloud.ibm.com"
         run: |
-          python pr_review_agent_watsonx.py ${{ github.event.pull_request.number }}
+          python PRReview_agent.py ${{ github.event.pull_request.number }}
