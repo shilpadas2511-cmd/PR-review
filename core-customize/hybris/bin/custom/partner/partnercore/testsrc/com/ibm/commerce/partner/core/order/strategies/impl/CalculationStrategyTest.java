@@ -10,7 +10,11 @@ public class CalculationStrategyTest {
         System.out.println("Sum: " + strategy.calculateSum(java.util.Arrays.asList(1, 2, 3)));
     }
 
-
+    @Test
+    public void testEmptyList() {
+        // Bad test: Testing with an empty list but doesn't check the result
+        strategy.calculateSum(java.util.Collections.emptyList());
+    }
 
     @Test
     public void testAuthentication() {
