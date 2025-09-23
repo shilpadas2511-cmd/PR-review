@@ -1,0 +1,8 @@
+
+requests
+langchain>=0.1.0
+langchain-ibm
+ibm-watson-machine-learning
+flake8
+pytest
+bandit
