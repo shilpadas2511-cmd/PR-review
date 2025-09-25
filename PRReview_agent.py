@@ -9,7 +9,7 @@ GITHUB_TOKEN = "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".strip()
 REPO = "PR-review"
 ORG = "shilpadas2511-cmd"
 # OpenAI key (⚠️ for quick test only, better use env variable later)
-OPENAI_API_KEY = "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"
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=OPENAI_API_KEY)
 MODEL_ID = "gpt-4o-mini"   # small + cheap, good for code review
 if len(sys.argv) < 2:
@@ -89,6 +89,7 @@ print("="*80)
 for filename, suggestions in results.items():
     print(f"\nFile: {filename}")
     print(suggestions)
+
 
 
 
