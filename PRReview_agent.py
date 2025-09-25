@@ -1,3 +1,4 @@
+import os
 import sys
 import requests
 import base64
@@ -89,6 +90,7 @@ print("="*80)
 for filename, suggestions in results.items():
     print(f"\nFile: {filename}")
     print(suggestions)
+
 
 
 
