@@ -6,7 +6,7 @@ from openai import OpenAI
 # -------------------
 # Config
 # -------------------
-GITHUB_TOKEN = "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".strip()
+GITHUB_TOKEN = "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"
 REPO = "PR-review"
 ORG = "shilpadas2511-cmd"
 # OpenAI key (⚠️ for quick test only, better use env variable later)
@@ -90,6 +90,7 @@ print("="*80)
 for filename, suggestions in results.items():
     print(f"\nFile: {filename}")
     print(suggestions)
+
 
 
 
