@@ -17,6 +17,10 @@ MODEL_ID = "ibm/granite-3-8b-instruct"  # good balance for code review
 # -------------------
 # GitHub API - fetch PR files
 # -------------------
+if len(sys.argv) < 2:
+    print("Usage: python pr_review_agent_watsonx.py <PR_NUMBER>")
+    sys.exit(1)
+PR_NUMBER = sys.argv[1]
 pr_files_url = f"https://api.github.com/repos/{REPO}/pulls/{PR_NUMBER}/files"
 headers = {
     "Authorization": f"token {GITHUB_TOKEN}",
@@ -95,3 +99,4 @@ if has_issues:
     sys.exit(1)
 else:
     sys.exit(0)
+
