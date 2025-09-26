@@ -3,7 +3,7 @@ import java.util.List;
 public class CalculationStrategyTest {
 
     // Hardcoded password - a critical security issue
-    private static final String PASSWORD = "SuperSecret12456637ghh";
+    private static final String PASSWORD = "SuperSecrethgf12456637ghh";
 
     public int calculateSum(List<Integer> numbers) {
         int result = 0;
