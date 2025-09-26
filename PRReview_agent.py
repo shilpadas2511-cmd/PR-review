@@ -6,7 +6,7 @@ from langchain_ibm import WatsonxLLM
 # -------------------
 # Config
 # -------------------
-GITHUB_TOKEN = "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".strip()
+GITHUB_TOKEN = "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".strip()
 REPO = "PR-review"
 ORG = "shilpadas2511-cmd"
 # Watsonx credentials (from secrets too, not hardcoded!)
@@ -118,3 +118,4 @@ The following checklist summarizes the AI review:
 :white_check_mark: **Recommendation**: Please review the suggestions above and update the code accordingly.
 """
 post_comment(PR_NUMBER, comment_body)
+
