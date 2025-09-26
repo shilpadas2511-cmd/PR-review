@@ -6,7 +6,7 @@ from langchain_ibm import WatsonxLLM
 # -------------------
 # Config
 # -------------------
-GITHUB_TOKEN = "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".strip()
+GITHUB_TOKEN = "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".strip()
 REPO = "PR-review"
 ORG = "shilpadas2511-cmd"
 # Watsonx credentials (from secrets too, not hardcoded!)
@@ -23,7 +23,7 @@ PR_NUMBER = sys.argv[1]
 # -------------------
 pr_files_url = f"https://api.github.com/repos/{ORG}/{REPO}/pulls/{PR_NUMBER}/files"
 headers = {
-    "Authorization": f"token {GITHUB_TOKEN}",
+    "Authorization": GITHUB_TOKEN,
     "Accept": "application/vnd.github.v3+json"
 }
 files_data = requests.get(pr_files_url, headers=headers).json()
@@ -118,4 +118,5 @@ The following checklist summarizes the AI review:
 :white_check_mark: **Recommendation**: Please review the suggestions above and update the code accordingly.
 """
 post_comment(PR_NUMBER, comment_body)
+
 
