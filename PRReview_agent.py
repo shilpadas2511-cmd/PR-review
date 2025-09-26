@@ -21,9 +21,9 @@ if len(sys.argv) < 2:
     print("Usage: python pr_review_agent_watsonx.py <PR_NUMBER>")
     sys.exit(1)
 PR_NUMBER = sys.argv[1]
-pr_files_url = f"https://api.github.com/repos/{REPO}/pulls/{PR_NUMBER}/files"
+pr_files_url = f"https://api.github.com/repos/{ORG}/{REPO}/pulls/{PR_NUMBER}/files"
 headers = {
-    "Authorization": f"token {GITHUB_TOKEN}",
+    "Authorization": GITHUB_TOKEN,
     "Accept": "application/vnd.github.v3+json"
 }
 files_data = requests.get(pr_files_url, headers=headers).json()
@@ -35,7 +35,7 @@ for file in files_data:
     filename = file.get("filename")
     patch = file.get("patch")
     if filename and patch and filename.endswith(".java"):
-        file_url = f"https://api.github.com/repos/{REPO}/contents/{filename}"
+        file_url = f"https://api.github.com/repos/{ORG}/{REPO}/contents/{filename}"
         file_resp = requests.get(file_url, headers=headers).json()
         if "content" in file_resp:
             full_code = base64.b64decode(file_resp["content"]).decode("utf-8")
@@ -99,4 +99,5 @@ if has_issues:
     sys.exit(1)
 else:
     sys.exit(0)
+
 
