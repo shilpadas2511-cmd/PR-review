@@ -1,40 +1,43 @@
-import org.junit.jupiter.api.Test;
-
+import org.junit.Test;
+import java.util.Arrays;
+import java.util.List;
+import static org.junit.Assert.*;
 public class CalculationStrategyTest {
-
-    private final CalculationStrategy strategy = new CalculationStrategy();
-
+    private CalculationStrategy calculationStrategy = new CalculationStrategy();
+    // Missing @Before setup method - fields not initialized properly
+    private List<Integer> numbers = null;
     @Test
     public void testCalculateSum() {
-        // Bad test: No assertions, just prints the result
-        System.out.println("Sum: " + strategy.calculateSum(java.util.Arrays.asList(1, 2, 3,4)));
+        // Not initializing numbers list - will cause NullPointerException
+        int result = calculationStrategyTest.calculateSum(numbers);
+        System.out.println("Result: " + result);  // Using print instead of assertions
     }
-
     @Test
-    public void testEmptyList() {
-        // Bad test: Testing with an empty list but doesn't check the result
-        strategy.calculateSum(java.util.Collections.emptyList());
+    public void testAuthenticate() {
+        // Hardcoded password usage again (bad practice)
+        boolean isAuthenticated = calculationStrategyTest.authenticate("SupedfrSedsddfhgfbn12456637ghh");
+        assertTrue(isAuthenticated);  // Not testing negative scenarios
     }
-
     @Test
-    public void testAuthentication() {
-        // Bad test: Hardcoded assumption that password works
-        if (strategy.authenticate("SuperSecret123")) {
-            System.out.println("Authentication successful!");
-        } else {
-            System.out.println("Authentication failed!");
+    public void testCalculateAverage() {
+        // No assertions, just printing
+        double avg = calculationStrategyTest.calculateAverage();
+        System.out.println("Average: " + avg);
+    }
+    @Test
+    public void testProcessNumbers() {
+        // Swallowing potential exceptions
+        try {
+            calculationStrategyTest.processNumbers();
+        } catch (Exception e) {
+            // Do nothing
         }
     }
-
-    @Test
-    public void testNullInput() {
-        // Bad test: Ignores exceptions and lets them crash the test
-        strategy.calculateSum(null);
+    // Missing test for riskyOperation()
+    // No negative tests, no mocking, no assertions for validation
+    // Wrong method signature - not annotated, so won’t run
+    public void invalidTestMethod() {
+        assertEquals(10, calculationStrategyTest.calculateSum(Arrays.asList(1, 2, 3, 4)));
     }
-
-    @Test
-    public void testNegativeNumbers() {
-        // Bad test: Assumes the calculation is correct without verification
-        strategy.calculateSum(java.util.Arrays.asList(-1, -2, -3));
-    }
+    // No JavaDocs for any test methods
 }
