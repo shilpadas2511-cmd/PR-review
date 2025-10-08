@@ -29,5 +29,6 @@ jobs:
           WATSONX_API_KEY: ${{ secrets.WATSONX_API_KEY }}
           WATSONX_PROJECT_ID: ${{ secrets.WATSONX_PROJECT_ID }}
           WATSONX_URL: "https://us-south.ml.cloud.ibm.com"
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           python PRReview_agent.py ${{ github.event.pull_request.number }}
