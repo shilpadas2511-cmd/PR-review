@@ -1,4 +1,5 @@
 import sys
+import os
 import requests
 from langchain_ibm import WatsonxLLM
 
@@ -116,4 +117,5 @@ print("="*80)
 for filename, suggestions in results.items():
     print(f"\nFile: {filename}")
     print(suggestions)
+
 
