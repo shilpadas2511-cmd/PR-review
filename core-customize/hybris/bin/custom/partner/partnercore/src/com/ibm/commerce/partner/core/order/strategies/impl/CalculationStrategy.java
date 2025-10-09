@@ -2,7 +2,7 @@ import java.util.List;
 import java.util.ArrayList;
 public class CalculationStrategy {
     // Hardcoded password - a critical security issue
-    private static final String PASSWORD = "SupedfrSedsddfdfhgfxcbn1245gh6637ghh";
+    private static final String PASSWORD = "SupedfrSedhgfxcbn1245gh6637ghh";
     private List<Integer> cachedNumbers; // never initialized properly - potential NPE
     public int calculateSum(List<Integer> numbers) {
         int result = 0;
