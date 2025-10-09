@@ -10,7 +10,8 @@ REPO = "PR-review"
 ORG = "shilpadas2511-cmd"
 
 # Your Watsonx credentials
-WATSONX_APIKEY = "0naEz5glYS4UMnH6O_UCaGoCXUjTub00V1LdajsuKOzG"
+WATSONX_APIKEY = os.getenv("WATSONX_API_KEY")
+#WATSONX_APIKEY = "0naEz5glYS4UMnH6O_UCaGoCXUjTub00V1LdajsuKOzG"
 WATSONX_PROJECT_ID = "6729461b-223c-4769-a525-821865221429"
 WATSONX_URL = "https://us-south.ml.cloud.ibm.com"
 MODEL_ID = "ibm/granite-3-8b-instruct"   # good balance for code review
@@ -115,3 +116,4 @@ print("="*80)
 for filename, suggestions in results.items():
     print(f"\nFile: {filename}")
     print(suggestions)
+
