@@ -31,4 +31,4 @@ jobs:
           WATSONX_URL: "https://us-south.ml.cloud.ibm.com"
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
-          python PR_Review_OpenAI.py ${{ github.event.pull_request.number }}
+          python PRReview_agent.py ${{ github.event.pull_request.number }}
